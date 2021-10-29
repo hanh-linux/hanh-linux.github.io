@@ -1,8 +1,9 @@
-### Welcome to Hanh Linux Website source code
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/hanh-linux/hanh-linux.github.io/main/assets/img/logo.svg" alt="Hanh Linux's logo, featuring 3 characters: H, L, X" width = "300px">
 </p>
+
+### Welcome to Hanh Linux Website source code
 
 🌐 The website is available at <a href="https://hanh-linux.github.io">Hanh Linux (GitHub Pages)</a> or <a href="https://hanhlinux.pages.dev">Hanh Linux (Cloudflare)</a>
 
