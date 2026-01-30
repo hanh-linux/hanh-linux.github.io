@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Practice: Technology & Media</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e74c3c;
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --correct: #27ae60;
+            --incorrect: #c0392b;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.2em;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #7f8c8d;
+        }
+
+        /* Exercise Card */
+        .exercise-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .topic-badge {
+            background-color: var(--accent);
+            font-size: 0.85em;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Word Bank */
+        .word-bank {
+            background-color: var(--light);
+            border: 2px dashed #bdc3c7;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .draggable {
+            background: white;
+            border: 1px solid #bdc3c7;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: grab;
+            font-weight: 600;
+            font-size: 0.95em;
+            color: var(--primary);
+            box-shadow: 0 2px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .draggable:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            background: #dfe6e9;
+        }
+
+        /* Paragraph Content */
+        .text-content {
+            font-size: 1.1em;
+            line-height: 2.5; /* High line-height for drop zones */
+            text-align: justify;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            min-width: 140px;
+            height: 34px;
+            border-bottom: 2px solid #95a5a6;
+            background-color: #f4f6f7;
+            margin: 0 5px;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+            position: relative;
+            top: 4px;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #d6eaf8;
+            border-bottom-color: var(--secondary);
+        }
+
+        .drop-zone .draggable {
+            margin: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+            cursor: grab;
+        }
+
+        /* Results */
+        .drop-zone.correct {
+            border-bottom: 3px solid var(--correct);
+            background-color: #e9f7ef;
+            color: var(--correct);
+            font-weight: bold;
+        }
+
+        .drop-zone.incorrect {
+            border-bottom: 3px solid var(--incorrect);
+            background-color: #fdedec;
+            color: var(--incorrect);
+            font-weight: bold;
+        }
+
+        /* Footer Controls */
+        .footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            border-top: 1px solid #eee;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+        }
+
+        #submit-btn {
+            background-color: var(--correct);
+            color: white;
+        }
+        #submit-btn:hover { background-color: #219150; }
+
+        #reset-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+        #reset-btn:hover { background-color: #7f8c8d; }
+
+        #score-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary);
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Technology & The Media</h1>
+        <p class="subtitle">Theme 14 Vocabulary Practice (Based on provided word list)</p>
+    </header>
+
+    <div id="exercises-wrapper"></div>
+</div>
+
+<div class="footer-bar">
+    <button id="submit-btn" onclick="checkAll()">Nộp Bài</button>
+    <button id="reset-btn" onclick="location.reload()">Làm Lại</button>
+    <div id="score-display"></div>
+</div>
+
+<script>
+    // Dữ liệu 10 bài tập được biên soạn từ file từ vựng nguồn
+    const exercisesData = [
+        {
+            id: 1,
+            title: "Cybersecurity Basics",
+            topic: "Security",
+            text: "In the modern age, protecting your computer is essential. A <strong>[1]</strong> is a system designed to prevent unauthorized access to your private network. However, a skilled <strong>[2]</strong> can sometimes bypass these protections to steal information. They often use a <strong>[3]</strong>, which is a hidden program designed to destroy data or cause faults. It is crucial to protect your <strong>[4]</strong>, such as passwords and bank details, to prevent theft. Users should value their <strong>[5]</strong> and not share personal details on suspicious sites. Installing good <strong>[6]</strong> software is the first step in defense.",
+            answers: ["firewall", "hacker", "virus", "identity", "privacy", "security"],
+            distractors: ["tabloid", "columnist", "paparazzi", "genre", "remote control", "chip"]
+        },
+        {
+            id: 2,
+            title: "Social Media Interaction",
+            topic: "Social Networking",
+            text: "The way we communicate has changed due to the internet. A <strong>[1]</strong> site allows users to create a profile and share updates. The level of <strong>[2]</strong> on these platforms is high, with users commenting and reacting instantly. Media companies now target a specific <strong>[3]</strong> based on their interests. Having a stable internet <strong>[4]</strong> is necessary to stay online. Famous people can have a huge <strong>[5]</strong> on their followers' behavior. However, spending too much time in a <strong>[6]</strong> world can make people feel disconnected from reality.",
+            answers: ["social network", "interactivity", "audience", "connection", "influence", "virtual"],
+            distractors: ["hardware", "patent", "facsimile", "electronics", "coverage", "function"]
+        },
+        {
+            id: 3,
+            title: "Journalism & Reporting",
+            topic: "Media",
+            text: "The world of news is complex. Good <strong>[1]</strong> involves collecting and writing news stories objectively. A foreign <strong>[2]</strong> is often sent to other countries to report on major events. However, some articles can be <strong>[3]</strong>, showing favor towards one side of an argument. Governments sometimes use <strong>[4]</strong> to remove parts of a report they consider a threat. Media <strong>[5]</strong> of an event can influence public opinion significantly. Unlike serious newspapers, a <strong>[6]</strong> often focuses on sensational stories about celebrities.",
+            answers: ["journalism", "correspondent", "biased", "censorship", "coverage", "tabloid"],
+            distractors: ["microchip", "firewall", "spam", "hacker", "virus", "automation"]
+        },
+        {
+            id: 4,
+            title: "Hardware & Gadgets",
+            topic: "Technology",
+            text: "Every computer system consists of physical parts known as <strong>[1]</strong>. Inside, a tiny <strong>[2]</strong> carries complicated electronic circuits that power the machine. The field of consumer <strong>[3]</strong> has grown rapidly, giving us smartphones and tablets. A modern <strong>[4]</strong> is usually designed to be <strong>[5]</strong>, meaning it is easy to carry around. Most modern devices also use <strong>[6]</strong> technology, allowing them to connect to the internet without cables.",
+            answers: ["hardware", "chip", "electronics", "device", "portable", "wireless"],
+            distractors: ["rumor", "gossip", "slander", "libel", "plagiarism", "fantasy"]
+        },
+        {
+            id: 5,
+            title: "Computer Operations",
+            topic: "Computing",
+            text: "When you get a new computer, you first need to <strong>[1]</strong> the necessary software. You can <strong>[2]</strong> programs directly from the internet. Sometimes, if too many programs are running, the computer might <strong>[3]</strong> suddenly. You may need to <strong>[4]</strong> the settings to make the system work the way you prefer. To read your emails, you must <strong>[5]</strong> your account using a password. Computers can now <strong>[6]</strong> huge amounts of data in seconds.",
+            answers: ["install", "download", "crash", "configure", "access", "process"],
+            distractors: ["paparazzi", "audience", "critic", "genre", "hoax", "scam"]
+        },
+        {
+            id: 6,
+            title: "Digital Advertising",
+            topic: "Marketing",
+            text: "Companies use various methods to sell products. An <strong>[1]</strong> on TV or online is a common way to reach people. A <strong>[2]</strong> is a specific type of video ad on television. Sometimes, a company will <strong>[3]</strong> an event, paying costs in exchange for brand visibility. However, internet users often hate <strong>[4]</strong>, which is unwanted advertising email. Users must also be careful of a <strong>[5]</strong>, a dishonest plan to steal money. Companies protect their unique inventions by obtaining a <strong>[6]</strong>.",
+            answers: ["advertisement", "commercial", "sponsor", "spam", "scam", "patent"],
+            distractors: ["isolation", "frustration", "evidence", "incident", "measure", "function"]
+        },
+        {
+            id: 7,
+            title: "Artificial Intelligence",
+            topic: "Future Tech",
+            text: "We are witnessing a technological <strong>[1]</strong>. <strong>[2]</strong> allows computers to perform tasks that normally require human intelligence. Scientists are creating <strong>[3]</strong> robots that look and act like people. These machines can <strong>[4]</strong> real-life situations for training purposes. As machines become more <strong>[5]</strong> and complex, they change how we live. A <strong>[6]</strong> is someone who loves this new technology, while others are afraid of it.",
+            answers: ["revolution", "artificial intelligence", "humanoid", "simulate", "sophisticated", "technophile"],
+            distractors: ["tabloid", "gossip", "rumor", "slander", "libel", "coverage"]
+        },
+        {
+            id: 8,
+            title: "Media Ethics & Law",
+            topic: "Ethics",
+            text: "Writers and creators have legal rights. <strong>[1]</strong> protects a person's creative work from being copied without permission. <strong>[2]</strong> is the act of taking someone else's work and pretending it is yours. In journalism, publishing a false spoken statement that damages a reputation is called <strong>[3]</strong>, while a written one is libel. Some news headlines are <strong>[4]</strong>, designed to trick readers into believing something false. Topics that cause public anger are often described as <strong>[5]</strong>. It is important to verify sources to avoid spreading <strong>[6]</strong> information.",
+            answers: ["copyright", "plagiarism", "slander", "misleading", "controversial", "inaccurate"], 
+            // Note: 'inaccurate' replaced with 'misleading' synonym or distractor if needed. 
+            // Let's use words strictly from list. "misleading" is in list. "inaccurate" isn't. 
+            // Let's use "hoax" or "rumor" or adjust. 
+            // Adjusting answers: copyright, plagiarism, slander, misleading, controversial. 
+            // Last blank: "rumor" fits "spreading rumor". Or "gossip".
+            // Let's use "rumor" for the last blank.
+            distractors: ["hardware", "chip", "wireless", "portable", "digital", "electronic"]
+        },
+        {
+            id: 9,
+            title: "User Experience",
+            topic: "Psychology",
+            text: "Technology should be easy to use. A <strong>[1]</strong> device is one that non-experts can understand quickly. However, when technology fails, it causes great <strong>[2]</strong> for the user. Spending all day on a computer can lead to social <strong>[3]</strong> from the real world. Technology is now <strong>[4]</strong>, meaning it exists in every part of our lives. A <strong>[5]</strong> is someone who fears or dislikes this new tech. For many, the internet is primarily a source of <strong>[6]</strong>, like movies and games.",
+            answers: ["user-friendly", "frustration", "isolation", "pervasive", "technophobe", "entertainment"],
+            distractors: ["firewall", "virus", "slander", "spam", "scam", "hoax"]
+        },
+        {
+            id: 10,
+            title: "Managing Information",
+            topic: "Data",
+            text: "Computers are excellent at handling information. They use hard drives to <strong>[1]</strong> vast amounts of files. Users can then <strong>[2]</strong> this information whenever they need it. It is vital that the information is <strong>[3]</strong> and correct in every detail. Scientists look for <strong>[4]</strong> or proof to support their theories. Sometimes, a whistleblower might <strong>[5]</strong> or reveal secret information to the public. However, some sources might <strong>[6]</strong> a story to make it more interesting than the truth.",
+            answers: ["store", "access", "accurate", "evidence", "disclose", "fabricate"],
+            distractors: ["broadcast", "publish", "circulate", "edit", "display", "simulate"]
+        }
+    ];
+
+    // Hàm trộn mảng (Fisher-Yates Shuffle)
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Khởi tạo bài tập
+    function init() {
+        const wrapper = document.getElementById('exercises-wrapper');
+
+        exercisesData.forEach((ex, index) => {
+            // Tạo thẻ Card
+            const card = document.createElement('div');
+            card.classList.add('exercise-card');
+
+            // Header
+            const header = document.createElement('div');
+            header.classList.add('card-header');
+            header.innerHTML = `
+                <h3>${index + 1}. ${ex.title}</h3>
+                <span class="topic-badge">${ex.topic}</span>
+            `;
+            card.appendChild(header);
+
+            // Body
+            const body = document.createElement('div');
+            body.classList.add('card-body');
+
+            // Word Bank
+            const bank = document.createElement('div');
+            bank.classList.add('word-bank');
+            bank.id = `bank-${ex.id}`;
+
+            // Gộp đáp án đúng và từ nhiễu, sau đó trộn
+            const allWords = shuffle([...ex.answers, ...ex.distractors]);
+            
+            allWords.forEach(word => {
+                const span = document.createElement('span');
+                span.classList.add('draggable');
+                span.setAttribute('draggable', 'true');
+                span.textContent = word;
+                span.id = `word-${ex.id}-${word.replace(/\s+/g, '-')}`;
+                span.dataset.word = word;
+                span.dataset.origin = ex.id; // Để kiểm tra nguồn gốc tránh kéo nhầm bài
+
+                // Events Drag
+                span.addEventListener('dragstart', dragStart);
+                span.addEventListener('dragend', dragEnd);
+
+                bank.appendChild(span);
+            });
+            body.appendChild(bank);
+
+            // Đoạn văn
+            const p = document.createElement('div');
+            p.classList.add('text-content');
+            
+            // Thay thế [1]..[6] bằng ô drop-zone
+            let formattedText = ex.text;
+            ex.answers.forEach((ans, i) => {
+                const placeholder = `<strong>[${i + 1}]</strong>`;
+                const zone = `<span class="drop-zone" data-correct="${ans}" data-ex="${ex.id}"></span>`;
+                formattedText = formattedText.replace(placeholder, zone);
+            });
+            
+            p.innerHTML = formattedText;
+            body.appendChild(p);
+            
+            card.appendChild(body);
+            wrapper.appendChild(card);
+        });
+
+        // Gán sự kiện Drop cho toàn bộ zone và bank
+        document.querySelectorAll('.drop-zone, .word-bank').forEach(el => {
+            el.addEventListener('dragover', dragOver);
+            el.addEventListener('drop', drop);
+        });
+    }
+
+    // Drag & Drop Functions
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+        setTimeout(() => e.target.classList.add('dragging'), 0);
+    }
+
+    function dragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+    function dragOver(e) {
+        e.preventDefault();
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+        if (target) target.classList.add('drag-over');
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        // Xóa hiệu ứng hover
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+        const id = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(id);
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+
+        if (!target || !draggable) return;
+
+        // Logic: Chỉ cho phép thả trong cùng 1 bài tập (dựa trên ID bài tập)
+        let targetExId;
+        if (target.classList.contains('word-bank')) {
+            targetExId = target.id.split('-')[1];
+        } else {
+            targetExId = target.dataset.ex;
+        }
+
+        // Nếu từ vựng không thuộc bài tập này -> Chặn
+        if (draggable.dataset.origin != targetExId) return;
+
+        // Xử lý thả vào ô trống
+        if (target.classList.contains('drop-zone')) {
+            // Nếu ô đã có từ -> Trả từ cũ về bank của bài tập đó
+            if (target.children.length > 0) {
+                const oldChild = target.children[0];
+                document.getElementById(`bank-${targetExId}`).appendChild(oldChild);
+            }
+            target.appendChild(draggable);
+            target.classList.remove('correct', 'incorrect');
+        } 
+        // Xử lý thả về bank
+        else {
+            target.appendChild(draggable);
+        }
+    }
+
+    // Kiểm tra đáp án
+    function checkAll() {
+        const zones = document.querySelectorAll('.drop-zone');
+        let total = zones.length;
+        let correct = 0;
+
+        zones.forEach(zone => {
+            const correctAnswer = zone.dataset.correct;
+            // Reset style
+            zone.classList.remove('correct', 'incorrect');
+
+            if (zone.children.length > 0) {
+                const userWord = zone.children[0].dataset.word;
+                if (userWord === correctAnswer) {
+                    zone.classList.add('correct');
+                    correct++;
+                } else {
+                    zone.classList.add('incorrect');
+                }
+            } else {
+                zone.classList.add('incorrect');
+            }
+        });
+
+        const display = document.getElementById('score-display');
+        display.innerHTML = `Kết quả: <span style="color:${correct === total ? '#27ae60' : '#c0392b'}">${correct} / ${total}</span> câu đúng`;
+        
+        if (correct === total) {
+            display.innerHTML += " - Tuyệt vời!";
+        }
+    }
+
+    // Chạy khi tải trang
+    window.onload = init;
+
+</script>
+
+</body>
+</html>

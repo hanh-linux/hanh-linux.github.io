@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Vocabulary Practice: EDUCATION</title>
+    <style>
+        :root {
+            --primary: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --correct: #27ae60;
+            --incorrect: #c0392b;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #f4f6f7;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding-bottom: 80px; /* Space for fixed footer */
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--secondary);
+            font-size: 2.5em;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+
+        p.instruction {
+            font-size: 1.1em;
+            color: #7f8c8d;
+        }
+
+        /* Exercise Card */
+        .exercise-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.3em;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Word Bank */
+        .word-bank {
+            background-color: var(--light);
+            border: 2px dashed #bdc3c7;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .draggable {
+            background: white;
+            border: 1px solid #bdc3c7;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: grab;
+            font-weight: 600;
+            color: var(--secondary);
+            box-shadow: 0 2px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .draggable:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            background: #dfe6e9;
+        }
+
+        /* Paragraph Area */
+        .text-content {
+            font-size: 1.15em;
+            line-height: 2.4;
+            text-align: justify;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            width: 160px;
+            height: 36px;
+            border-bottom: 2px solid #95a5a6;
+            background-color: #f8f9f9;
+            margin: 0 6px;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+            position: relative;
+            top: 5px;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #d6eaf8;
+            border-bottom-color: var(--accent);
+        }
+
+        .drop-zone .draggable {
+            margin: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+            cursor: grab;
+        }
+
+        /* Results */
+        .drop-zone.correct {
+            border-bottom: 3px solid var(--correct);
+            background-color: #e9f7ef;
+            color: var(--correct);
+            font-weight: bold;
+        }
+
+        .drop-zone.incorrect {
+            border-bottom: 3px solid var(--incorrect);
+            background-color: #fdedec;
+            color: var(--incorrect);
+            font-weight: bold;
+        }
+
+        /* Sticky Footer */
+        .footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            border-top: 1px solid #ddd;
+        }
+
+        button {
+            padding: 12px 35px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+        }
+
+        #submit-btn {
+            background-color: var(--correct);
+            color: white;
+        }
+
+        #submit-btn:hover { background-color: #219150; }
+
+        #reset-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        #reset-btn:hover { background-color: #7f8c8d; }
+
+        #score-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Education Vocabulary</h1>
+        <p class="instruction">Kéo từ vựng trong khung (Word Bank) và thả vào ô trống thích hợp trong đoạn văn. Nhấn "NỘP BÀI" để kiểm tra kết quả.</p>
+    </header>
+
+    <div id="exercises-wrapper"></div>
+</div>
+
+<div class="footer-bar">
+    <button id="submit-btn" onclick="checkAll()">Nộp Bài</button>
+    <button id="reset-btn" onclick="location.reload()">Làm Lại</button>
+    <div id="score-display"></div>
+</div>
+
+<script>
+    // Dữ liệu 10 bài tập lấy từ file Education Vocabulary
+    const exercisesData = [
+        {
+            id: 1,
+            title: "Topic 1: University Life",
+            text: "Starting university is a major milestone. First, students must usually live on <strong>[1]</strong>, which helps them socialize. The academic year is divided into two parts, and in the first <strong>[2]</strong>, the workload can be heavy. Students have to attend every <strong>[3]</strong> given by professors in large halls. If they miss too many, their <strong>[4]</strong> record will suffer. Besides listening, they must complete written tasks. Every <strong>[5]</strong> has a strict date by which it must be submitted. If a student misses a <strong>[6]</strong>, they might fail the course.",
+            answers: ["campus", "semester", "lecture", "attendance", "assignment", "deadline"],
+            distractors: ["kindergarten", "truancy", "nursery", "parenting", "detention", "recess"]
+        },
+        {
+            id: 2,
+            title: "Topic 2: Academic Research",
+            text: "For postgraduate students, the focus shifts to independent study. To obtain a Master's degree, one often has to write a <strong>[1]</strong>, while a PhD requires a much longer <strong>[2]</strong> containing original ideas. Before writing, students must conduct extensive <strong>[3]</strong> to find data. They spend days in the <strong>[4]</strong> reading books and journals. It is crucial to have a clear <strong>[5]</strong> or subject to investigate. Throughout this process, they work under the <strong>[6]</strong> of a supervisor who offers advice and support.",
+            answers: ["dissertation", "thesis", "research", "library", "topic", "guidance"],
+            distractors: ["playground", "canteen", "uniform", "gymnasium", "textbook", "timetable"]
+        },
+        {
+            id: 3,
+            title: "Topic 3: Admissions & Finance",
+            text: "Higher education can be expensive. Many students have to pay high <strong>[1]</strong> fees each year. For talented students who cannot afford this, there is the option to apply for a <strong>[2]</strong>, which is a grant of money based on merit. To get into a good college, a <strong>[3]</strong> must perform well in the entrance interview. Once accepted, they must formally <strong>[4]</strong> in the courses they want to take. Some choose a specific <strong>[5]</strong>, such as Engineering or History, as their main field of study. Upon finishing the course, they receive a <strong>[6]</strong> or degree.",
+            answers: ["tuition", "scholarship", "candidate", "enroll", "major", "certificate"],
+            distractors: ["pension", "salary", "wage", "expel", "suspend", "dropout"]
+        },
+        {
+            id: 4,
+            title: "Topic 4: Learning Methods",
+            text: "Educators debate which teaching style is best. Traditional methods often rely on <strong>[1]</strong>, where students memorize facts by repeating them without deep understanding. However, modern education encourages students to <strong>[2]</strong> the meaning of concepts fully. Teachers use various <strong>[3]</strong> to make lessons interesting. A good student is <strong>[4]</strong>, meaning they spend a lot of time studying carefully. They must also be <strong>[5]</strong> to succeed, not letting difficulties stop them. Effective learning requires not just memorization, but the ability to <strong>[6]</strong> and solve problems.",
+            answers: ["rote-learning", "grasp", "strategies", "studious", "determined", "analyse"],
+            distractors: ["ignorant", "apathetic", "lazy", "cheating", "truant", "illegal"]
+        },
+        {
+            id: 5,
+            title: "Topic 5: School Discipline",
+            text: "Schools must maintain order to function well. If a student behaves badly, they lack <strong>[1]</strong>. Common punishments include <strong>[2]</strong>, where a student is kept at school after hours. Some students decide to <strong>[3]</strong> classes without permission, which is a serious issue. In extreme cases, a school may <strong>[4]</strong> a student, forcing them to leave permanently. To avoid this, students should follow instructions and be <strong>[5]</strong>, arriving on time for every lesson. Good behavior is as important as having a high <strong>[6]</strong> or score in exams.",
+            answers: ["discipline", "detention", "skip", "expel", "punctual", "grade"],
+            distractors: ["reward", "scholarship", "promotion", "graduation", "enrollment", "admission"]
+        },
+        {
+            id: 6,
+            title: "Topic 6: Curriculum & Subjects",
+            text: "The government usually decides the national <strong>[1]</strong>, which lists what must be taught in schools. Some subjects, like Math and English, are <strong>[2]</strong>, meaning every student must take them. Others are <strong>[3]</strong>, allowing students to choose what they enjoy. A well-rounded education includes not just books but also <strong>[4]</strong> activities like sports and drama. Teachers use a <strong>[5]</strong> to guide their daily lessons. At the end of the term, students usually take an exam to <strong>[6]</strong> how much they have learned.",
+            answers: ["curriculum", "compulsory", "elective", "extra-curricular", "textbook", "assess"],
+            distractors: ["optional", "voluntary", "useless", "illegal", "private", "ignoring"]
+        },
+        {
+            id: 7,
+            title: "Topic 7: Skills & Development",
+            text: "Education is not just about facts; it is about skills. Basic <strong>[1]</strong> involves the ability to read and write, while <strong>[2]</strong> is the ability to work with numbers. As students grow <strong>[3]</strong>, they are expected to take more responsibility. They attend a <strong>[4]</strong> or workshop where they can discuss ideas in small groups. Presenting ideas is also key, so they often have to give a <strong>[5]</strong> in front of the class. The goal is to gain a recognized <strong>[6]</strong> that will help them get a job later.",
+            answers: ["literacy", "numeracy", "mature", "seminar", "presentation", "qualification"],
+            distractors: ["infancy", "childhood", "silence", "ignorance", "failure", "unemployment"]
+        },
+        {
+            id: 8,
+            title: "Topic 8: Types of Education",
+            text: "There are different types of schools. A <strong>[1]</strong> school is owned by the state and is free for everyone. In contrast, a <strong>[2]</strong> school charges fees and is owned by an individual or company. Young children go to <strong>[3]</strong> or kindergarten before starting formal schooling. Later, they move to <strong>[4]</strong> school (high school). Some students prefer <strong>[5]</strong> training, which focuses on practical job skills rather than academic <strong>[6]</strong>.",
+            answers: ["comprehensive", "private", "nursery", "secondary", "vocational", "theory"],
+            distractors: ["university", "college", "master's", "doctoral", "thesis", "research"]
+        },
+        {
+            id: 9,
+            title: "Topic 9: Exam Preparation",
+            text: "Exam season is stressful. Students often try to <strong>[1]</strong> or 'swot' just days before the test, learning a lot in a short time. It is better to <strong>[2]</strong> lessons regularly throughout the year. During the exam, they must <strong>[3]</strong> fully on the paper and not get distracted. Unfortunately, some students try to <strong>[4]</strong> by copying others, which results in disqualification. After the exam, they wait anxiously for the results to see if they <strong>[5]</strong> or fail. High achievers feel a great sense of <strong>[6]</strong>.",
+            answers: ["cram", "revise", "concentrate", "cheat", "pass", "achievement"],
+            distractors: ["ignore", "forget", "sleep", "play", "lose", "failure"]
+        },
+        {
+            id: 10,
+            title: "Topic 10: The Role of Teachers",
+            text: "A good teacher does more than just instruct; they <strong>[1]</strong> students to do their best. In university, a <strong>[2]</strong> might work with a single student or a small group to provide personalized help. They provide <strong>[3]</strong> on assignments so students know how to improve. Teachers also organize the <strong>[4]</strong> list for the course. They must be <strong>[5]</strong> and treat all students equally. If a student is struggling, the teacher tries to <strong>[6]</strong> the problem and find a solution.",
+            answers: ["inspire", "tutor", "feedback", "reading", "fair", "solve"],
+            distractors: ["discourage", "punish", "ignore", "unfair", "biased", "create"]
+        }
+    ];
+
+    // Hàm trộn mảng (Fisher-Yates)
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Khởi tạo bài tập
+    function init() {
+        const wrapper = document.getElementById('exercises-wrapper');
+
+        exercisesData.forEach((ex, index) => {
+            // Tạo thẻ Card
+            const card = document.createElement('div');
+            card.classList.add('exercise-card');
+
+            // Header
+            const header = document.createElement('div');
+            header.classList.add('card-header');
+            header.innerHTML = `<h3>${ex.title}</h3>`;
+            card.appendChild(header);
+
+            // Body
+            const body = document.createElement('div');
+            body.classList.add('card-body');
+
+            // Word Bank
+            const bank = document.createElement('div');
+            bank.classList.add('word-bank');
+            bank.id = `bank-${ex.id}`;
+
+            // Gộp đáp án đúng và từ nhiễu, sau đó trộn
+            const allWords = shuffle([...ex.answers, ...ex.distractors]);
+            
+            allWords.forEach(word => {
+                const span = document.createElement('span');
+                span.classList.add('draggable');
+                span.setAttribute('draggable', 'true');
+                span.textContent = word;
+                span.id = `word-${ex.id}-${word.replace(/\s+/g, '-')}`;
+                span.dataset.word = word;
+                span.dataset.origin = ex.id; // Để kiểm tra nguồn gốc
+
+                // Events Drag
+                span.addEventListener('dragstart', dragStart);
+                span.addEventListener('dragend', dragEnd);
+
+                bank.appendChild(span);
+            });
+            body.appendChild(bank);
+
+            // Đoạn văn
+            const p = document.createElement('div');
+            p.classList.add('text-content');
+            
+            // Thay thế [1]..[6] bằng ô drop-zone
+            let formattedText = ex.text;
+            ex.answers.forEach((ans, i) => {
+                const placeholder = `<strong>[${i + 1}]</strong>`;
+                const zone = `<span class="drop-zone" data-correct="${ans}" data-ex="${ex.id}"></span>`;
+                formattedText = formattedText.replace(placeholder, zone);
+            });
+            
+            p.innerHTML = formattedText;
+            body.appendChild(p);
+            
+            card.appendChild(body);
+            wrapper.appendChild(card);
+        });
+
+        // Gán sự kiện Drop cho toàn bộ zone và bank
+        document.querySelectorAll('.drop-zone, .word-bank').forEach(el => {
+            el.addEventListener('dragover', dragOver);
+            el.addEventListener('drop', drop);
+        });
+    }
+
+    // Drag & Drop Functions
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+        setTimeout(() => e.target.classList.add('dragging'), 0);
+    }
+
+    function dragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+    function dragOver(e) {
+        e.preventDefault();
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+        if (target) target.classList.add('drag-over');
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        // Xóa hiệu ứng hover
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+        const id = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(id);
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+
+        if (!target || !draggable) return;
+
+        // Logic: Chỉ cho phép thả trong cùng 1 bài tập
+        let targetExId;
+        if (target.classList.contains('word-bank')) {
+            targetExId = target.id.split('-')[1];
+        } else {
+            targetExId = target.dataset.ex;
+        }
+
+        // Nếu ID bài tập của từ không khớp với ID bài tập của đích đến -> Chặn
+        if (draggable.dataset.origin != targetExId) return;
+
+        // Xử lý thả vào ô trống
+        if (target.classList.contains('drop-zone')) {
+            // Nếu ô đã có từ -> Trả từ cũ về bank
+            if (target.children.length > 0) {
+                const oldChild = target.children[0];
+                document.getElementById(`bank-${targetExId}`).appendChild(oldChild);
+            }
+            target.appendChild(draggable);
+            target.classList.remove('correct', 'incorrect');
+        } 
+        // Xử lý thả về bank
+        else {
+            target.appendChild(draggable);
+        }
+    }
+
+    // Kiểm tra đáp án
+    function checkAll() {
+        const zones = document.querySelectorAll('.drop-zone');
+        let total = zones.length;
+        let correct = 0;
+
+        zones.forEach(zone => {
+            const correctAnswer = zone.dataset.correct;
+            // Reset style
+            zone.classList.remove('correct', 'incorrect');
+
+            if (zone.children.length > 0) {
+                const userWord = zone.children[0].dataset.word;
+                if (userWord === correctAnswer) {
+                    zone.classList.add('correct');
+                    correct++;
+                } else {
+                    zone.classList.add('incorrect');
+                }
+            } else {
+                zone.classList.add('incorrect');
+            }
+        });
+
+        const display = document.getElementById('score-display');
+        display.innerHTML = `Kết quả: <span style="color:${correct === total ? '#27ae60' : '#c0392b'}">${correct} / ${total}</span> câu đúng`;
+        
+        if (correct === total) {
+            display.innerHTML += " 🏆 Xuất sắc!";
+        }
+    }
+
+    // Chạy khi tải trang
+    window.onload = init;
+
+</script>
+
+</body>
+</html>

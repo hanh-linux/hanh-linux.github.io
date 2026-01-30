@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đề Thi Khảo Sát Chất Lượng - Liên Trường THPT Bắc Ninh 2025-2026</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .quiz-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            margin-top: 30px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .passage {
+            background-color: #e8f4f8;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #3498db;
+            white-space: pre-line; /* Giữ format xuống dòng */
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1em;
+        }
+        .question-block {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .question-content {
+            font-style: italic;
+            margin-bottom: 10px;
+            white-space: pre-line;
+            color: #555;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 5px 0;
+        }
+        .options label {
+            cursor: pointer;
+            display: block;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .options label:hover {
+            background-color: #f0f0f0;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .submit-btn:hover {
+            background-color: #219150;
+        }
+        .result-box {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            color: #3c763d;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        /* Styles cho kết quả đúng sai */
+        .correct {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: #c0392b;
+            text-decoration: line-through;
+        }
+        .correct-answer-label {
+            background-color: #d4edda !important;
+            border: 1px solid #c3e6cb;
+        }
+        .wrong-answer-label {
+            background-color: #f8d7da !important;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h1>ĐỀ KHẢO SÁT CHẤT LƯỢNG KHỐI 12</h1>
+        <h2>LIÊN TRƯỜNG THPT BẮC NINH 2025-2026</h2>
+        <p style="text-align: center; font-style: italic;">Môn: Tiếng Anh - Thời gian: 50 phút</p>
+
+        <form id="quizForm">
+            <div id="quizContent"></div>
+            <button type="button" class="submit-btn" onclick="submitQuiz()">Nộp Bài & Xem Kết Quả</button>
+        </form>
+
+        <div id="result" class="result-box"></div>
+    </div>
+
+<script>
+    // Dữ liệu đề thi
+    const quizData = [
+        // --- Phần Sắp xếp câu (Q1-5) ---
+        {
+            type: "section",
+            title: "Mark the letter A, B, C, or D on your answer sheet to indicate the best arrangement of utterances or sentences to make a meaningful exchange or text in each of the following questions from 1 to 5."
+        },
+        {
+            id: 1,
+            content: "Dear Tom,\na. Since you helped me before, I want to help you with your challenge.\nb. Although the path was hard, I kept walking until I reached the top.\nc. While big problems feel scary, we can solve them when we try each day.\nd. When I climbed the small mountain, I felt very happy because I did it!\ne. If you try again tomorrow, you will feel better than today.\nYour friend,\nJohn",
+            question: "Question 1.",
+            options: ["e–a–c–b–d", "b–a–d–e–c", "a–d–e–b–c", "d–b–e–a–c"],
+            correct: 2 // C
+        },
+        {
+            id: 2,
+            content: "a. For example, behaviors that are acceptable in one culture, such as direct eye contact, may be considered impolite in another.\nb. At first, people may feel excited about exploring a new culture, but this initial enthusiasm often fades as they begin to notice differences in language, customs, and social norms.\nc. Culture shock, which occurs when individuals struggle to adapt to a foreign culture, is a common experience for travelers and expatriates.\nd. This period of adjustment can be challenging, but it ultimately helps individuals develop a deeper understanding of and respect for cultural diversity.\ne. Such differences can lead to feelings of frustration, confusion, or even isolation for newcomers.",
+            question: "Question 2.",
+            options: ["c–e–a–b–d", "c–b–a–e–d", "c–a–e–b–d", "c–b–e–a–d"],
+            correct: 1 // B
+        },
+        {
+            id: 3,
+            content: "a. Susan : I've heard about it, but I'm not sure yet.\nb. Brian : It's a great way to gain experience and help the community.\nc. Susan : That sounds interesting. What kind of work do they do?\nd. Brian : Mostly teaching kids and organizing weekend activities.\ne. Brian : Are you going to join the volunteering project this summer?",
+            question: "Question 3.",
+            options: ["e–a–b–c–d", "c–e–d–b–a", "d–b–a–e–c", "e–b–a–d–c"],
+            correct: 0 // A
+        },
+        {
+            id: 4,
+            content: "a. In addition, adhering to a balanced diet rich in nutrients and engaging in regular physical activity have been proven to significantly enhance one's overall well-being and resilience.\nb. As a result, maintaining an optimistic outlook, even during challenging circumstances, is considered essential to living a happier and more fulfilling life.\nc. Recent scientific studies have consistently indicated that optimism not only improves mental health but can also positively impact physical health outcomes.\nd. For example, individuals who demonstrate optimism are often observed to recover faster from illnesses and injuries compared to their more pessimistic counterparts.\ne. In summary, integrating optimism with healthy lifestyle practices, including proper nutrition and consistent exercise routines, can greatly improve both mental and physical health.",
+            question: "Question 4.",
+            options: ["d-c-b-a-e", "c-d-a-b-e", "c-d-b-a-e", "b-c-d-a-e"],
+            correct: 2 // C
+        },
+        {
+            id: 5,
+            content: "a. Sarah : Hi, Ben! It’s been ages since we last caught up. You look great!\nb. Sarah : Yes, I have! I started running every morning and switched to a healthier diet.\nc. Ben : Hi, Sarah! Thank you. You’re looking fantastic, too. Have you been working out?",
+            question: "Question 5.",
+            options: ["b-c-a", "c-a-b", "a-c-b", "a-b-c"],
+            correct: 2 // C
+        },
+
+        // --- Phần Điền từ (Q6-11) ---
+        {
+            type: "section",
+            title: "Read the following advertisement and mark the letter A, B, C or D on your answer sheet to indicate the option that best fits each of the numbered blanks from 6 to 11."
+        },
+        {
+            type: "passage",
+            text: "<strong>Zero-Waste Wardrobes: Fashion That Regenerates The Earth</strong>\nOur beautiful (6) ____________ natural fabrics always come from sustainable natural sources. The (7) ____________ truly helps our beautiful green planet every day. We proudly sell quality products (8) ____________ out of organic materials in our stores. We happily bring eco-friendly clothes (9) ____________ you at affordable prices every season. You should (10) ____________ up with the times by choosing sustainable fashion options for your everyday wardrobe needs. We strongly want (11) ____________ colorful zero-waste clothing for everyone in our community."
+        },
+        { id: 6, question: "Question 6.", options: ["recycled", "recycle", "recyclable", "recyclability"], correct: 2 }, // C
+        { id: 7, question: "Question 7.", options: ["fashion sustainable industry", "industry fashion sustainable", "sustainable fashion industry", "sustainable industry fashion"], correct: 2 }, // C
+        { id: 8, question: "Question 8.", options: ["made", "was made", "which made", "making"], correct: 0 }, // A
+        { id: 9, question: "Question 9.", options: ["to", "with", "out", "at"], correct: 0 }, // A
+        { id: 10, question: "Question 10.", options: ["talk", "make", "say", "keep"], correct: 3 }, // D
+        { id: 11, question: "Question 11.", options: ["create", "to create", "to creating", "creating"], correct: 1 }, // B
+
+        // --- Phần Điền từ Leaflet (Q12-17) ---
+        {
+            type: "section",
+            title: "Read the following leaflet and mark the letter A, B, C, and D on your answer sheet to indicate the option that best fits each of the numbered blanks from 12 to 17."
+        },
+        {
+            type: "passage",
+            text: "<strong>ECO-FRIENDLY HOME SOLUTIONS: BUILD A GREENER FUTURE TODAY!</strong>\nLet’s take action and make our homes more eco-friendly to build a better future for the planet.\nHere are some important facts and figures:\n• Did you know that human activities are harming wildlife? (12) ____________, we throw away 80 million cans every day and 45,000 tonnes of plastic packaging each year. This waste kills nearly one million seabirds annually.\n\n<strong>Positive Actions You Can Take:</strong>\n• Buy and (13) ____________ fresh, organic food produced locally. This reduces the need for long-distance food transport, which in turn cuts down on pollution and greenhouse gas emissions.\n• Don’t always buy food that comes in cans or plastic packaging. The other option is to make your own meals, which helps reduce (14) ____________ amount of rubbish you produce and saves you money.\n• (15) ____________ packaging wherever possible. Separate paper, plastic, and metal items for recycling. By doing so, we help reduce the waste that ends up in landfills.\n\n<strong>Other Ways To Make a Difference at Home:</strong>\n• Use energy-efficient appliances. These (16) ____________ help reduce your electricity consumption and (17) ____________ the amount of energy used by the grid.\n• Install water-saving devices. These help you use less water while taking showers, washing dishes, or even watering the plants, which conserves an essential natural resource.\n\nLet’s all work together to make our homes eco-friendly and reduce our environmental impact. By changing small habits, we can make a big difference for the future of the planet."
+        },
+        { id: 12, question: "Question 12.", options: ["But", "Therefore", "Nevertheless", "Consequently"], correct: 3 }, // D
+        { id: 13, question: "Question 13.", options: ["devour", "purchase", "ingest", "consume"], correct: 3 }, // D
+        { id: 14, question: "Question 14.", options: ["an", "No article", "the", "a"], correct: 2 }, // C
+        { id: 15, question: "Question 15.", options: ["Reuse", "Recycle", "Reduce", "Refill"], correct: 1 }, // B
+        { id: 16, question: "Question 16.", options: ["devices", "equipment", "machines", "appliances"], correct: 3 }, // D
+        { id: 17, question: "Question 17.", options: ["face up to", "cut down on", "run out of", "put up with"], correct: 1 }, // B
+
+        // --- Phần Nellie Bly (Q18-22) ---
+        {
+            type: "section",
+            title: "Read the following passage about Nellie Bly and mark the letter A, B, C, or D on your answer sheet to indicate the option that best fits each of the numbered blanks from 18 to 22."
+        },
+        {
+            type: "passage",
+            text: "Nellie Bly was an American journalist, (18) ____________. She also made the fastest trip around the world.\nShe was born in 1864 in Pennsylvania, the United States. Her parents named her Elizabeth Jane Cochran. She started her career in 1885 after writing an angry response to an article called What Girls Are Good For in the Pittsburgh Dispatch. They were impressed and gave her a job. (19) ____________, and that they should have better opportunities.\nShe then used the name Nellie Bly for the rest of her career.\nAfter leaving the Pittsburgh Dispatch, (20) ____________. She finally got a job at the New York World by agreeing to pretend to be mentally unwell to investigate a mental asylum.\nHer report exposed the asylum’s conditions, and it was forced to improve its patient care.\nDuring her career, she wrote about many difficult issues, and most of them are in support of women’s lives.\nIn 1889, inspired by Jules Verne’s novel Around the World in Eighty Days, she took a trip around the world. The idea (21) ____________ because “no one but a man can do this,” but finally her editor agreed. She travelled alone for most of it, an unusual thing for women to do at the time. She actually met Jules Verne in France and completed the trip after 72 days, setting a world record.\nIn her later years, Nellie Bly returned to journalism. She wrote reports about World War I and problems that impacted women.\nNellie Bly died in 1922 at the age of 57. (22) ____________."
+        },
+        { id: 18, question: "Question 18.", options: ["of whom investigative reporting was known best", "having been known best for her investigative reporting", "best known for her investigative reporting", "that got her investigative reporting best known"], correct: 2 }, // C
+        { id: 19, question: "Question 19.", options: ["It is her first article that said being married was unnecessary for all women", "Her first article, in which she claimed that not every woman was required to marry", "That marriage was not necessary for every woman was stated in her first article", "In her first article, she argued that not all women needed to get married"], correct: 3 }, // D
+        { id: 20, question: "Question 20.", options: ["job opportunities were denied for Nellie as newspapers didn’t want to hire women", "female employees were rejected, therefore Nellie couldn’t get jobs", "her application was refused since Nellie was a woman", "Nellie was rejected from jobs because newspapers wouldn’t hire a woman"], correct: 3 }, // D
+        { id: 21, question: "Question 21.", options: ["initially rejected by her newspaper", "was rejected by her newspaper at first", "first rejected her an agreement from her newspaper", "with an initial rejection from her newspaper"], correct: 1 }, // B
+        { id: 22, question: "Question 22.", options: ["Her life has inspired dozens of movies, TV series, and books", "Such was her life that has inspired dozens of movies, TV series, and books", "Based on her life, dozens of movies, TV series, and books got an inspiration", "After her death, books on movies, TV series, and books have been inspired"], correct: 0 }, // A
+
+        // --- Phần Christmas Trees (Q23-32) ---
+        {
+            type: "section",
+            title: "Read the following passage about Christmas trees and mark the letter A, B, C, or D to indicate the correct answer to each of the questions."
+        },
+        {
+            type: "passage",
+            text: "[ I ] The environmental impact of Christmas trees goes beyond choosing real or artificial.\n[ II ] Real trees, typically spruce, fir, or pine, are grown on plantations for about ten years, supporting biodiversity by providing habitats for farmland birds and insects.\n[ III ] These trees play a small but meaningful role in preserving rural landscapes and preventing alternative, less sustainable land uses, like urban development.\n[ IV ]\nArtificial trees, while reusable, have a significantly higher carbon footprint during production and transport. According to the Carbon Trust, they must be reused for several years to match the lower carbon footprint of real trees.\nDisposal methods are critical. Real trees release their stored carbon upon decay, but if they end up in landfill, anaerobic conditions produce methane, a far more potent greenhouse gas. Composting, chipping, or using trees for energy or habitat restoration are far better alternatives.\nAdditionally, some companies now offer tree rentals, and pot-grown trees can be replanted, making them excellent sustainable options.\nSustainability efforts can also include buying locally grown trees, reducing travel emissions, and supporting certified sustainable farms.\nWhile Christmas trees represent a minor part of land use and the global carbon cycle, their management highlights opportunities for improvement. Reducing waste, eliminating fertilisers, and avoiding landfill disposal are practical steps toward making this cherished tradition more eco-friendly.\nThough a small element of the festive season, Christmas trees remind us of the broader need to balance ecological responsibility with tradition. With mindful practices, this holiday symbol can contribute positively to both biodiversity and climate goals."
+        },
+        { id: 23, question: "Question 23. Where in paragraph I does the following sentence best fit?\n\"However, concerns arise from the fertilisers and pesticides used to grow them and the emissions from harvesting, transporting, and managing them.\"", options: ["[III]", "[II]", "[IV]", "[I]"], correct: 2 }, // C
+        { id: 24, question: "Question 24. According to paragraph I, which of the following is NOT mentioned about real Christmas trees?", options: ["They help prevent unsustainable land use.", "They are grown on plantations for a long time.", "They are beneficial to biodiversity.", "They can help slow down urbanisation."], correct: 3 }, // D
+        { id: 25, question: "Question 25. Which of the following best paraphrases the underlined sentence in paragraph 2? (Artificial trees, while reusable, have a significantly higher carbon footprint...)", options: ["It is their ability to be reused that makes artificial trees less harmful despite emissions from production and transport.", "Although artificial trees can be reused, they produce much higher carbon emissions during manufacturing and transport.", "Not until artificial trees are reused many times do their production and transport reduce overall carbon emissions.", "No matter how reusable artificial trees may be, their production and transport rarely result in significant carbon emissions."], correct: 1 }, // B
+        { id: 26, question: "Question 26. Which of the following best summarises paragraph 3?", options: ["Pot-grown trees and rented ones are widely used because they release fewer emissions than chipped or composted trees.", "Real trees release carbon, but landfill creates worse methane, calling for composting as the most sustainable alternative.", "Real trees decay naturally, so landfill is the most common solution, although composting may sometimes be used.", "Anaerobic decay worsens with decaying, but landfill causes worse methane, which highlights the role of sustainable options."], correct: 3 }, // D
+        { id: 27, question: "Question 27. The word \"potent\" in paragraph 3 is CLOSEST in meaning to ____________.", options: ["typical", "natural", "widespread", "powerful"], correct: 3 }, // D
+        { id: 28, question: "Question 28. The word \"them\" in paragraph 3 refers to ____________.", options: ["tree rentals and pot-grown trees", "anaerobic conditions", "real trees", "sustainable options"], correct: 0 }, // A
+        { id: 29, question: "Question 29. The word \"cherished\" in paragraph 4 is OPPOSITE in meaning to ____________.", options: ["appreciated", "deep-rooted", "forgotten", "dominant"], correct: 2 }, // C
+        { id: 30, question: "Question 30. Which of the following is true according to the passage?", options: ["The carbon footprint of real Christmas trees is comparable to that of artificial ones.", "Buying locally grown Christmas trees is the most sustainable way to enjoy the holiday.", "Most companies are sluggish in providing sustainable alternatives to fake Christmas trees.", "Real Christmas trees pose a greater environmental threat if they are disposed of in landfills."], correct: 3 }, // D
+        { id: 31, question: "Question 31. Which of the following can be inferred from the passage?", options: ["Managing Christmas trees can serve as a small but meaningful step towards sustainability.", "Turning Christmas into an eco-friendly holiday depends mostly on Christmas trees.", "Reusing real Christmas trees for energy and habitat restoration should be prioritised.", "Real Christmas trees are considered more environmentally friendly than artificial ones."], correct: 0 }, // A
+        { id: 32, question: "Question 32. Which of the following best summarises the passage?", options: ["Christmas tree sustainability compares real trees’ biodiversity benefits with landfill methane, and artificial ones’ high carbon footprint, urging better disposal, local sourcing, and waste reduction for a fading tradition.", "Beyond real or artificial, Christmas tree sustainability requires understanding their carbon footprint from growth to disposal, promoting options like composting and local sourcing to align this tradition with biodiversity and climate goals.", "The environmental impact of Christmas trees involves comparing real and artificial options, considering factors like production, methane from landfill versus composting, and sustainable choices such as buying locally – all highlighting the urgency of phasing out artificial trees.", "Choosing between real and artificial Christmas trees is complex; real trees offer biodiversity benefits but require proper disposal, while artificial ones need extensive reuse to offset their production footprint."], correct: 1 }, // B
+
+        // --- Phần Cultural Bias (Q33-40) ---
+        {
+            type: "section",
+            title: "Read the following passage and mark the letter A, B, C or D on your answer sheet to indicate the best answer to each of the following questions."
+        },
+        {
+            type: "passage",
+            text: "Cultural bias remains a significant obstacle in our connected world. As we enter 2025, many communities struggle with preconceptions about people from different backgrounds. These biases often stem from limited exposure to other cultures. Children typically acquire these prejudices from their environment rather than being born with them. Recent studies show that unconscious bias affects decision-making in education, healthcare, and employment, creating barriers for qualified individuals. Addressing this challenge requires both personal awareness and systemic changes.\nIn workplaces, cultural bias manifests when managers favor candidates who share their cultural background. In schools, students from certain cultures may face lower expectations from teachers who harbor preconceptions.\nMedia representation perpetuates stereotypes by portraying specific groups in limited roles. These portrayals reinforce existing biases and shape public perception.\nOrganizations that neglect cultural diversity training risk creating unwelcoming environments for employees and clients alike.\nApproaches to mitigate cultural bias include educational initiatives exposing people to diverse perspectives early.\nTechnology facilitates cultural exchange through virtual reality experiences. Many corporations have implemented blind recruitment processes to eliminate discrimination.\nCommunity events celebrating different traditions help break down barriers between groups.\nThese combined efforts are gradually shifting attitudes, though progress remains uneven across regions.\nThe benefits of overcoming cultural bias extend beyond social harmony. Research indicates that diverse teams outperform homogeneous ones in problem-solving. Countries embracing multiculturalism often experience economic growth, increased creativity. Individuals who overcome their biases report more meaningful human interactions, as they can empathize and collaborate together as equals."
+        },
+        { id: 33, question: "Question 33. According to the passage, which of the following is NOT mentioned as a cause of cultural bias?", options: ["Religious teachings", "Limited exposure to other cultures", "Environmental influences during childhood", "Media representation of certain groups"], correct: 0 }, // A
+        { id: 34, question: "Question 34. The word \"unconscious\" in paragraph 1 is OPPOSITE in meaning to ____________.", options: ["unintentional", "automatic", "unplanned", "deliberate"], correct: 3 }, // D
+        { id: 35, question: "Question 35. The word \"their\" in paragraph 2 refers to ____________.", options: ["managers", "communities", "workplaces", "candidates"], correct: 0 }, // A
+        { id: 36, question: "Question 36. The word \"uneven\" in paragraph 3 could be best replaced by ____________.", options: ["inconsistent", "unsuccessful", "unnecessary", "insufficient"], correct: 0 }, // A
+        { id: 37, question: "Question 37. Which of the following best paraphrases the underlined sentence in paragraph 4? (The benefits of overcoming cultural bias extend beyond social harmony.)", options: ["Reducing cultural bias provides advantages that exceed improved social cohesion alone.", "Social harmony is the primary outcome when cultural bias is gradually eliminated.", "Cultural differences create tensions that must be resolved to achieve social progress.", "Cultural bias in society has to be completely removed before communities can unite."], correct: 0 }, // A
+        { id: 38, question: "Question 38. Which of the following is TRUE according to the passage?", options: ["Children acquire cultural prejudices primarily from their surrounding environment.", "Virtual reality technology has minimal impact on reducing cultural stereotypes.", "Homogeneous teams typically demonstrate superior problem-solving capabilities.", "Most organizations have successfully eliminated bias through diversity training."], correct: 0 }, // A
+        { id: 39, question: "Question 39. In which paragraph does the writer mention examples of cultural bias in different settings?", options: ["Paragraph 3", "Paragraph 2", "Paragraph 4", "Paragraph 1"], correct: 1 }, // B
+        { id: 40, question: "Question 40. In which paragraph does the writer discuss the positive outcomes of reducing cultural bias?", options: ["Paragraph 2", "Paragraph 1", "Paragraph 4", "Paragraph 3"], correct: 2 } // C
+    ];
+
+    function renderQuiz() {
+        const quizContent = document.getElementById('quizContent');
+        
+        quizData.forEach((item, index) => {
+            if (item.type === "section") {
+                const div = document.createElement('div');
+                div.className = "section-title";
+                div.innerText = item.title;
+                quizContent.appendChild(div);
+            } else if (item.type === "passage") {
+                const div = document.createElement('div');
+                div.className = "passage";
+                div.innerHTML = item.text;
+                quizContent.appendChild(div);
+            } else {
+                const div = document.createElement('div');
+                div.className = "question-block";
+                
+                let html = `<div class="question-text">${item.question}</div>`;
+                if(item.content) {
+                    html += `<div class="question-content">${item.content}</div>`;
+                }
+                
+                html += `<ul class="options">`;
+                item.options.forEach((opt, i) => {
+                    const labelId = `label-q${item.id}-${i}`;
+                    const inputId = `q${item.id}-${i}`;
+                    html += `
+                        <li>
+                            <label id="${labelId}">
+                                <input type="radio" name="q${item.id}" id="${inputId}" value="${i}">
+                                ${String.fromCharCode(65 + i)}. ${opt}
+                            </label>
+                        </li>
+                    `;
+                });
+                html += `</ul>`;
+                div.innerHTML = html;
+                quizContent.appendChild(div);
+            }
+        });
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        let totalQuestions = 0;
+        
+        // Disable nút nộp bài
+        document.querySelector('.submit-btn').disabled = true;
+
+        quizData.forEach(item => {
+            if (item.id) {
+                totalQuestions++;
+                const selected = document.querySelector(`input[name="q${item.id}"]:checked`);
+                const correctIndex = item.correct;
+                
+                // Highlight đáp án đúng
+                const correctLabel = document.getElementById(`label-q${item.id}-${correctIndex}`);
+                if (correctLabel) {
+                    correctLabel.classList.add('correct-answer-label');
+                    correctLabel.innerHTML += ` <span class="correct">✔ (Đáp án đúng)</span>`;
+                }
+
+                if (selected) {
+                    const selectedIndex = parseInt(selected.value);
+                    if (selectedIndex === correctIndex) {
+                        score++;
+                    } else {
+                        // Highlight đáp án sai người dùng chọn
+                        const wrongLabel = document.getElementById(`label-q${item.id}-${selectedIndex}`);
+                        wrongLabel.classList.add('wrong-answer-label');
+                        wrongLabel.innerHTML += ` <span class="incorrect">✘ (Bạn chọn)</span>`;
+                    }
+                }
+            }
+        });
+
+        // Hiển thị kết quả
+        const resultBox = document.getElementById('result');
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = `Bạn đã trả lời đúng ${score} / ${totalQuestions} câu.`;
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Khởi chạy khi load trang
+    renderQuiz();
+</script>
+
+</body>
+</html>

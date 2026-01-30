@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Từ Vựng: Employment & Business</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #fdfdfd;
+            --card-bg: #ffffff;
+            --correct-color: #27ae60;
+            --wrong-color: #c0392b;
+            --border-color: #dfe6e9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .intro {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        /* Exercise Container */
+        .exercise-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+        }
+
+        .exercise-header {
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .exercise-title {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Word Bank */
+        .word-bank {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 6px;
+            border: 2px dashed #bdc3c7;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 60px;
+            margin-bottom: 25px;
+        }
+
+        .draggable {
+            background-color: white;
+            border: 1px solid #b2bec3;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: grab;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .draggable:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            background-color: #dfe6e9;
+        }
+
+        /* Text Content */
+        .text-content {
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            width: 140px;
+            height: 32px;
+            border-bottom: 2px solid #95a5a6;
+            background-color: #fafafa;
+            margin: 0 5px;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px 4px 0 0;
+            transition: background 0.3s;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #d1e8ff;
+            border-bottom-color: var(--accent-color);
+        }
+
+        .drop-zone .draggable {
+            margin: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            cursor: grab;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Grading Styles */
+        .drop-zone.correct {
+            border-bottom: 2px solid var(--correct-color);
+            background-color: #e8f8f5;
+            color: var(--correct-color);
+            font-weight: bold;
+        }
+
+        .drop-zone.incorrect {
+            border-bottom: 2px solid var(--wrong-color);
+            background-color: #fdedec;
+            color: var(--wrong-color);
+            font-weight: bold;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            position: sticky;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 1px solid #ddd;
+            z-index: 100;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            margin: 0 10px;
+        }
+
+        #submit-btn {
+            background-color: var(--correct-color);
+            color: white;
+        }
+        #submit-btn:hover { background-color: #219150; }
+
+        #reset-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+        #reset-btn:hover { background-color: #7f8c8d; }
+
+        #score-display {
+            margin-top: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bài Tập Từ Vựng: Employment & Business</h1>
+    <p class="intro">
+        Kéo các từ trong khung (Word Box) thả vào ô trống thích hợp. Mỗi bài có 6 ô trống nhưng có tới 12 từ để lựa chọn.
+    </p>
+
+    <div id="exercises-container">
+        </div>
+
+    <div class="control-panel">
+        <button id="submit-btn" onclick="checkAllAnswers()">Nộp Bài (Submit)</button>
+        <button id="reset-btn" onclick="location.reload()">Làm Lại (Reset)</button>
+        <div id="score-display"></div>
+    </div>
+
+    <script>
+        // Dữ liệu 10 bài tập
+        const exercisesDB = [
+            {
+                id: 1,
+                title: "Exercise 1: The Recruitment Process",
+                text: "Finding a job begins with searching for a suitable <strong>[1]</strong> in newspapers or online job boards. Once a potential job is found, the <strong>[2]</strong> must prepare their application carefully. This usually involves sending a detailed <strong>[3]</strong> that lists their education and work history. If the company is interested, they will invite the person for an <strong>[4]</strong> to discuss their skills in person. Large companies often have a specific department to <strong>[5]</strong> new staff directly from universities. It is important to <strong>[6]</strong> for jobs that match your qualifications to increase your chances of success.",
+                answers: ["vacancy", "candidate", "CV", "interview", "recruit", "apply"],
+                distractors: ["pension", "strike", "monopoly", "logo", "crisis", "merger"]
+            },
+            {
+                id: 2,
+                title: "Exercise 2: Office Structure & Management",
+                text: "In a large corporation, the <strong>[1]</strong> usually handles the day-to-day organization and paperwork necessary for the company to function. I work in a small local <strong>[2]</strong>, which is miles away from the main headquarters. My immediate <strong>[3]</strong> is very strict and checks my work every few hours to ensure no mistakes are made. However, I sit next to a very helpful <strong>[4]</strong> who has been with the company for ten years. The entire <strong>[5]</strong> is currently worried about news of budget cuts. A good <strong>[6]</strong> knows how to listen to their employees and provide guidance rather than just giving orders.",
+                answers: ["administration", "branch", "supervisor", "colleague", "workforce", "manager"],
+                distractors: ["clerk", "apprentice", "customer", "intern", "investor", "founder"]
+            },
+            {
+                id: 3,
+                title: "Exercise 3: Salary, Wages & Benefits",
+                text: "When considering a job offer, it is not just about the basic salary. You should calculate your total potential <strong>[1]</strong> including all bonuses. One attractive <strong>[2]</strong> of this job is the private health insurance provided for free. Employees also receive an annual salary <strong>[3]</strong> if they meet their performance targets. Furthermore, the company contributes to a <strong>[4]</strong> scheme to help you save money for when you stop working in old age. Sales staff often prefer jobs where they earn a <strong>[5]</strong> on every product they sell. A financial <strong>[6]</strong> is often given to encourage the team to work harder during the busy season.",
+                answers: ["earnings", "perk", "increment", "pension", "commission", "incentive"],
+                distractors: ["debt", "tax", "loan", "fee", "fine", "deposit"]
+            },
+            {
+                id: 4,
+                title: "Exercise 4: Marketing & Advertising",
+                text: "The <strong>[1]</strong> department is planning a massive campaign to launch the new phone. We saw a very funny TV <strong>[2]</strong> for their product last night during the football match. The company's <strong>[3]</strong> is a recognizable blue circle with a silver star in the middle. They also have a catchy <strong>[4]</strong> that everyone remembers and repeats. In today's society of <strong>[5]</strong>, people are constantly encouraged to buy things they do not really need. The company plans to <strong>[6]</strong> this product heavily on social media platforms to reach younger buyers.",
+                answers: ["marketing", "commercial", "logo", "slogan", "consumerism", "publicize"],
+                distractors: ["manufacture", "export", "import", "storage", "inventory", "supply"]
+            },
+            {
+                id: 5,
+                title: "Exercise 5: Working Conditions",
+                text: "I dislike my current job because I constantly have to work <strong>[1]</strong> without any extra pay. Fortunately, my new company offers <strong>[2]</strong>, which means I can start work at 10 AM and finish later if I want. Working the night <strong>[3]</strong> is very tiring and disrupts your sleep pattern significantly. There is a lot of <strong>[4]</strong> to finish the project before the deadline next week. My boss is a total <strong>[5]</strong>; he is always at the office and never takes a holiday. Low <strong>[6]</strong> among the staff means everyone is unhappy and unmotivated.",
+                answers: ["overtime", "flexitime", "shift", "pressure", "workaholic", "morale"],
+                distractors: ["leisure", "holiday", "retirement", "strike", "union", "safety"]
+            },
+            {
+                id: 6,
+                title: "Exercise 6: Types of Employment",
+                text: "Not everyone wants a traditional office job. A <strong>[1]</strong> writer works for several different clients at the same time and is not committed to one employer. Being <strong>[2]</strong> means you are your own boss, but you also take all the financial risks. A <strong>[3]</strong> worker does not have a permanent contract and might only work for a few days when needed. I only work <strong>[4]</strong>, about 20 hours a week, so I can study at university. A <strong>[5]</strong> job is usually nine-to-five, Monday to Friday. An <strong>[6]</strong> works for low pay to learn a specific trade or skill from an expert.",
+                answers: ["freelance", "self-employed", "casual", "part-time", "regular", "apprentice"],
+                distractors: ["wealthy", "jobless", "retired", "fired", "promoted", "hired"]
+            },
+            {
+                id: 7,
+                title: "Exercise 7: Business Strategy & Operations",
+                text: "We just completed a major business <strong>[1]</strong> with a partner in Japan. The company needs to develop a new <strong>[2]</strong> to increase its sales figures for the next quarter. The <strong>[3]</strong> on this product is very low; we spend $10 to make it and sell it for only $11. It is illegal to have a <strong>[4]</strong> where one single company controls the entire market and sets high prices. We must <strong>[5]</strong> aggressively with rival companies to survive in this industry. The board decided to <strong>[6]</strong> $1 million in new technology to speed up production.",
+                answers: ["transaction", "strategy", "profit margin", "monopoly", "compete", "invest"],
+                distractors: ["bankrupt", "borrow", "lend", "saving", "spending", "audit"]
+            },
+            {
+                id: 8,
+                title: "Exercise 8: Leaving Employment",
+                text: "Due to the economic crisis, the factory had to <strong>[1]</strong> its operations to save money. Unfortunately, the director decided to <strong>[2]</strong> (fire) three managers for poor performance. Many loyal workers were made <strong>[3]</strong> because there was simply no work left for them to do. He decided to <strong>[4]</strong> from his position because he found a better opportunity elsewhere. The workers went on <strong>[5]</strong> for three days to demand better pay and safer conditions. At the age of 65, most people plan to <strong>[6]</strong> and enjoy their free time with family.",
+                answers: ["downsize", "dismiss", "redundant", "resign", "strike", "retire"],
+                distractors: ["hire", "employ", "train", "promote", "bonus", "reward"]
+            },
+            {
+                id: 9,
+                title: "Exercise 9: Skills & Qualities",
+                text: "You usually need a university <strong>[1]</strong> to apply for this high-level position. However, practical <strong>[2]</strong> gained over years of working is often more important than degrees. Clear communication is a vital <strong>[3]</strong> in the business world today. She is a very <strong>[4]</strong> person who has lots of energy and new ideas. This job is very <strong>[5]</strong> and difficult, requiring long hours and intense focus. He is a highly <strong>[6]</strong> worker who knows his craft perfectly and needs no supervision.",
+                answers: ["qualification", "experience", "skill", "dynamic", "demanding", "skilled"],
+                distractors: ["boring", "lazy", "monotonous", "manual", "adverse", "hostile"]
+            },
+            {
+                id: 10,
+                title: "Exercise 10: Retail & Products",
+                text: "Goods that are <strong>[1]</strong> in factories using machines are usually cheaper than handmade ones. The cost of <strong>[2]</strong> is increasing because workers are demanding higher wages. Oil is a valuable <strong>[3]</strong> that is traded globally and affects the price of everything else. We have no shirts left in <strong>[4]</strong>, so you will have to wait for the next delivery. We <strong>[5]</strong> our products to shops all over the country using a fleet of trucks. The <strong>[6]</strong> sector sells directly to the public, unlike wholesalers who sell to businesses.",
+                answers: ["mass-produced", "labour", "commodity", "stock", "distribute", "retail"],
+                distractors: ["wholesale", "import", "service", "hospitality", "research", "design"]
+            }
+        ];
+
+        // Hàm xáo trộn mảng (Fisher-Yates)
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Khởi tạo bài tập
+        function initExercises() {
+            const container = document.getElementById('exercises-container');
+            
+            exercisesDB.forEach((ex, index) => {
+                // Tạo thẻ Card
+                const card = document.createElement('div');
+                card.classList.add('exercise-card');
+                
+                // Tiêu đề
+                const header = document.createElement('div');
+                header.classList.add('exercise-header');
+                header.innerHTML = `<h3 class="exercise-title">${ex.title}</h3>`;
+                card.appendChild(header);
+
+                // Word Bank (Word Box)
+                const bank = document.createElement('div');
+                bank.classList.add('word-bank');
+                bank.id = `bank-${ex.id}`;
+
+                // Gộp đáp án và từ gây nhiễu, sau đó xáo trộn
+                const allWords = shuffle([...ex.answers, ...ex.distractors]);
+                
+                allWords.forEach(word => {
+                    const item = document.createElement('div');
+                    item.classList.add('draggable');
+                    item.setAttribute('draggable', 'true');
+                    item.innerText = word;
+                    item.id = `word-${ex.id}-${word.replace(/\s+/g, '-')}`;
+                    item.dataset.val = word;
+                    item.dataset.originBank = `bank-${ex.id}`; // Đánh dấu nguồn gốc
+                    
+                    // Sự kiện Drag
+                    item.addEventListener('dragstart', dragStart);
+                    item.addEventListener('dragend', dragEnd);
+                    
+                    bank.appendChild(item);
+                });
+                card.appendChild(bank);
+
+                // Nội dung đoạn văn
+                const textDiv = document.createElement('div');
+                textDiv.classList.add('text-content');
+                
+                // Thay thế placeholder [1]...[6] bằng ô thả
+                let processedText = ex.text;
+                ex.answers.forEach((ans, i) => {
+                    const placeholder = `<strong>[${i+1}]</strong>`;
+                    const zoneHTML = `<span class="drop-zone" data-correct="${ans}" data-exercise-id="${ex.id}"></span>`;
+                    processedText = processedText.replace(placeholder, zoneHTML);
+                });
+                
+                textDiv.innerHTML = processedText;
+                card.appendChild(textDiv);
+
+                container.appendChild(card);
+            });
+
+            // Gán sự kiện Drop cho tất cả drop-zone và word-bank
+            document.querySelectorAll('.drop-zone, .word-bank').forEach(el => {
+                el.addEventListener('dragover', dragOver);
+                el.addEventListener('drop', drop);
+            });
+        }
+
+        // --- Xử lý Drag & Drop ---
+
+        function dragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.id);
+            setTimeout(() => e.target.classList.add('dragging'), 0);
+        }
+
+        function dragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+            const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+            if (target) target.classList.add('drag-over');
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            // Xóa hiệu ứng drag-over
+            document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+            const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+            if (!target) return;
+
+            const id = e.dataTransfer.getData('text/plain');
+            const draggable = document.getElementById(id);
+            if (!draggable) return;
+
+            // Logic kiểm tra ID bài tập để tránh kéo nhầm bài này sang bài kia
+            const originBankId = draggable.dataset.originBank;
+            let targetExId;
+
+            if (target.classList.contains('word-bank')) {
+                targetExId = target.id.split('-')[1];
+            } else {
+                // Nếu target là drop-zone, tìm ID bài tập từ data attribute
+                targetExId = target.dataset.exerciseId;
+            }
+
+            // Chỉ cho phép thả nếu cùng một bài tập
+            const originExId = originBankId.split('-')[1];
+            if (originExId !== targetExId) return;
+
+            // Xử lý thả vào ô trống
+            if (target.classList.contains('drop-zone')) {
+                // Nếu ô đã có từ, trả từ đó về bank
+                if (target.children.length > 0) {
+                    const existing = target.children[0];
+                    const bank = document.getElementById(originBankId);
+                    bank.appendChild(existing);
+                }
+                target.appendChild(draggable);
+                target.classList.remove('correct', 'incorrect'); // Reset trạng thái chấm điểm
+            } 
+            // Xử lý thả về lại Word Bank
+            else if (target.classList.contains('word-bank')) {
+                target.appendChild(draggable);
+            }
+        }
+
+        // --- Logic Chấm Điểm ---
+
+        function checkAllAnswers() {
+            const dropZones = document.querySelectorAll('.drop-zone');
+            let total = dropZones.length;
+            let correct = 0;
+
+            dropZones.forEach(zone => {
+                const correctAnswer = zone.dataset.correct;
+                
+                if (zone.children.length > 0) {
+                    const userWord = zone.children[0].dataset.val;
+                    if (userWord === correctAnswer) {
+                        zone.classList.add('correct');
+                        zone.classList.remove('incorrect');
+                        correct++;
+                    } else {
+                        zone.classList.add('incorrect');
+                        zone.classList.remove('correct');
+                    }
+                } else {
+                    zone.classList.add('incorrect');
+                    zone.classList.remove('correct');
+                }
+            });
+
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.innerHTML = `Kết Quả: <span style="color:${correct === total ? '#27ae60' : '#c0392b'}">${correct} / ${total}</span> câu đúng`;
+            
+            if (correct === total) {
+                scoreDisplay.innerHTML += " 🏆 Tuyệt vời!";
+            } else if (correct > total * 0.7) {
+                scoreDisplay.innerHTML += " 👍 Khá tốt!";
+            }
+        }
+
+        // Chạy khi tải trang
+        window.onload = initExercises;
+
+    </script>
+</body>
+</html>

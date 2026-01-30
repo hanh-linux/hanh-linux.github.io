@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Practice: Culture & History</title>
+    <style>
+        :root {
+            --primary: #2c3e50; /* Dark Blue */
+            --accent: #8e44ad; /* Purple for History theme */
+            --secondary: #2980b9;
+            --light-bg: #f9fbfd;
+            --bank-bg: #f4f6f7;
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #ecf0f1;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding-bottom: 90px; /* Space for the fixed footer */
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.3em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .instructions {
+            color: #555;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        /* Exercise Card Styles */
+        .exercise-card {
+            background: var(--light-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 50px;
+            border: 1px solid #dcdde1;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        /* Word Bank Styles */
+        .word-bank {
+            background-color: var(--bank-bg);
+            border: 2px dashed #95a5a6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .draggable {
+            background: white;
+            border: 1px solid #bdc3c7;
+            padding: 8px 18px;
+            border-radius: 4px;
+            cursor: grab;
+            font-weight: 600;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            user-select: none;
+            font-size: 1em;
+        }
+
+        .draggable:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            background: #dfe6e9;
+        }
+
+        /* Passage and Drop Zone Styles */
+        .passage {
+            font-size: 1.15em;
+            line-height: 2.4; /* High line-height accommodates drop zones */
+            text-align: justify;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            width: 160px;
+            height: 36px;
+            border-bottom: 2px solid #7f8c8d;
+            background-color: #fdfdfd;
+            margin: 0 5px;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+            position: relative;
+            top: 5px;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #d6eaf8;
+            border-bottom-color: var(--accent);
+        }
+
+        /* Styles for words placed inside drop zones */
+        .drop-zone .draggable {
+            margin: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+            cursor: grab;
+        }
+
+        /* Grading Styles */
+        .drop-zone.correct {
+            border-bottom: 3px solid var(--correct);
+            background-color: #e9f7ef;
+            color: var(--correct);
+            font-weight: bold;
+        }
+
+        .drop-zone.incorrect {
+            border-bottom: 3px solid var(--wrong);
+            background-color: #fdedec;
+            color: var(--wrong);
+            font-weight: bold;
+        }
+
+        /* Fixed Footer Panel */
+        .footer-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            border-top: 1px solid #ddd;
+        }
+
+        button {
+            padding: 12px 35px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+        }
+
+        #submit-btn {
+            background-color: var(--correct);
+            color: white;
+        }
+        #submit-btn:hover { background-color: #219150; }
+
+        #reset-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+        #reset-btn:hover { background-color: #7f8c8d; }
+
+        #score-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary);
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Culture and History - Theme 13</h1>
+        <p class="instructions">Kéo các từ vựng trong khung (Word Bank) và thả vào ô trống thích hợp trong đoạn văn. Nhấn "NỘP BÀI" để kiểm tra kết quả.</p>
+    </header>
+
+    <div id="exercises-wrapper">
+        </div>
+</div>
+
+<div class="footer-panel">
+    <button id="submit-btn" onclick="checkAllAnswers()">Nộp Bài (Submit)</button>
+    <button id="reset-btn" onclick="location.reload()">Làm Lại (Reset)</button>
+    <div id="score-display"></div>
+</div>
+
+<script>
+    // Data for 10 exercises, STRICTLY utilizing vocabulary from the provided Theme 13 list.
+    const exerciseData = [
+        {
+            id: 1,
+            title: "Topic 1: Unearthing the Past",
+            text: "The study of human history often relies on <strong>[1]</strong> to uncover the secrets of the past. Through careful <strong>[2]</strong>, scientists dig into the earth to find physical evidence of early societies. An <strong>[3]</strong>, such as a clay pot or a bronze tool, can tell us a lot about daily life thousands of years ago. Sometimes, entire cities are discovered, leaving behind majestic <strong>[4]</strong> that attract tourists from all over the world. These historical sites are considered an essential part of a nation's <strong>[5]</strong> and must be protected. Studying these <strong>[6]</strong> civilizations helps us understand where we came from and how human society developed.",
+            answers: ["archaeology", "excavation", "artefact", "ruins", "heritage", "ancient"],
+            distractors: ["sculpture", "phenomenon", "taboo", "identity", "timeline", "patriotism"]
+        },
+        {
+            id: 2,
+            title: "Topic 2: The Price of Freedom",
+            text: "Throughout history, many nations have had to defend themselves when foreign forces tried to <strong>[1]</strong> their territory. The local <strong>[2]</strong> would fight fiercely to protect their homeland from the aggressors. Countless <strong>[3]</strong> men and women sacrificed their lives in these brutal conflicts. Their ultimate goal was to <strong>[4]</strong> their country from foreign rule and secure a better future for their children. Finally, after years of struggle, the nation achieved its <strong>[5]</strong> and became a free country. Today, a large stone <strong>[6]</strong> stands in the capital city to honor the fallen heroes and remind future generations of the high cost of peace.",
+            answers: ["invade", "army", "courageous", "liberate", "independence", "monument"],
+            distractors: ["conquer", "hostile", "colony", "treaty", "exhibition", "manuscript"]
+        },
+        {
+            id: 3,
+            title: "Topic 3: Preserving Traditions",
+            text: "In a rapidly globalizing world, maintaining one's cultural <strong>[1]</strong> can be a major challenge. A traditional <strong>[2]</strong>, such as a specific festival or style of clothing, is what makes a community unique. For <strong>[3]</strong> people, holding onto their ancestral lands and languages is vital. However, younger people often face pressure to <strong>[4]</strong> into the dominant modern culture, which can lead to the loss of their original way of life. It is the responsibility of the older <strong>[5]</strong> to teach these values to the youth. They must <strong>[6]</strong> their stories, beliefs, and skills so that the rich cultural tapestry of humanity does not disappear.",
+            answers: ["identity", "custom", "indigenous", "assimilate", "generation", "pass down"],
+            distractors: ["alien", "prejudice", "stereotype", "ritual", "philosophy", "craft"]
+        },
+        {
+            id: 4,
+            title: "Topic 4: Masterpieces in the Museum",
+            text: "Visiting a history <strong>[1]</strong> is an excellent way to connect with the past. A new <strong>[2]</strong> has just opened, showcasing masterpieces from the Renaissance period. Viewers can appreciate the <strong>[3]</strong> beauty of the paintings, which focus on light and human emotion. One marble <strong>[4]</strong> is particularly famous for its realistic details and flawless proportion. Curators ensure that every item on display is <strong>[5]</strong>, meaning it is the real original piece and not a modern copy. These artworks beautifully <strong>[6]</strong> the social life and religious beliefs of the people who lived during that fascinating historical period.",
+            answers: ["museum", "exhibition", "aesthetic", "sculpture", "authentic", "depict"],
+            distractors: ["pioneer", "era", "consecutive", "chronological", "legend", "oblivion"]
+        },
+        {
+            id: 5,
+            title: "Topic 5: Ancient Beliefs and Spirits",
+            text: "Before the rise of modern science, people used the <strong>[1]</strong> to explain the mysteries of the natural world. Many cultures considered certain mountains or rivers to be <strong>[2]</strong> spaces where spirits resided. People would perform a complex <strong>[3]</strong> with music and dance to please the gods. They would also <strong>[4]</strong> for good weather, a bountiful harvest, and protection from disease. It was common to honor a deceased <strong>[5]</strong> by offering food and burning incense. These ancient stories and practices help us understand the <strong>[6]</strong> of human civilization and the diverse ways we try to make sense of the universe.",
+            answers: ["myth", "sacred", "ritual", "pray", "ancestor", "origin"],
+            distractors: ["stereotype", "taboo", "era", "manuscript", "relic", "symbol"]
+        },
+        {
+            id: 6,
+            title: "Topic 6: Social Progress",
+            text: "A just society strives to eliminate <strong>[1]</strong> and treat all citizens equally regardless of their background. Unfortunately, <strong>[2]</strong> against minority groups still exists, often fueled by ignorance and fear. A harmful <strong>[3]</strong> reduces complex individuals to a single, negative trait, which is unfair and untrue. To move forward, we must appeal to our shared <strong>[4]</strong> and recognize that everyone deserves dignity. Showing <strong>[5]</strong> toward those who are suffering is a sign of a civilized society. We must continuously re-examine our cultural <strong>[6]</strong> to ensure they promote inclusivity and justice for all people.",
+            answers: ["discrimination", "prejudice", "stereotype", "humanity", "compassion", "values"],
+            distractors: ["impact", "movement", "philosophy", "hostile", "mundane", "obsolete"]
+        },
+        {
+            id: 7,
+            title: "Topic 7: Measuring Time",
+            text: "Historians use a <strong>[1]</strong> to organize events and see how they relate to one another. An <strong>[2]</strong> is a distinct period defined by specific characteristics, such as the Victorian Age or the Cold War. The invention of the printing press was a major <strong>[3]</strong> that changed how information was spread. Textbooks usually present history in <strong>[4]</strong> order, starting from the earliest times to the present day. Events that happened before the birth of Christ are labeled <strong>[5]</strong>, meaning they count downwards. Conversely, years after this point are marked <strong>[6]</strong>, which comes from a Latin phrase meaning 'in the year of the Lord'.",
+            answers: ["timeline", "era", "milestone", "chronological", "BC", "AD"],
+            distractors: ["consecutive", "imminent", "previous", "decade", "century", "millennium"]
+        },
+        {
+            id: 8,
+            title: "Topic 8: Architectural Heritage",
+            text: "Governments spend millions of dollars to <strong>[1]</strong> historical buildings for future generations. Sometimes it is necessary to <strong>[2]</strong> a decaying structure by repairing its roof and reinforcing its walls. This physical <strong>[3]</strong> connects us to our ancestors and teaches us about their architectural skills. An ancient temple <strong>[4]</strong> might attract thousands of tourists each year. It is a miracle that some monuments have survived <strong>[5]</strong> through centuries of war and natural disasters. Unfortunately, pollution and neglect can <strong>[6]</strong> these precious landmarks if we do not take urgent action to protect them.",
+            answers: ["preserve", "renovate", "legacy", "site", "intact", "devastate"],
+            distractors: ["revive", "collapse", "explore", "exchange", "unique", "obsolete"]
+        },
+        {
+            id: 9,
+            title: "Topic 9: Cultural Exchange",
+            text: "In the age of globalization, cultural <strong>[1]</strong> happens faster than ever before through the internet and travel. Foreign media can heavily <strong>[2]</strong> the fashion, music, and food choices of young people. When moving to a new country, immigrants must <strong>[3]</strong> to a different way of life to survive. Customs that initially seem completely <strong>[4]</strong> to a newcomer will eventually become normal. Over time, the new environment becomes <strong>[5]</strong> and feels like home. This blending of different traditions can <strong>[6]</strong> a society, making it more diverse, vibrant, and open-minded.",
+            answers: ["exchange", "influence", "adapt", "alien", "familiar", "enrich"],
+            distractors: ["abandon", "conquer", "escape", "reject", "hostile", "mundane"]
+        },
+        {
+            id: 10,
+            title: "Topic 10: The Fall of Empires",
+            text: "No empire lasts forever; every great <strong>[1]</strong> experiences a cycle of rise and fall. Powerful nations would often <strong>[2]</strong> weaker neighbors to expand their territory and gain resources. The defeated land would become a <strong>[3]</strong> governed by the foreign power. However, internal corruption and external invasions would eventually cause the empire to <strong>[4]</strong>. What was once a bustling capital would leave behind only a broken <strong>[5]</strong> of its former glory. Without written records, the names of their great kings would fade into <strong>[6]</strong>, lost to history until discovered by modern archaeologists.",
+            answers: ["civilisation", "conquer", "colony", "collapse", "relic", "oblivion"],
+            distractors: ["patriotism", "chronological", "obsolete", "ordinary", "mundane", "craft"]
+        }
+    ];
+
+    // Array Shuffler (Fisher-Yates)
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    // Initialize the exercises
+    function init() {
+        const wrapper = document.getElementById('exercises-wrapper');
+
+        exerciseData.forEach((ex, index) => {
+            // Create Card Container
+            const card = document.createElement('div');
+            card.classList.add('exercise-card');
+
+            // Card Header
+            const header = document.createElement('div');
+            header.classList.add('card-header');
+            header.innerHTML = `<h3>${ex.title}</h3>`;
+            card.appendChild(header);
+
+            // Card Body
+            const body = document.createElement('div');
+            body.classList.add('card-body');
+
+            // Word Bank
+            const bank = document.createElement('div');
+            bank.classList.add('word-bank');
+            bank.id = `bank-${ex.id}`;
+
+            // Combine answers and distractors, then shuffle
+            const allWords = shuffle([...ex.answers, ...ex.distractors]);
+            
+            allWords.forEach(word => {
+                const item = document.createElement('span');
+                item.classList.add('draggable');
+                item.setAttribute('draggable', 'true');
+                item.textContent = word;
+                // Generate a unique ID using the exercise ID and the word
+                item.id = `word-${ex.id}-${word.replace(/\s+/g, '-')}`;
+                item.dataset.val = word;
+                item.dataset.origin = ex.id; // Mark origin to prevent cross-exercise dropping
+
+                // Drag Events
+                item.addEventListener('dragstart', dragStart);
+                item.addEventListener('dragend', dragEnd);
+
+                bank.appendChild(item);
+            });
+            body.appendChild(bank);
+
+            // Passage
+            const p = document.createElement('div');
+            p.classList.add('passage');
+            
+            // Replace [1], [2]... with Drop Zones
+            let formattedText = ex.text;
+            ex.answers.forEach((ans, i) => {
+                const placeholder = `<strong>[${i + 1}]</strong>`;
+                const zone = `<span class="drop-zone" data-correct="${ans}" data-ex="${ex.id}"></span>`;
+                formattedText = formattedText.replace(placeholder, zone);
+            });
+            
+            p.innerHTML = formattedText;
+            body.appendChild(p);
+            
+            card.appendChild(body);
+            wrapper.appendChild(card);
+        });
+
+        // Add Drop Event Listeners to all drop zones and word banks
+        document.querySelectorAll('.drop-zone, .word-bank').forEach(el => {
+            el.addEventListener('dragover', dragOver);
+            el.addEventListener('drop', drop);
+        });
+    }
+
+    // Drag & Drop Functions
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+        setTimeout(() => e.target.classList.add('dragging'), 0);
+    }
+
+    function dragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+    function dragOver(e) {
+        e.preventDefault();
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+        if (target) target.classList.add('drag-over');
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        // Remove hover styles
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+        const id = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(id);
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+
+        if (!target || !draggable) return;
+
+        // Constraint: Only allow dropping within the SAME exercise ID
+        let targetExId;
+        if (target.classList.contains('word-bank')) {
+            targetExId = target.id.split('-')[1];
+        } else {
+            targetExId = target.dataset.ex;
+        }
+
+        // Block drops from different exercises
+        if (draggable.dataset.origin != targetExId) return;
+
+        // Logic for Drop Zone
+        if (target.classList.contains('drop-zone')) {
+            // Swap logic: if zone is occupied, return existing word to the bank
+            if (target.children.length > 0) {
+                const existingWord = target.children[0];
+                document.getElementById(`bank-${targetExId}`).appendChild(existingWord);
+            }
+            target.appendChild(draggable);
+            target.classList.remove('correct', 'incorrect');
+        } 
+        // Logic for returning to Word Bank
+        else {
+            target.appendChild(draggable);
+        }
+    }
+
+    // Scoring Function
+    function checkAllAnswers() {
+        const dropZones = document.querySelectorAll('.drop-zone');
+        let total = dropZones.length; // 60 blanks in total
+        let correct = 0;
+
+        dropZones.forEach(zone => {
+            const correctAnswer = zone.dataset.correct;
+            // Clear previous grading
+            zone.classList.remove('correct', 'incorrect');
+
+            if (zone.children.length > 0) {
+                const userWord = zone.children[0].dataset.val;
+                if (userWord === correctAnswer) {
+                    zone.classList.add('correct');
+                    correct++;
+                } else {
+                    zone.classList.add('incorrect');
+                }
+            } else {
+                zone.classList.add('incorrect');
+            }
+        });
+
+        // Display Score
+        const scoreDisplay = document.getElementById('score-display');
+        scoreDisplay.innerHTML = `Kết quả: <span style="color:${correct === total ? '#27ae60' : '#c0392b'}">${correct} / ${total}</span> câu đúng`;
+        
+        if (correct === total) {
+            scoreDisplay.innerHTML += " 🏆 Hoàn hảo! (Perfect!)";
+        } else if (correct >= total * 0.8) {
+            scoreDisplay.innerHTML += " 👍 Rất tốt! (Great job!)";
+        } else {
+            scoreDisplay.innerHTML += " 💪 Cố gắng hơn nhé! (Keep trying!)";
+        }
+    }
+
+    // Run on load
+    window.onload = init;
+
+</script>
+
+</body>
+</html>

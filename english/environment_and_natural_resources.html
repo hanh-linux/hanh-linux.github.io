@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Vocabulary: Environment & Natural Resources</title>
+    <style>
+        :root {
+            --primary: #27ae60;
+            --secondary: #2c3e50;
+            --accent: #16a085;
+            --bg: #f0f3f4;
+            --card-bg: #ffffff;
+            --text: #34495e;
+            --wrong: #c0392b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--secondary);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        p.instruction {
+            font-size: 1.1em;
+            color: #7f8c8d;
+        }
+
+        /* Exercise Card Styles */
+        .exercise-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            overflow: hidden;
+            border-left: 6px solid var(--primary);
+        }
+
+        .card-header {
+            background-color: #eafaf1;
+            padding: 15px 25px;
+            border-bottom: 1px solid #d5dbdb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            color: var(--secondary);
+        }
+
+        .topic-tag {
+            background: var(--accent);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Word Bank */
+        .word-bank {
+            background-color: #f8f9f9;
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 50px;
+        }
+
+        .draggable {
+            background: white;
+            border: 1px solid #bdc3c7;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: grab;
+            font-weight: 600;
+            color: var(--secondary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .draggable:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            background: #e0e0e0;
+        }
+
+        /* Paragraph & Drop Zones */
+        .paragraph {
+            font-size: 1.1em;
+            line-height: 2.2;
+            text-align: justify;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            width: 150px;
+            height: 35px;
+            border-bottom: 2px solid #95a5a6;
+            background-color: #f4f6f7;
+            margin: 0 5px;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px 4px 0 0;
+            transition: background 0.3s;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #d5f5e3;
+            border-bottom-color: var(--primary);
+        }
+
+        .drop-zone .draggable {
+            margin: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Results */
+        .drop-zone.correct {
+            border-bottom: 3px solid var(--primary);
+            background-color: #eafaf1;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .drop-zone.incorrect {
+            border-bottom: 3px solid var(--wrong);
+            background-color: #fdedec;
+            color: var(--wrong);
+            font-weight: bold;
+        }
+
+        /* Floating Footer */
+        .footer-controls {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 100;
+            border-top: 1px solid #eee;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #submit-btn {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        #submit-btn:hover { background-color: #219150; }
+
+        #reset-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        #reset-btn:hover { background-color: #7f8c8d; }
+
+        #score-board {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-left: 20px;
+            align-self: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>VOCABULARY PRACTICE</h1>
+        <h2>Theme: Environment & Natural Resources</h2>
+        <p class="instruction">Kéo từ vựng từ khung (Word Bank) và thả vào ô trống thích hợp trong đoạn văn. Nhấn "Nộp bài" để kiểm tra.</p>
+    </header>
+
+    <div id="exercises-wrapper"></div>
+</div>
+
+<div class="footer-controls">
+    <button id="submit-btn" onclick="checkAll()">Nộp Bài (Submit)</button>
+    <button id="reset-btn" onclick="location.reload()">Làm Lại (Reset)</button>
+    <div id="score-board"></div>
+</div>
+
+<script>
+    // Dữ liệu bài tập dựa trên file nguồn
+    const exercises = [
+        {
+            id: 1,
+            topic: "Climate Change",
+            text: "Scientists warn that the earth's average <strong>[1]</strong> is rising at an alarming rate. This phenomenon, known as <strong>[2]</strong>, is largely caused by human activities that release <strong>[3]</strong> into the atmosphere. The burning of <strong>[4]</strong> such as coal and oil for energy creates a blanket of gases that traps heat. As a result, we are seeing <strong>[5]</strong> melting in the polar regions, which contributes to rising sea levels. To combat this, nations must reduce their carbon <strong>[6]</strong> immediately.",
+            answers: ["temperature", "global warming", "greenhouse gases", "fossil fuel", "glacier", "emission"],
+            distractors: ["pesticide", "poaching", "drainage", "sewage", "predator", "erosion"]
+        },
+        {
+            id: 2,
+            topic: "Biodiversity & Wildlife",
+            text: "A healthy ecosystem relies on rich <strong>[1]</strong>, where many different species coexist. However, many animals are currently <strong>[2]</strong> and face the risk of disappearing forever. The primary cause is the destruction of their natural <strong>[3]</strong> due to deforestation and urbanization. Illegal hunting, or <strong>[4]</strong>, also poses a severe <strong>[5]</strong> to animals like elephants and rhinos. If we do not act to protect these species, they will face total <strong>[6]</strong>.",
+            answers: ["biodiversity", "endangered", "habitat", "poaching", "threat", "extinction"],
+            distractors: ["sanitation", "irrigation", "turbine", "landfill", "radiation", "precipitation"]
+        },
+        {
+            id: 3,
+            topic: "Pollution & Waste",
+            text: "Modern society produces a vast amount of <strong>[1]</strong> that ends up in dumps. Much of this rubbish is buried in a <strong>[2]</strong>, where it can stay for centuries. Plastic, in particular, is problematic because it is often not <strong>[3]</strong>, meaning it does not decompose naturally. Furthermore, factories often dump <strong>[4]</strong> chemicals into rivers, causing severe water <strong>[5]</strong>. We must move away from <strong>[6]</strong> products and embrace recycling to save our planet.",
+            answers: ["waste", "landfill", "biodegradable", "toxic", "contamination", "disposable"],
+            distractors: ["organic", "solar", "renewable", "fertile", "medicinal", "hostile"]
+        },
+        {
+            id: 4,
+            topic: "Natural Disasters",
+            text: "Climate change is making weather patterns more extreme. A prolonged period without rain can lead to a severe <strong>[1]</strong>, destroying crops and causing famine. Conversely, excessive rainfall can cause a massive <strong>[2]</strong> that washes away homes. In coastal areas, an underwater earthquake can trigger a <strong>[3]</strong>, sending giant waves crashing onto the shore. These <strong>[4]</strong> events take a heavy <strong>[5]</strong> on human life and the economy. We must take every <strong>[6]</strong> to prepare for these emergencies.",
+            answers: ["drought", "flood", "tsunami", "catastrophic", "toll", "precaution"],
+            distractors: ["harvest", "resource", "mineral", "fauna", "flora", "botany"]
+        },
+        {
+            id: 5,
+            topic: "Energy Transition",
+            text: "To save the environment, we must transition from finite resources to <strong>[1]</strong> energy sources. One of the most popular forms is <strong>[2]</strong> energy, which captures power directly from the sun. Another option is wind power, where large blades turn a <strong>[3]</strong> to generate electricity. <strong>[4]</strong> is also widely used, utilizing the power of flowing water. These <strong>[5]</strong> solutions are essential for a <strong>[6]</strong> future where we meet our needs without compromising the ability of future generations to meet theirs.",
+            answers: ["renewable", "solar", "turbine", "hydroelectricity", "alternative", "sustainable"],
+            distractors: ["fossil", "exhaust", "acid", "carbon", "unleaded", "nuclear"]
+        },
+        {
+            id: 6,
+            topic: "Agriculture & Soil",
+            text: "Traditional farming often uses chemical <strong>[1]</strong> to kill insects that eat crops. However, these chemicals can damage the environment. Farmers also use artificial <strong>[2]</strong> to make the plants grow faster, but this can degrade the quality of the <strong>[3]</strong> over time. In dry areas, <strong>[4]</strong> systems are used to bring water to the fields. A more environmentally friendly approach is <strong>[5]</strong> farming, which avoids artificial chemicals. Bad farming practices can lead to soil <strong>[6]</strong>, where the top layer of earth is washed or blown away.",
+            answers: ["pesticide", "fertilizer", "soil", "irrigation", "organic", "erosion"],
+            distractors: ["emission", "radiation", "ventilation", "digestion", "sanitation", "pollution"]
+        },
+        {
+            id: 7,
+            topic: "Marine Ecosystems",
+            text: "The ocean is home to a vast array of <strong>[1]</strong> life. Coral reefs, often called the rainforests of the sea, support thousands of <strong>[2]</strong>. However, <strong>[3]</strong> is depleting fish stocks faster than they can reproduce. Additionally, marine animals often mistake plastic trash for <strong>[4]</strong> and eat it, which can be fatal. Sharks are often seen as a dangerous <strong>[5]</strong>, but they play a vital role in maintaining the balance of the ocean. We must create marine <strong>[6]</strong> areas where fishing is prohibited.",
+            answers: ["aquatic", "species", "overfishing", "prey", "predator", "conservation"],
+            distractors: ["terrestrial", "mammal", "reptile", "amphibian", "delta", "dune"]
+        },
+        {
+            id: 8,
+            topic: "Deforestation",
+            text: "Forests are the lungs of our planet, yet <strong>[1]</strong> is happening at an alarming rate. In some areas, farmers use a <strong>[2]</strong> method, cutting down trees and setting fire to the land to create fields. This destroys the <strong>[3]</strong> habitat of countless animals. Without trees to anchor the soil, heavy rains can cause landslides. We need to protect the remaining <strong>[4]</strong> areas where nature is untouched. Some organizations are working to <strong>[5]</strong> damaged forests by planting new trees, a process known as reforestation, to restore the <strong>[6]</strong> balance.",
+            answers: ["deforestation", "slash-and-burn", "natural", "wilderness", "restore", "ecological"],
+            distractors: ["urban", "industrial", "commercial", "artificial", "synthetic", "digital"]
+        },
+        {
+            id: 9,
+            topic: "Biology & Adaptation",
+            text: "Through the process of <strong>[1]</strong>, species change over millions of years to survive in their environment. Animals rely on <strong>[2]</strong> rather than thought to perform complex behaviors like migration. Plants play a crucial role by performing <strong>[3]</strong>, turning sunlight into energy and releasing oxygen. Every living <strong>[4]</strong>, from the smallest bacteria to the largest whale, has a role. Some animals are <strong>[5]</strong>, meaning they are active at night. Scientists study <strong>[6]</strong> to understand how traits are passed from parents to offspring.",
+            answers: ["evolution", "instinct", "photosynthesis", "organism", "nocturnal", "genetics"],
+            distractors: ["machinery", "robotics", "chemistry", "physics", "geology", "astronomy"]
+        },
+        {
+            id: 10,
+            topic: "Human Impact",
+            text: "Human activities have a profound <strong>[1]</strong> on the natural world. Our cities produce <strong>[2]</strong> that dirties the air and water. We must improve <strong>[3]</strong> systems to treat human waste properly before discharging it. Raising public <strong>[4]</strong> about environmental issues is the first step toward change. Many young people have become an <strong>[5]</strong>, campaigning for stricter laws to protect nature. We must act now to prevent further damage to the <strong>[6]</strong> layer that protects us from the sun's rays.",
+            answers: ["impact", "pollution", "sanitation", "awareness", "activist", "atmosphere"],
+            distractors: ["benefit", "advantage", "profit", "income", "salary", "wage"]
+        }
+    ];
+
+    // Hàm trộn mảng
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Khởi tạo bài tập
+    function init() {
+        const wrapper = document.getElementById('exercises-wrapper');
+
+        exercises.forEach((ex, index) => {
+            // Tạo Card
+            const card = document.createElement('div');
+            card.classList.add('exercise-card');
+
+            // Header Card
+            const header = document.createElement('div');
+            header.classList.add('card-header');
+            header.innerHTML = `<h3>Exercise ${index + 1}</h3> <span class="topic-tag">${ex.topic}</span>`;
+            card.appendChild(header);
+
+            // Body Card
+            const body = document.createElement('div');
+            body.classList.add('card-body');
+
+            // Word Bank
+            const bank = document.createElement('div');
+            bank.classList.add('word-bank');
+            bank.id = `bank-${ex.id}`;
+
+            // Gộp và trộn từ
+            const allWords = shuffle([...ex.answers, ...ex.distractors]);
+            
+            allWords.forEach(word => {
+                const span = document.createElement('span');
+                span.classList.add('draggable');
+                span.setAttribute('draggable', 'true');
+                span.textContent = word;
+                span.id = `word-${ex.id}-${word.replace(/\s+/g, '-')}`; // Unique ID
+                span.dataset.word = word;
+                span.dataset.origin = ex.id; // Để kiểm tra bài nào
+
+                // Events
+                span.addEventListener('dragstart', dragStart);
+                span.addEventListener('dragend', dragEnd);
+
+                bank.appendChild(span);
+            });
+            body.appendChild(bank);
+
+            // Paragraph Content
+            const p = document.createElement('div');
+            p.classList.add('paragraph');
+            
+            // Thay thế [1]..[6] bằng ô trống
+            let formattedText = ex.text;
+            ex.answers.forEach((ans, i) => {
+                const placeholder = `<strong>[${i + 1}]</strong>`;
+                const zone = `<span class="drop-zone" data-correct="${ans}" data-ex="${ex.id}"></span>`;
+                formattedText = formattedText.replace(placeholder, zone);
+            });
+            
+            p.innerHTML = formattedText;
+            body.appendChild(p);
+            
+            card.appendChild(body);
+            wrapper.appendChild(card);
+        });
+
+        // Global drop listeners
+        document.querySelectorAll('.drop-zone, .word-bank').forEach(el => {
+            el.addEventListener('dragover', dragOver);
+            el.addEventListener('drop', drop);
+        });
+    }
+
+    // Drag & Drop Functions
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+        setTimeout(() => e.target.classList.add('dragging'), 0);
+    }
+
+    function dragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+    function dragOver(e) {
+        e.preventDefault();
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+        if (target) target.classList.add('drag-over');
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+        const id = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(id);
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+
+        if (!target || !draggable) return;
+
+        // Logic: Chỉ cho phép thả trong cùng 1 bài tập (dựa trên data-ex và data-origin)
+        let targetExId;
+        if (target.classList.contains('word-bank')) {
+            targetExId = target.id.split('-')[1];
+        } else {
+            targetExId = target.dataset.ex;
+        }
+
+        if (draggable.dataset.origin !== targetExId) return; // Chặn kéo sang bài khác
+
+        // Xử lý thả
+        if (target.classList.contains('drop-zone')) {
+            // Nếu ô đã có từ -> Trả từ cũ về bank
+            if (target.children.length > 0) {
+                const oldChild = target.children[0];
+                document.getElementById(`bank-${targetExId}`).appendChild(oldChild);
+            }
+            target.appendChild(draggable);
+            target.classList.remove('correct', 'incorrect');
+        } else {
+            // Thả về bank
+            target.appendChild(draggable);
+        }
+    }
+
+    // Check Answers
+    function checkAll() {
+        const zones = document.querySelectorAll('.drop-zone');
+        let total = zones.length;
+        let correct = 0;
+
+        zones.forEach(zone => {
+            const answer = zone.dataset.correct;
+            if (zone.children.length > 0) {
+                const userWord = zone.children[0].dataset.word;
+                if (userWord === answer) {
+                    zone.classList.add('correct');
+                    zone.classList.remove('incorrect');
+                    correct++;
+                } else {
+                    zone.classList.add('incorrect');
+                    zone.classList.remove('correct');
+                }
+            } else {
+                zone.classList.add('incorrect');
+                zone.classList.remove('correct');
+            }
+        });
+
+        const scoreboard = document.getElementById('score-board');
+        scoreboard.innerHTML = `Kết quả: <span style="color:${correct === total ? '#27ae60' : '#c0392b'}">${correct}/${total}</span> câu đúng`;
+    }
+
+    // Init on load
+    window.onload = init;
+
+</script>
+
+</body>
+</html>
