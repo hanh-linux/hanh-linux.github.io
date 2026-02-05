@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Từ Vựng: Travelling & Tourism</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .instruction {
+            text-align: center;
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+        }
+        .exercise-card {
+            background: #fff;
+            border: 1px solid #e1e4e8;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+        .exercise-title {
+            color: #2980b9;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .word-box {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px dashed #bdc3c7;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            min-height: 50px;
+            justify-content: center;
+        }
+        .draggable-word {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: grab;
+            font-weight: 500;
+            user-select: none;
+            transition: transform 0.1s;
+        }
+        .draggable-word:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+        .draggable-word.dragging {
+            opacity: 0.5;
+        }
+        .text-content {
+            font-size: 1.1em;
+            text-align: justify;
+            line-height: 2;
+        }
+        .drop-zone {
+            display: inline-block;
+            min-width: 120px;
+            height: 30px;
+            border-bottom: 2px solid #95a5a6;
+            vertical-align: bottom;
+            margin: 0 5px;
+            text-align: center;
+            color: #2c3e50;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .drop-zone.hovered {
+            background-color: #e8f6f3;
+            border-color: #1abc9c;
+        }
+        .drop-zone.correct {
+            border-bottom: 2px solid #27ae60;
+            color: #27ae60;
+            background-color: rgba(39, 174, 96, 0.1);
+        }
+        .drop-zone.incorrect {
+            border-bottom: 2px solid #c0392b;
+            color: #c0392b;
+            background-color: rgba(192, 57, 43, 0.1);
+        }
+        .btn-check {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .btn-check:hover {
+            background-color: #219150;
+        }
+        .result-box {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>BÀI TẬP TỪ VỰNG: TRAVELLING & TOURISM</h1>
+    <p class="instruction">Hướng dẫn: Kéo từ trong hộp màu xám và thả vào ô trống thích hợp trong đoạn văn. Nhấn "Nộp bài" để kiểm tra kết quả.</p>
+
+    <div class="exercise-card" id="ex1">
+        <h2 class="exercise-title">Bài 1: Sustainable Tourism</h2>
+        <div class="word-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-1">ecotourism</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-2">unspoiled</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-3">landscape</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-4">impact</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-5">local</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-6">destination</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-7">budget</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-8">luggage</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-9">queue</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-10">resort</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-11">embassy</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w1-12">vehicle</span>
+        </div>
+        <p class="text-content">
+            In recent years, there has been a significant shift away from mass tourism towards <span class="drop-zone" data-answer="ecotourism" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. Travelers are increasingly seeking out <span class="drop-zone" data-answer="unspoiled" ondrop="drop(event)" ondragover="allowDrop(event)"></span> areas where nature remains untouched by heavy industrial development. When choosing a holiday <span class="drop-zone" data-answer="destination" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, responsible tourists now consider the environmental <span class="drop-zone" data-answer="impact" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of their visit. They often prefer to admire the breathtaking <span class="drop-zone" data-answer="landscape" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of mountains or forests without leaving a trace. Furthermore, spending money on <span class="drop-zone" data-answer="local" ondrop="drop(event)" ondragover="allowDrop(event)"></span> products and services ensures that the community benefits directly from the visitors.
+        </p>
+        <button class="btn-check" onclick="checkAnswers('ex1')">Nộp bài</button>
+        <div class="result-box" id="result-ex1"></div>
+    </div>
+
+    <div class="exercise-card" id="ex2">
+        <h2 class="exercise-title">Bài 2: Urban Transport</h2>
+        <div class="word-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-1">commute</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-2">congested</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-3">traffic</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-4">passenger</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-5">reliable</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-6">delay</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-7">aviation</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-8">bypass</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-9">stroll</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-10">orbit</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-11">terrain</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w2-12">alien</span>
+        </div>
+        <p class="text-content">
+            Living in a metropolis usually means that workers have a long daily <span class="drop-zone" data-answer="commute" ondrop="drop(event)" ondragover="allowDrop(event)"></span> from their homes to their offices. During rush hour, the main roads become heavily <span class="drop-zone" data-answer="congested" ondrop="drop(event)" ondragover="allowDrop(event)"></span> with cars, buses, and motorbikes. The volume of <span class="drop-zone" data-answer="traffic" ondrop="drop(event)" ondragover="allowDrop(event)"></span> can be overwhelming, causing frustration for everyone. To avoid being late, many people look for a <span class="drop-zone" data-answer="reliable" ondrop="drop(event)" ondragover="allowDrop(event)"></span> means of public transport, such as the subway. However, even on the train, a sudden technical problem can cause a <span class="drop-zone" data-answer="delay" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. Every <span class="drop-zone" data-answer="passenger" ondrop="drop(event)" ondragover="allowDrop(event)"></span> just wants to get to work on time without stress.
+        </p>
+        <button class="btn-check" onclick="checkAnswers('ex2')">Nộp bài</button>
+        <div class="result-box" id="result-ex2"></div>
+    </div>
+
+    <div class="exercise-card" id="ex3">
+        <h2 class="exercise-title">Bài 3: Airport Procedures</h2>
+        <div class="word-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-1">itinerary</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-2">luggage</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-3">check in</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-4">embassy</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-5">identification</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-6">aviation</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-7">meadow</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-8">sickness</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-9">shortcut</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-10">peak</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-11">facility</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w3-12">galaxy</span>
+        </div>
+        <p class="text-content">
+            Preparing for an international flight involves careful planning. First, you should review your <span class="drop-zone" data-answer="itinerary" ondrop="drop(event)" ondragover="allowDrop(event)"></span> to know exactly when and where you are flying. At the airport, you must go to the counter to <span class="drop-zone" data-answer="check in" ondrop="drop(event)" ondragover="allowDrop(event)"></span> and hand over your heavy bags. Be careful not to exceed the weight limit for your <span class="drop-zone" data-answer="luggage" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, or you will pay extra fees. Security officers will ask to see your <span class="drop-zone" data-answer="identification" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, such as a passport. If you lose your passport abroad, you must contact your country's <span class="drop-zone" data-answer="embassy" ondrop="drop(event)" ondragover="allowDrop(event)"></span> immediately. The modern <span class="drop-zone" data-answer="aviation" ondrop="drop(event)" ondragover="allowDrop(event)"></span> industry has made traveling across the globe faster than ever before.
+        </p>
+        <button class="btn-check" onclick="checkAnswers('ex3')">Nộp bài</button>
+        <div class="result-box" id="result-ex3"></div>
+    </div>
+
+    <div class="exercise-card" id="ex4">
+        <h2 class="exercise-title">Bài 4: Accommodation & Budget</h2>
+        <div class="word-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-1">accommodation</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-2">budget</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-3">discount</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-4">facility</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-5">spacious</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-6">book</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-7">brain drain</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-8">refugee</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-9">influx</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-10">crash</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-11">cater</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w4-12">indulge</span>
+        </div>
+        <p class="text-content">
+            Finding the right place to stay is crucial for a good trip. Travelers on a tight <span class="drop-zone" data-answer="budget" ondrop="drop(event)" ondragover="allowDrop(event)"></span> often look for hostels or cheaper hotels. It is wise to <span class="drop-zone" data-answer="book" ondrop="drop(event)" ondragover="allowDrop(event)"></span> your room months in advance to get a good price. Sometimes, travel websites offer a significant <span class="drop-zone" data-answer="discount" ondrop="drop(event)" ondragover="allowDrop(event)"></span> during the off-peak season. When checking hotel reviews, look for comments about the room size; a <span class="drop-zone" data-answer="spacious" ondrop="drop(event)" ondragover="allowDrop(event)"></span> room is much more relaxing than a cramped one. Also, check if the hotel provides every necessary <span class="drop-zone" data-answer="facility" ondrop="drop(event)" ondragover="allowDrop(event)"></span> like Wi-Fi, a gym, or a pool. Good <span class="drop-zone" data-answer="accommodation" ondrop="drop(event)" ondragover="allowDrop(event)"></span> can make or break your holiday experience.
+        </p>
+        <button class="btn-check" onclick="checkAnswers('ex4')">Nộp bài</button>
+        <div class="result-box" id="result-ex4"></div>
+    </div>
+
+    <div class="exercise-card" id="ex5">
+        <h2 class="exercise-title">Bài 5: Space & Science</h2>
+        <div class="word-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-1">astronomy</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-2">galaxy</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-3">orbit</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-4">planet</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-5">universe</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-6">alien</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-7">coastal</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-8">calm</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-9">diverse</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-10">flexible</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-11">remote</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w5-12">tough</span>
+        </div>
+        <p class="text-content">
+            Space tourism is becoming a reality, but for now, we mostly study space through <span class="drop-zone" data-answer="astronomy" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. Scientists use powerful telescopes to look far beyond our own solar system. They observe how every <span class="drop-zone" data-answer="planet" ondrop="drop(event)" ondragover="allowDrop(event)"></span> moves in a predictable <span class="drop-zone" data-answer="orbit" ondrop="drop(event)" ondragover="allowDrop(event)"></span> around its star. Our sun is just one of billions of stars in the Milky Way <span class="drop-zone" data-answer="galaxy" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. The sheer size of the <span class="drop-zone" data-answer="universe" ondrop="drop(event)" ondragover="allowDrop(event)"></span> makes many people wonder if we are alone. Many science fiction movies explore the concept of <span class="drop-zone" data-answer="alien" ondrop="drop(event)" ondragover="allowDrop(event)"></span> life forms visiting Earth, though we have no proof yet.
+        </p>
+        <button class="btn-check" onclick="checkAnswers('ex5')">Nộp bài</button>
+        <div class="result-box" id="result-ex5"></div>
+    </div>
+
+    <div class="exercise-card" id="ex6">
+        <h2 class="exercise-title">Bài 6: Migration & People</h2>
+        <div class="word-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-1">brain drain</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-2">emigration</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-3">immigration</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-4">refugee</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-5">expatriate</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-6">influx</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-7">detour</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-8">access</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-9">bypass</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-10">effect</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-11">trend</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w6-12">heritage</span>
+        </div>
+        <p class="text-content">
+            People move across borders for many reasons. <span class="drop-zone" data-answer="immigration" ondrop="drop(event)" ondragover="allowDrop(event)"></span> is the process of coming to live permanently in a foreign country. Conversely, <span class="drop-zone" data-answer="emigration" ondrop="drop(event)" ondragover="allowDrop(event)"></span> is the act of leaving one's own country. When highly skilled workers leave a developing nation to work in richer countries, this phenomenon is called a <span class="drop-zone" data-answer="brain drain" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. Sometimes, a sudden <span class="drop-zone" data-answer="influx" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of people arrives due to war or disaster; a person fleeing such danger is called a <span class="drop-zone" data-answer="refugee" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. On the other hand, an <span class="drop-zone" data-answer="expatriate" ondrop="drop(event)" ondragover="allowDrop(event)"></span> is simply someone living and working in a country other than their citizenship, often for a limited time.
+        </p>
+        <button class="btn-check" onclick="checkAnswers('ex6')">Nộp bài</button>
+        <div class="result-box" id="result-ex6"></div>
+    </div>
+
+     <div class="exercise-card" id="ex7">
+        <h2 class="exercise-title">Bài 7: Driving & Roads</h2>
+        <div class="word-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-1">bypass</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-2">detour</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-3">shortcut</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-4">terrain</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-5">automobile</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-6">manoeuvre</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-7">efficient</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-8">adventurous</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-9">breathtaking</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-10">leisurely</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-11">polluted</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w7-12">time-consuming</span>
+        </div>
+        <p class="text-content">
+            Driving in a new area can be challenging. If the main road is blocked by an accident, the police might force you to take a <span class="drop-zone" data-answer="detour" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. Experienced drivers often know a secret <span class="drop-zone" data-answer="shortcut" ondrop="drop(event)" ondragover="allowDrop(event)"></span> to avoid traffic lights. To avoid driving through the busy city center, you can take the <span class="drop-zone" data-answer="bypass" ondrop="drop(event)" ondragover="allowDrop(event)"></span> which goes around the town. When driving off-road, the <span class="drop-zone" data-answer="terrain" ondrop="drop(event)" ondragover="allowDrop(event)"></span> can be very rough and rocky. It requires skill to <span class="drop-zone" data-answer="manoeuvre" ondrop="drop(event)" ondragover="allowDrop(event)"></span> the car through narrow spaces. The modern <span class="drop-zone" data-answer="automobile" ondrop="drop(event)" ondragover="allowDrop(event)"></span> is designed for comfort, but road conditions still dictate the quality of the journey.
+        </p>
+        <button class="btn-check" onclick="checkAnswers('ex7')">Nộp bài</button>
+        <div class="result-box" id="result-ex7"></div>
+    </div>
+
+    <div class="exercise-card" id="ex8">
+        <h2 class="exercise-title">Bài 8: City vs Countryside</h2>
+        <div class="word-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-1">countryside</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-2">metropolitan</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-3">cosmopolitan</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-4">village</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-5">polluted</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-6">pace</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-7">stop off</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-8">transit</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-9">wander</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-10">pick sb up</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-11">repatriate</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w8-12">fluctuate</span>
+        </div>
+        <p class="text-content">
+            There is a big difference between rural and urban life. In the <span class="drop-zone" data-answer="countryside" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, the air is fresh and life is quiet. A small <span class="drop-zone" data-answer="village" ondrop="drop(event)" ondragover="allowDrop(event)"></span> usually has a close-knit community. However, many young people prefer the excitement of a <span class="drop-zone" data-answer="metropolitan" ondrop="drop(event)" ondragover="allowDrop(event)"></span> area. Big cities are often <span class="drop-zone" data-answer="cosmopolitan" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, containing people from many different cultures and countries. The downside is that cities can be heavily <span class="drop-zone" data-answer="polluted" ondrop="drop(event)" ondragover="allowDrop(event)"></span> due to factories and cars. Also, the <span class="drop-zone" data-answer="pace" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of life in the city is much faster and more stressful than in rural areas.
+        </p>
+        <button class="btn-check" onclick="checkAnswers('ex8')">Nộp bài</button>
+        <div class="result-box" id="result-ex8"></div>
+    </div>
+
+    <div class="exercise-card" id="ex9">
+        <h2 class="exercise-title">Bài 9: Adventure & Exploration</h2>
+        <div class="word-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-1">adventurous</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-2">explore</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-3">stroll</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-4">wander</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-5">breathtaking</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-6">peak</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-7">cater</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-8">indulge</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-9">hire</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-10">break down</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-11">delay</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w9-12">embark</span>
+        </div>
+        <p class="text-content">
+            For those who are <span class="drop-zone" data-answer="adventurous" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, sitting on a beach is not enough. They want to <span class="drop-zone" data-answer="explore" ondrop="drop(event)" ondragover="allowDrop(event)"></span> wild jungles or climb high mountains. Reaching the <span class="drop-zone" data-answer="peak" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of a mountain gives a sense of achievement and a <span class="drop-zone" data-answer="breathtaking" ondrop="drop(event)" ondragover="allowDrop(event)"></span> view. For a more relaxed activity, you might take a leisurely <span class="drop-zone" data-answer="stroll" ondrop="drop(event)" ondragover="allowDrop(event)"></span> through a park or a historic town. It is lovely to simply <span class="drop-zone" data-answer="wander" ondrop="drop(event)" ondragover="allowDrop(event)"></span> around the streets without a map, discovering hidden shops and cafes that are not in the guidebooks.
+        </p>
+        <button class="btn-check" onclick="checkAnswers('ex9')">Nộp bài</button>
+        <div class="result-box" id="result-ex9"></div>
+    </div>
+
+    <div class="exercise-card" id="ex10">
+        <h2 class="exercise-title">Bài 10: Culture & Heritage</h2>
+        <div class="word-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-1">heritage</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-2">attraction</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-3">diverse</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-4">community</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-5">admire</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-6">inhabitant</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-7">sickness</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-8">queue</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-9">access</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-10">effect</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-11">trend</span>
+            <span class="draggable-word" draggable="true" ondragstart="drag(event)" id="w10-12">trip</span>
+        </div>
+        <p class="text-content">
+            Understanding a country's culture involves visiting its historical sites. A World <span class="drop-zone" data-answer="heritage" ondrop="drop(event)" ondragover="allowDrop(event)"></span> Site is a landmark which has been officially recognized for its cultural value. It is often a major tourist <span class="drop-zone" data-answer="attraction" ondrop="drop(event)" ondragover="allowDrop(event)"></span> drawing millions of visitors. Travelers come to <span class="drop-zone" data-answer="admire" ondrop="drop(event)" ondragover="allowDrop(event)"></span> the ancient architecture and art. However, culture is also about people. A <span class="drop-zone" data-answer="diverse" ondrop="drop(event)" ondragover="allowDrop(event)"></span> society has many different traditions and languages. To truly understand a place, you should talk to a local <span class="drop-zone" data-answer="inhabitant" ondrop="drop(event)" ondragover="allowDrop(event)"></span> or participate in <span class="drop-zone" data-answer="community" ondrop="drop(event)" ondragover="allowDrop(event)"></span> events and festivals.
+        </p>
+        <button class="btn-check" onclick="checkAnswers('ex10')">Nộp bài</button>
+        <div class="result-box" id="result-ex10"></div>
+    </div>
+
+</div>
+
+<script>
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.innerText);
+        ev.dataTransfer.setData("id", ev.target.id);
+        ev.target.classList.add('dragging');
+    }
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+        if(ev.target.classList.contains('drop-zone')) {
+            ev.target.classList.add('hovered');
+        }
+    }
+
+    // Xử lý sự kiện khi kéo ra khỏi vùng thả để bỏ highlight
+    document.addEventListener("dragleave", function(event) {
+        if (event.target.classList && event.target.classList.contains("drop-zone")) {
+            event.target.classList.remove("hovered");
+        }
+    });
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        var draggedId = ev.dataTransfer.getData("id");
+        var draggedElement = document.getElementById(draggedId);
+
+        if (ev.target.classList.contains('drop-zone')) {
+            ev.target.innerText = data;
+            ev.target.classList.remove('hovered');
+            ev.target.classList.remove('correct');
+            ev.target.classList.remove('incorrect');
+            
+            // Xóa hiệu ứng dragging
+            if(draggedElement) draggedElement.classList.remove('dragging');
+        } 
+        else if (ev.target.classList.contains('word-box')) {
+             // Logic nếu muốn trả từ về hộp (tùy chọn, ở đây đơn giản là không làm gì đặc biệt)
+             if(draggedElement) draggedElement.classList.remove('dragging');
+        }
+    }
+
+    // Xử lý kết thúc drag nếu thả ra ngoài
+    document.addEventListener("dragend", function(event) {
+        event.target.classList.remove("dragging");
+    });
+
+
+    function checkAnswers(exerciseId) {
+        var exerciseDiv = document.getElementById(exerciseId);
+        var dropZones = exerciseDiv.querySelectorAll('.drop-zone');
+        var score = 0;
+        var total = dropZones.length;
+
+        dropZones.forEach(function(zone) {
+            var userAnswer = zone.innerText.trim();
+            var correctAnswer = zone.getAttribute('data-answer');
+
+            if (userAnswer === correctAnswer) {
+                zone.classList.add('correct');
+                zone.classList.remove('incorrect');
+                score++;
+            } else {
+                zone.classList.add('incorrect');
+                zone.classList.remove('correct');
+            }
+        });
+
+        var resultBox = document.getElementById('result-' + exerciseId);
+        resultBox.style.display = 'block';
+        resultBox.innerText = "Bạn đã làm đúng " + score + "/" + total + " câu.";
+        resultBox.style.color = score === total ? '#27ae60' : '#c0392b';
+    }
+</script>
+
+</body>
+</html>

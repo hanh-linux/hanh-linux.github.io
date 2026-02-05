@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Practice: Economy & Politics</title>
+    <style>
+        :root {
+            --primary: #2c3e50; /* Dark Slate Blue */
+            --accent: #c0392b; /* Dark Red for Politics/Economy vibe */
+            --secondary: #2980b9;
+            --bg-color: #f4f6f6;
+            --card-bg: #ffffff;
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.4em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .sub-text {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        /* Card Style */
+        .exercise-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            margin-bottom: 50px;
+            border: 1px solid #d5dbdb;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        /* Word Bank */
+        .word-bank {
+            background-color: #ecf0f1;
+            border: 2px dashed #95a5a6;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .draggable {
+            background: white;
+            border: 1px solid #bdc3c7;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: grab;
+            font-weight: 600;
+            color: var(--primary);
+            box-shadow: 0 2px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            user-select: none;
+            font-size: 0.95em;
+        }
+
+        .draggable:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            background: #dfe6e9;
+        }
+
+        /* Text Content */
+        .passage {
+            font-size: 1.1em;
+            line-height: 2.4; /* Dãn dòng để chứa ô trống */
+            text-align: justify;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            width: 150px;
+            height: 34px;
+            border-bottom: 2px solid #7f8c8d;
+            background-color: #f8f9f9;
+            margin: 0 5px;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+            position: relative;
+            top: 5px;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #d6eaf8;
+            border-bottom-color: var(--secondary);
+        }
+
+        .drop-zone .draggable {
+            margin: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+            cursor: grab;
+        }
+
+        /* Score Styles */
+        .drop-zone.correct {
+            border-bottom: 3px solid var(--correct);
+            background-color: #e9f7ef;
+            color: var(--correct);
+            font-weight: bold;
+        }
+
+        .drop-zone.incorrect {
+            border-bottom: 3px solid var(--wrong);
+            background-color: #fdedec;
+            color: var(--wrong);
+            font-weight: bold;
+        }
+
+        /* Footer Controls */
+        .footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            border-top: 1px solid #ddd;
+        }
+
+        button {
+            padding: 12px 35px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+        }
+
+        #submit-btn {
+            background-color: var(--correct);
+            color: white;
+        }
+        #submit-btn:hover { background-color: #219150; }
+
+        #reset-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+        #reset-btn:hover { background-color: #7f8c8d; }
+
+        #score-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary);
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Economy & Politics Vocabulary</h1>
+        <p class="sub-text">Theme 16: Kéo từ vựng trong khung và thả vào ô trống thích hợp. Nhấn "NỘP BÀI" để kiểm tra.</p>
+    </header>
+
+    <div id="exercises-wrapper">
+        </div>
+</div>
+
+<div class="footer-bar">
+    <button id="submit-btn" onclick="checkAllAnswers()">Nộp Bài</button>
+    <button id="reset-btn" onclick="location.reload()">Làm Lại</button>
+    <div id="score-display"></div>
+</div>
+
+<script>
+    // Dữ liệu 10 bài tập, sử dụng chính xác từ vựng trong file
+    const exercisesData = [
+        {
+            id: 1,
+            title: "Topic 1: Economic Downturn",
+            text: "The global market is currently facing a severe <strong>[1]</strong>, characterized by a decline in trade and industrial activity. During such a difficult time, general prices often rise due to high <strong>[2]</strong>, reducing the value of money. Many companies that cannot pay their bills go <strong>[3]</strong> and are forced to close down. This leads to a rise in unemployment, further damaging the national <strong>[4]</strong>. The government often has to borrow money, increasing the national <strong>[5]</strong> significantly. Economists warn that this is a major <strong>[6]</strong> that requires urgent attention to prevent long-term damage.",
+            answers: ["recession", "inflation", "bankrupt", "economy", "debt", "crisis"],
+            distractors: ["agriculture", "monarchy", "royal", "barrier", "fine", "bribe"]
+        },
+        {
+            id: 2,
+            title: "Topic 2: Government Finance",
+            text: "Every year, the Finance <strong>[1]</strong> announces the national budget. A key part of the plan involves the <strong>[2]</strong> on government services, such as healthcare and education. To pay for this, the government collects <strong>[3]</strong> from citizens based on their income. Sometimes, a new <strong>[4]</strong> is introduced to manage these finances more effectively. Critics often argue that high taxes reduce the <strong>[5]</strong> that companies earn. However, the government insists that this <strong>[6]</strong> is necessary to balance the books and provide for the public.",
+            answers: ["minister", "expenditure", "tax", "policy", "revenue", "reform"],
+            distractors: ["anarchy", "riot", "terror", "rebel", "wing", "customs"]
+        },
+        {
+            id: 3,
+            title: "Topic 3: International Trade",
+            text: "In an era of rapid <strong>[1]</strong>, countries are more interconnected than ever. Businesses produce goods to <strong>[2]</strong> to foreign markets, hoping to expand their reach. At the same time, we <strong>[3]</strong> products that are not manufactured locally. All these items must pass through <strong>[4]</strong> at the border, where officials check them. Governments sometimes place a trade <strong>[5]</strong> or tariff to protect local industries from foreign competition. This flow of <strong>[6]</strong> and services is the backbone of the modern world economy.",
+            answers: ["globalisation", "export", "import", "customs", "barrier", "goods"],
+            distractors: ["household", "pension", "mortgage", "loan", "deposit", "atrocity"]
+        },
+        {
+            id: 4,
+            title: "Topic 4: Business & Entrepreneurship",
+            text: "Starting a new business is a challenging journey. An ambitious <strong>[1]</strong> must be willing to take risks to succeed. They typically need significant initial <strong>[2]</strong> to buy equipment and hire staff. The goal of any private <strong>[3]</strong> is to generate a healthy <strong>[4]</strong> after paying all costs. Investors look for companies with strong potential for <strong>[5]</strong> before they decide to put their money in. Therefore, you must <strong>[6]</strong> wisely to ensure the business expands and remains sustainable.",
+            answers: ["entrepreneur", "capital", "enterprise", "profit", "growth", "invest"],
+            distractors: ["bureaucracy", "poverty", "welfare", "subsidy", "donate", "fund"]
+        },
+        {
+            id: 5,
+            title: "Topic 5: Democracy & Voting",
+            text: "In a healthy <strong>[1]</strong>, the power lies with the people. Every few years, citizens exercise their right to <strong>[2]</strong> in a general election. Candidates from each political <strong>[3]</strong> campaign to win the support of the public. The leader of the winning group usually becomes the <strong>[4]</strong> or Prime Minister. This system contrasts sharply with a dictatorship, where a single <strong>[5]</strong> holds absolute authority. In a free society, transferring <strong>[6]</strong> peacefully is a sign of stability.",
+            answers: ["democracy", "vote", "party", "president", "dictator", "power"],
+            distractors: ["monopoly", "output", "sector", "supply", "demand", "earnings"]
+        },
+        {
+            id: 6,
+            title: "Topic 6: Social Equality",
+            text: "Many nations struggle with the issue of social inequality. While some citizens are wealthy, others live in extreme <strong>[1]</strong>, unable to afford basic needs. The government often provides <strong>[2]</strong> payments to help the unemployed and sick. There is frequently an uneven <strong>[3]</strong> of wealth across different regions. Additionally, discrimination against an <strong>[4]</strong> can lead to social tension. In severe cases, people may flee persecution and seek <strong>[5]</strong> in another country. Political <strong>[6]</strong> often occurs when these deep social issues are ignored for too long.",
+            answers: ["poverty", "welfare", "distribution", "ethnic minority", "asylum", "unrest"],
+            distractors: ["profit", "revenue", "tax", "excise", "bargain", "bill"]
+        },
+        {
+            id: 7,
+            title: "Topic 7: Personal Banking",
+            text: "Managing personal finances is a skill everyone needs. Most people open a bank <strong>[1]</strong> to keep their money safe. When you want to buy a house, you usually need to apply for a <strong>[2]</strong>, which you pay back over many years. If you need cash for a car, you might take out a smaller <strong>[3]</strong>. Adding money to your bank is called making a <strong>[4]</strong>. Conversely, spending more than you have on a <strong>[5]</strong> card can lead to serious financial trouble. It is important to avoid bad <strong>[6]</strong> to maintain financial health.",
+            answers: ["account", "mortgage", "loan", "deposit", "credit", "debt"],
+            distractors: ["production", "manufacturing", "labour", "union", "strike", "protest"]
+        },
+        {
+            id: 8,
+            title: "Topic 8: Industry and Production",
+            text: "The <strong>[1]</strong> sector plays a crucial role in a developed economy. Factories process <strong>[2]</strong> materials like steel and oil into finished products. Heavy <strong>[3]</strong> often requires large machinery and a significant workforce. Recently, the total <strong>[4]</strong> of our factories has increased due to better technology. However, finding skilled <strong>[5]</strong> is becoming difficult for employers. Companies must ensure a steady <strong>[6]</strong> of parts to keep production lines running smoothly.",
+            answers: ["manufacturing", "raw", "industry", "output", "labour", "supply"],
+            distractors: ["ideology", "religion", "politics", "policy", "anarchy", "bureaucracy"]
+        },
+        {
+            id: 9,
+            title: "Topic 9: Political Protest",
+            text: "When citizens are unhappy, they may organize a public <strong>[1]</strong> to make their voices heard. Sometimes, what starts as a peaceful <strong>[2]</strong> can turn into a violent <strong>[3]</strong> if tensions run high. Protesters often <strong>[4]</strong> changes to laws or better living conditions. In extreme cases, this can lead to a <strong>[5]</strong> that overthrows the existing government. A <strong>[6]</strong> group might take up arms to fight against the authorities directly.",
+            answers: ["demonstration", "protest", "riot", "demand", "revolution", "rebel"],
+            distractors: ["commerce", "trade", "market", "consumer", "household", "income"]
+        },
+        {
+            id: 10,
+            title: "Topic 10: Political Ideologies",
+            text: "People hold different views on how a country should be run. <strong>[1]</strong> supports private ownership and free markets, whereas <strong>[2]</strong> argues for state control of major industries. Your personal <strong>[3]</strong> influences which party you support. A <strong>[4]</strong> person tends to value tradition and slow change. On the other hand, a <strong>[5]</strong> person usually supports new social programs and personal freedoms. Some views are considered <strong>[6]</strong> because they call for extreme and immediate changes to the system.",
+            answers: ["capitalism", "socialism", "ideology", "conservative", "liberal", "radical"],
+            distractors: ["sustainable", "scarce", "available", "confidential", "extreme", "productive"]
+        }
+    ];
+
+    // Hàm trộn mảng (Fisher-Yates)
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    // Khởi tạo bài tập
+    function init() {
+        const wrapper = document.getElementById('exercises-wrapper');
+
+        exercisesData.forEach((ex, index) => {
+            // Tạo thẻ Card
+            const card = document.createElement('div');
+            card.classList.add('exercise-card');
+
+            // Header
+            const header = document.createElement('div');
+            header.classList.add('card-header');
+            header.innerHTML = `<h3>${ex.title}</h3>`;
+            card.appendChild(header);
+
+            // Body
+            const body = document.createElement('div');
+            body.classList.add('card-body');
+
+            // Word Bank
+            const bank = document.createElement('div');
+            bank.classList.add('word-bank');
+            bank.id = `bank-${ex.id}`;
+
+            // Gộp đáp án đúng và từ nhiễu, sau đó trộn
+            const allWords = shuffle([...ex.answers, ...ex.distractors]);
+            
+            allWords.forEach(word => {
+                const item = document.createElement('span');
+                item.classList.add('draggable');
+                item.setAttribute('draggable', 'true');
+                item.textContent = word;
+                item.id = `word-${ex.id}-${word.replace(/\s+/g, '-')}`;
+                item.dataset.val = word;
+                item.dataset.origin = ex.id; // Đánh dấu nguồn gốc để tránh kéo nhầm bài
+
+                // Drag Events
+                item.addEventListener('dragstart', dragStart);
+                item.addEventListener('dragend', dragEnd);
+
+                bank.appendChild(item);
+            });
+            body.appendChild(bank);
+
+            // Đoạn văn
+            const p = document.createElement('div');
+            p.classList.add('passage');
+            
+            // Thay thế [1]..[6] bằng ô drop-zone
+            let formattedText = ex.text;
+            ex.answers.forEach((ans, i) => {
+                const placeholder = `<strong>[${i + 1}]</strong>`;
+                const zone = `<span class="drop-zone" data-correct="${ans}" data-ex="${ex.id}"></span>`;
+                formattedText = formattedText.replace(placeholder, zone);
+            });
+            
+            p.innerHTML = formattedText;
+            body.appendChild(p);
+            
+            card.appendChild(body);
+            wrapper.appendChild(card);
+        });
+
+        // Add Drop Event Listeners
+        document.querySelectorAll('.drop-zone, .word-bank').forEach(el => {
+            el.addEventListener('dragover', dragOver);
+            el.addEventListener('drop', drop);
+        });
+    }
+
+    // Drag & Drop Functions
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+        setTimeout(() => e.target.classList.add('dragging'), 0);
+    }
+
+    function dragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+    function dragOver(e) {
+        e.preventDefault();
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+        if (target) target.classList.add('drag-over');
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+        const id = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(id);
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+
+        if (!target || !draggable) return;
+
+        // Constraint: Only allow dropping within the SAME exercise ID
+        let targetExId;
+        if (target.classList.contains('word-bank')) {
+            targetExId = target.id.split('-')[1];
+        } else {
+            targetExId = target.dataset.ex;
+        }
+
+        if (draggable.dataset.origin != targetExId) return;
+
+        // Drop Logic
+        if (target.classList.contains('drop-zone')) {
+            if (target.children.length > 0) {
+                const existingWord = target.children[0];
+                document.getElementById(`bank-${targetExId}`).appendChild(existingWord);
+            }
+            target.appendChild(draggable);
+            target.classList.remove('correct', 'incorrect');
+        } else {
+            target.appendChild(draggable);
+        }
+    }
+
+    // Scoring Function
+    function checkAllAnswers() {
+        const dropZones = document.querySelectorAll('.drop-zone');
+        let total = dropZones.length;
+        let correct = 0;
+
+        dropZones.forEach(zone => {
+            const correctAnswer = zone.dataset.correct;
+            zone.classList.remove('correct', 'incorrect');
+
+            if (zone.children.length > 0) {
+                const userWord = zone.children[0].dataset.val;
+                if (userWord === correctAnswer) {
+                    zone.classList.add('correct');
+                    correct++;
+                } else {
+                    zone.classList.add('incorrect');
+                }
+            } else {
+                zone.classList.add('incorrect');
+            }
+        });
+
+        const scoreDisplay = document.getElementById('score-display');
+        scoreDisplay.innerHTML = `Kết quả: <span style="color:${correct === total ? '#27ae60' : '#c0392b'}">${correct} / ${total}</span> câu đúng`;
+        
+        if (correct === total) {
+            scoreDisplay.innerHTML += " 🏆 Xuất sắc!";
+        }
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>

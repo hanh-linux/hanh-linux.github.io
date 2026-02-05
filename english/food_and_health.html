@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Từ Vựng: Food and Health (B1)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .instruction {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-left: 5px solid #3498db;
+            margin-bottom: 30px;
+        }
+        .exercise-container {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .exercise-header {
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .word-bank {
+            background-color: #f9f9f9;
+            border: 2px dashed #bdc3c7;
+            padding: 15px;
+            min-height: 60px;
+            border-radius: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .word-item {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: grab;
+            user-select: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .word-item:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+        .paragraph {
+            line-height: 2.2;
+            text-align: justify;
+            font-size: 16px;
+        }
+        .drop-zone {
+            display: inline-block;
+            width: 140px;
+            height: 30px;
+            border-bottom: 2px solid #7f8c8d;
+            vertical-align: middle;
+            margin: 0 5px;
+            text-align: center;
+            background-color: #fff;
+            transition: all 0.3s;
+        }
+        .drop-zone .word-item {
+            margin: 0;
+            padding: 2px 10px;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #2980b9;
+        }
+        .drop-zone.hovered {
+            background-color: #eafaf1;
+            border-bottom-color: #27ae60;
+        }
+        /* Styles cho kết quả */
+        .drop-zone.correct {
+            border-bottom: 3px solid #27ae60;
+            position: relative;
+        }
+        .drop-zone.correct::after {
+            content: '✓';
+            color: #27ae60;
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            font-weight: bold;
+        }
+        .drop-zone.incorrect {
+            border-bottom: 3px solid #e74c3c;
+            position: relative;
+        }
+        .drop-zone.incorrect::after {
+            content: '✗';
+            color: #e74c3c;
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            font-weight: bold;
+        }
+        
+        #submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: #fff;
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #219150;
+        }
+        #final-score {
+            font-size: 24px;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>BÀI TẬP TỪ VỰNG: FOOD AND HEALTH</h1>
+    
+    <div class="instruction">
+        <strong>Hướng dẫn:</strong> Kéo từ trong khung màu xám (Word Box) và thả vào ô trống thích hợp trong đoạn văn. Sau khi hoàn thành cả 10 bài, hãy kéo xuống dưới cùng và nhấn nút <strong>"Nộp Bài"</strong> để xem kết quả.
+    </div>
+
+    <div class="exercise-container" id="ex1">
+        <div class="exercise-header">Bài 1: Nutrition Basics</div>
+        <div class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)" id="bank1">
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-1">calorie</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-2">carbohydrate</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-3">nutrient</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-4">protein</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-5">fibre</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-6">vitamin</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-7">symptom</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-8">insurance</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-9">operation</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-10">artery</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-11">stroke</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w1-12">cancer</div>
+        </div>
+        <div class="paragraph">
+            To maintain a healthy body, we must pay attention to what we eat. Every food item provides a certain amount of energy, which is measured by the <span class="drop-zone" data-answer="calorie" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. A balanced diet should include a variety of substances. For energy, the body primarily relies on <span class="drop-zone" data-answer="carbohydrate" ondrop="drop(event)" ondragover="allowDrop(event)"></span> found in rice and bread. To build and repair muscles, we need to consume enough <span class="drop-zone" data-answer="protein" ondrop="drop(event)" ondragover="allowDrop(event)"></span> from meat, fish, or beans. Fruits and vegetables are essential because they contain every essential <span class="drop-zone" data-answer="nutrient" ondrop="drop(event)" ondragover="allowDrop(event)"></span> that keeps our organs functioning. Additionally, eating food rich in <span class="drop-zone" data-answer="fibre" ondrop="drop(event)" ondragover="allowDrop(event)"></span> helps keep the digestive system working smoothly. Finally, even though we need them in small amounts, not getting enough of a specific <span class="drop-zone" data-answer="vitamin" ondrop="drop(event)" ondragover="allowDrop(event)"></span> can lead to serious health issues.
+        </div>
+    </div>
+
+    <div class="exercise-container" id="ex2">
+        <div class="exercise-header">Bài 2: Chronic Health Issues</div>
+        <div class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)" id="bank2">
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-1">obesity</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-2">diabetes</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-3">chronic</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-4">blood pressure</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-5">arthritis</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-6">factor</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-7">chef</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-8">menu</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-9">restaurant</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-10">dine</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-11">delicious</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w2-12">cooking utensils</div>
+        </div>
+        <div class="paragraph">
+            Modern lifestyles have led to a rise in long-term health problems. One of the most common issues is <span class="drop-zone" data-answer="obesity" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, where a person carries too much excess body fat. This condition is a major risk <span class="drop-zone" data-answer="factor" ondrop="drop(event)" ondragover="allowDrop(event)"></span> for developing other diseases. For example, people who are overweight often suffer from high <span class="drop-zone" data-answer="blood pressure" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, which puts strain on the heart. Another related condition is <span class="drop-zone" data-answer="diabetes" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, which affects how the body processes blood sugar. Older people may also suffer from <span class="drop-zone" data-answer="arthritis" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, causing painful swelling in the joints. These are all examples of <span class="drop-zone" data-answer="chronic" ondrop="drop(event)" ondragover="allowDrop(event)"></span> diseases, meaning they persist for a long time and usually cannot be cured completely, only managed.
+        </div>
+    </div>
+
+    <div class="exercise-container" id="ex3">
+        <div class="exercise-header">Bài 3: Mental Health</div>
+        <div class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)" id="bank3">
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-1">stress</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-2">anxiety</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-3">depression</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-4">insomnia</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-5">symptom</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-6">relieve</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-7">muscle</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-8">bone</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-9">fever</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-10">flu</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-11">virus</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w3-12">cough</div>
+        </div>
+        <div class="paragraph">
+            Health is not just about the body; it is also about the mind. High pressure at work can lead to severe <span class="drop-zone" data-answer="stress" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. If this continues for a long time, a person might develop <span class="drop-zone" data-answer="anxiety" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, feeling constantly nervous that something bad will happen. A more serious condition is <span class="drop-zone" data-answer="depression" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, where extreme sadness affects daily life. A common physical <span class="drop-zone" data-answer="symptom" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of these mental issues is <span class="drop-zone" data-answer="insomnia" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, the inability to sleep properly. To <span class="drop-zone" data-answer="relieve" ondrop="drop(event)" ondragover="allowDrop(event)"></span> these feelings, doctors often recommend talking therapy or lifestyle changes rather than just medication.
+        </div>
+    </div>
+
+    <div class="exercise-container" id="ex4">
+        <div class="exercise-header">Bài 4: Heart Health</div>
+        <div class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)" id="bank4">
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-1">cardiovascular</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-2">artery</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-3">cholesterol</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-4">heart attack</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-5">stroke</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-6">risk</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-7">toothache</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-8">stomach</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-9">skin</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-10">dentist</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-11">digest</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w4-12">rash</div>
+        </div>
+        <div class="paragraph">
+            Doctors always emphasize the importance of <span class="drop-zone" data-answer="cardiovascular" ondrop="drop(event)" ondragover="allowDrop(event)"></span> health, which involves the heart and blood vessels. Eating too much fatty food can lead to high levels of <span class="drop-zone" data-answer="cholesterol" ondrop="drop(event)" ondragover="allowDrop(event)"></span> in the blood. This substance can build up inside an <span class="drop-zone" data-answer="artery" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, making it narrow and blocking blood flow. If blood cannot reach the heart muscle, the person may suffer a <span class="drop-zone" data-answer="heart attack" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. If the blockage happens in a vessel leading to the brain, it causes a <span class="drop-zone" data-answer="stroke" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. Regular exercise is the best way to lower the <span class="drop-zone" data-answer="risk" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of these dangerous events.
+        </div>
+    </div>
+
+    <div class="exercise-container" id="ex5">
+        <div class="exercise-header">Bài 5: Seeing the Doctor</div>
+        <div class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)" id="bank5">
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-1">diagnosis</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-2">prescription</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-3">consultant</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-4">treatment</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-5">recover</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-6">medicine</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-7">passport</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-8">travel</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-9">ticket</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-10">hotel</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-11">vacation</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w5-12">beach</div>
+        </div>
+        <div class="paragraph">
+            When you feel ill, you should go to a clinic. The doctor will ask about your symptoms to make a correct <span class="drop-zone" data-answer="diagnosis" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of the problem. If the illness is complicated, you might be referred to a <span class="drop-zone" data-answer="consultant" ondrop="drop(event)" ondragover="allowDrop(event)"></span> who specializes in that specific area. Often, the doctor will give you a <span class="drop-zone" data-answer="prescription" ondrop="drop(event)" ondragover="allowDrop(event)"></span> which allows you to buy strong <span class="drop-zone" data-answer="medicine" ondrop="drop(event)" ondragover="allowDrop(event)"></span> at the pharmacy. Following the correct <span class="drop-zone" data-answer="treatment" ondrop="drop(event)" ondragover="allowDrop(event)"></span> plan is essential. With rest and proper care, most patients <span class="drop-zone" data-answer="recover" ondrop="drop(event)" ondragover="allowDrop(event)"></span> fully within a few days or weeks.
+        </div>
+    </div>
+
+    <div class="exercise-container" id="ex6">
+        <div class="exercise-header">Bài 6: Physical Activity</div>
+        <div class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)" id="bank6">
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-1">exercise</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-2">muscle</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-3">maintain</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-4">weight</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-5">brisk</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-6">moderate</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-7">alcohol</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-8">smoke</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-9">lazy</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-10">sleep</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-11">bed</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w6-12">sedentary</div>
+        </div>
+        <div class="paragraph">
+            To prevent illness, experts recommend regular <span class="drop-zone" data-answer="exercise" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. You don't need to be an athlete; even <span class="drop-zone" data-answer="moderate" ondrop="drop(event)" ondragover="allowDrop(event)"></span> activity like walking or gardening is beneficial. A popular activity is taking a <span class="drop-zone" data-answer="brisk" ondrop="drop(event)" ondragover="allowDrop(event)"></span> walk in the park every morning. Strength training is also good because it helps build <span class="drop-zone" data-answer="muscle" ondrop="drop(event)" ondragover="allowDrop(event)"></span>. Being active helps you control your <span class="drop-zone" data-answer="weight" ondrop="drop(event)" ondragover="allowDrop(event)"></span> and prevents obesity. The goal is to <span class="drop-zone" data-answer="maintain" ondrop="drop(event)" ondragover="allowDrop(event)"></span> a healthy lifestyle for as long as possible.
+        </div>
+    </div>
+
+    <div class="exercise-container" id="ex7">
+        <div class="exercise-header">Bài 7: Eating Habits</div>
+        <div class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)" id="bank7">
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-1">allergy</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-2">ingredient</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-3">appetite</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-4">intake</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-5">harmful</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-6">avoid</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-7">traffic</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-8">car</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-9">drive</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-10">road</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-11">street</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w7-12">light</div>
+        </div>
+        <div class="paragraph">
+            When cooking, it is important to check every <span class="drop-zone" data-answer="ingredient" ondrop="drop(event)" ondragover="allowDrop(event)"></span> in the recipe. Some people have a severe food <span class="drop-zone" data-answer="allergy" ondrop="drop(event)" ondragover="allowDrop(event)"></span> to things like nuts or seafood, which can be dangerous. People trying to get fit often limit their <span class="drop-zone" data-answer="intake" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of sugar and salt. You should also <span class="drop-zone" data-answer="avoid" ondrop="drop(event)" ondragover="allowDrop(event)"></span> processed foods that contain chemical additives. These chemicals can be <span class="drop-zone" data-answer="harmful" ondrop="drop(event)" ondragover="allowDrop(event)"></span> to your health if eaten in large quantities. However, do not starve yourself; eating well helps you keep a healthy <span class="drop-zone" data-answer="appetite" ondrop="drop(event)" ondragover="allowDrop(event)"></span>.
+        </div>
+    </div>
+
+    <div class="exercise-container" id="ex8">
+        <div class="exercise-header">Bài 8: Infection & Immunity</div>
+        <div class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)" id="bank8">
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-1">pandemic</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-2">infectious</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-3">infection</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-4">immune</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-5">quarantine</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-6">prevent</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-7">money</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-8">bank</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-9">rich</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-10">poor</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-11">spend</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w8-12">economy</div>
+        </div>
+        <div class="paragraph">
+            The world recently experienced a global <span class="drop-zone" data-answer="pandemic" ondrop="drop(event)" ondragover="allowDrop(event)"></span> where a new virus spread rapidly. This disease was highly <span class="drop-zone" data-answer="infectious" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, passing easily from person to person. To stop the spread of <span class="drop-zone" data-answer="infection" ondrop="drop(event)" ondragover="allowDrop(event)"></span>, governments asked people to stay at home. Travelers arriving from other countries often had to go into <span class="drop-zone" data-answer="quarantine" ondrop="drop(event)" ondragover="allowDrop(event)"></span> for two weeks. Scientists worked hard to create vaccines to help our <span class="drop-zone" data-answer="immune" ondrop="drop(event)" ondragover="allowDrop(event)"></span> system fight the virus. Hygiene measures like washing hands also help <span class="drop-zone" data-answer="prevent" ondrop="drop(event)" ondragover="allowDrop(event)"></span> future outbreaks.
+        </div>
+    </div>
+
+    <div class="exercise-container" id="ex9">
+        <div class="exercise-header">Bài 9: Surgery & Life</div>
+        <div class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)" id="bank9">
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-1">operation</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-2">acute</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-3">vital</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-4">check-up</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-5">life expectancy</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-6">recover</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-7">school</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-8">teacher</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-9">book</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-10">exam</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-11">lesson</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w9-12">study</div>
+        </div>
+        <div class="paragraph">
+            Sometimes, medicine is not enough and a patient needs an <span class="drop-zone" data-answer="operation" ondrop="drop(event)" ondragover="allowDrop(event)"></span> in the hospital. If a pain is sudden and very severe, it is called <span class="drop-zone" data-answer="acute" ondrop="drop(event)" ondragover="allowDrop(event)"></span> pain, and you should seek help immediately. Regular medical visits for a <span class="drop-zone" data-answer="check-up" ondrop="drop(event)" ondragover="allowDrop(event)"></span> are essential to catch problems early. The heart and brain are <span class="drop-zone" data-answer="vital" ondrop="drop(event)" ondragover="allowDrop(event)"></span> organs; we cannot survive without them. Thanks to modern medical technology, the average <span class="drop-zone" data-answer="life expectancy" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of humans has increased significantly. Most people can <span class="drop-zone" data-answer="recover" ondrop="drop(event)" ondragover="allowDrop(event)"></span> from surgery and live long lives.
+        </div>
+    </div>
+
+    <div class="exercise-container" id="ex10">
+        <div class="exercise-header">Bài 10: Wellness & Therapy</div>
+        <div class="word-bank" ondrop="drop(event)" ondragover="allowDrop(event)" id="bank10">
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-1">therapy</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-2">meditation</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-3">holistic</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-4">alternative</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-5">mineral</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-6">awareness</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-7">computer</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-8">internet</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-9">screen</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-10">mouse</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-11">click</div>
+            <div class="word-item" draggable="true" ondragstart="drag(event)" id="w10-12">phone</div>
+        </div>
+        <div class="paragraph">
+            Many people today are interested in <span class="drop-zone" data-answer="holistic" ondrop="drop(event)" ondragover="allowDrop(event)"></span> medicine, which treats the whole person rather than just the disease. Some choose <span class="drop-zone" data-answer="alternative" ondrop="drop(event)" ondragover="allowDrop(event)"></span> treatments like herbal remedies or acupuncture instead of traditional drugs. Mental exercises like <span class="drop-zone" data-answer="meditation" ondrop="drop(event)" ondragover="allowDrop(event)"></span> can help calm the mind and reduce stress. Natural springs are also popular because the water contains a healthy <span class="drop-zone" data-answer="mineral" ondrop="drop(event)" ondragover="allowDrop(event)"></span> content good for the skin. Physical <span class="drop-zone" data-answer="therapy" ondrop="drop(event)" ondragover="allowDrop(event)"></span> helps people move better after an injury. Overall, there is a growing <span class="drop-zone" data-answer="awareness" ondrop="drop(event)" ondragover="allowDrop(event)"></span> of the importance of self-care.
+        </div>
+    </div>
+
+    <div id="submit-section">
+        <button onclick="checkAllAnswers()">NỘP BÀI (CHECK ALL)</button>
+        <div id="final-score"></div>
+    </div>
+
+    <script>
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.innerText);
+            ev.dataTransfer.setData("id", ev.target.id);
+            ev.target.classList.add('dragging');
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+            // Highlight drop zone
+            if (ev.target.classList.contains('drop-zone')) {
+                ev.target.classList.add('hovered');
+            }
+        }
+
+        // Remove highlight when leaving drop zone
+        document.addEventListener("dragleave", function(event) {
+            if (event.target.classList && event.target.classList.contains("drop-zone")) {
+                event.target.classList.remove("hovered");
+            }
+        });
+        
+        // Remove dragging class on drag end
+        document.addEventListener("dragend", function(event) {
+            event.target.classList.remove("dragging");
+        });
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedId = ev.dataTransfer.getData("id");
+            var draggedElement = document.getElementById(draggedId);
+            
+            // Tìm vùng drop hợp lệ (chính nó hoặc cha của nó nếu drop vào thẻ span con)
+            let targetZone = ev.target;
+            if (!targetZone.classList.contains('drop-zone') && !targetZone.classList.contains('word-bank')) {
+                targetZone = targetZone.closest('.drop-zone') || targetZone.closest('.word-bank');
+            }
+
+            if (!targetZone) return; // Không tìm thấy vùng drop hợp lệ
+
+            // Xử lý drop vào ô trống
+            if (targetZone.classList.contains('drop-zone')) {
+                targetZone.classList.remove('hovered');
+                
+                // Nếu ô trống đã có từ (element con), chuyển từ đó về word bank tương ứng
+                if (targetZone.children.length > 0) {
+                    let existingWord = targetZone.children[0];
+                    // Tìm word bank của bài tập hiện tại
+                    let currentBank = targetZone.closest('.exercise-container').querySelector('.word-bank');
+                    currentBank.appendChild(existingWord);
+                }
+                
+                // Chuyển từ mới vào ô trống
+                targetZone.appendChild(draggedElement);
+                
+                // Reset trạng thái đúng sai nếu người dùng sửa lại
+                targetZone.classList.remove('correct', 'incorrect');
+            } 
+            // Xử lý drop ngược lại vào word bank (nếu user muốn trả lại từ)
+            else if (targetZone.classList.contains('word-bank')) {
+                 // Chỉ cho phép trả về đúng bank của bài đó (để tránh lộn xộn)
+                 let originBankId = draggedElement.closest('.exercise-container') ? draggedElement.closest('.exercise-container').querySelector('.word-bank').id : null;
+                 if(originBankId && targetZone.id === originBankId) {
+                     targetZone.appendChild(draggedElement);
+                 } else {
+                     // Nếu drop vào bank của bài khác, trả về bank gốc của nó
+                     // (Đơn giản hóa: append vào targetZone hiện tại cũng được, nhưng logic đúng là trả về bank gốc)
+                     targetZone.appendChild(draggedElement); 
+                 }
+            }
+        }
+
+        function checkAllAnswers() {
+            let totalScore = 0;
+            let totalQuestions = 0;
+            const exercises = document.querySelectorAll('.exercise-container');
+
+            exercises.forEach(ex => {
+                const dropZones = ex.querySelectorAll('.drop-zone');
+                dropZones.forEach(zone => {
+                    totalQuestions++;
+                    // Lấy text của thẻ div con (nếu có)
+                    let userAnswer = "";
+                    if (zone.children.length > 0) {
+                        userAnswer = zone.children[0].innerText.trim();
+                    }
+                    
+                    const correctAnswer = zone.getAttribute('data-answer');
+
+                    if (userAnswer === correctAnswer) {
+                        zone.classList.add('correct');
+                        zone.classList.remove('incorrect');
+                        totalScore++;
+                    } else {
+                        zone.classList.add('incorrect');
+                        zone.classList.remove('correct');
+                    }
+                });
+            });
+
+            const scoreDiv = document.getElementById('final-score');
+            scoreDiv.style.display = 'block';
+            scoreDiv.innerText = `Kết quả của bạn: ${totalScore} / ${totalQuestions} câu đúng!`;
+            
+            if(totalScore === totalQuestions) {
+                scoreDiv.style.color = "#27ae60";
+                scoreDiv.innerText += " (Xuất sắc!)";
+            } else if (totalScore < totalQuestions / 2) {
+                scoreDiv.style.color = "#c0392b";
+                scoreDiv.innerText += " (Cố gắng hơn nhé!)";
+            } else {
+                scoreDiv.style.color = "#e67e22";
+            }
+            
+            // Scroll xuống kết quả
+            scoreDiv.scrollIntoView({behavior: "smooth"});
+        }
+    </script>
+
+</body>
+</html>

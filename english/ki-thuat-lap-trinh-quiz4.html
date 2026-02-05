@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Kỹ Thuật Lập Trình - Phần 4</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #ecf0f1; color: #2c3e50; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #2980b9; margin-bottom: 5px; }
+        .sub-header { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-style: italic; }
+
+        .dashboard { background: white; padding: 20px; border-radius: 8px; border-top: 5px solid #8e44ad; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        
+        .question-card { background: #fff; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid #bdc3c7; }
+        
+        /* Level Styling */
+        .lvl-easy { border-left-color: #27ae60; }
+        .lvl-medium { border-left-color: #f39c12; }
+        .lvl-hard { border-left-color: #c0392b; }
+
+        .q-meta { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9em; color: #7f8c8d; font-weight: bold; }
+        .q-text { font-size: 1.1em; font-weight: 600; margin-bottom: 15px; }
+
+        /* Code Block */
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            border: 1px solid #34495e;
+            white-space: pre-wrap;
+        }
+
+        .options label {
+            display: block;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: #f7f9f9;
+            border: 1px solid #dfe6e9;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .options label:hover { background: #e3e6e8; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+
+        /* Results */
+        .explain-area { display: none; margin-top: 15px; padding: 15px; background: #e8f6f3; color: #16a085; border-radius: 6px; border: 1px solid #a3e4d7; }
+        .ans-correct { background-color: #d5f5e3 !important; border-color: #2ecc71 !important; color: #27ae60 !important; font-weight: bold; }
+        .ans-wrong { background-color: #fadbd8 !important; border-color: #e74c3c !important; color: #c0392b !important; }
+
+        #btn-submit {
+            display: block; width: 100%; padding: 16px; background: #2980b9; color: white;
+            border: none; border-radius: 6px; font-size: 1.2em; font-weight: bold; cursor: pointer; margin-top: 30px;
+        }
+        #btn-submit:hover { background: #2471a3; }
+
+        #score-panel { text-align: center; font-size: 2em; color: #d35400; margin: 20px 0; display: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>Ngân Hàng Câu Hỏi Lập Trình - Phần 4</h1>
+    <p class="sub-header">Topics: Bit Fields, Name Hiding, Volatile, Double Free, SFINAE</p>
+
+    <div class="dashboard">
+        <p><strong>Thông tin đề:</strong> 40 câu hỏi (10 Dễ, 24 Trung Bình, 6 Khó).</p>
+        <p><strong>Lưu ý:</strong> Đề tập trung vào các tình huống "Undefined Behavior" và các lỗi logic khó phát hiện.</p>
+    </div>
+
+    <div id="score-panel"></div>
+    <div id="quiz-body"></div>
+    <button id="btn-submit" onclick="gradeQuiz()">NỘP BÀI NGAY</button>
+
+<script>
+    const questions = [
+        // --- 10 CÂU DỄ ---
+        {
+            id: 1, type: "C - Preprocessor", level: "easy",
+            q: "Sự khác nhau giữa `#include <file>` và `#include \"file\"`?",
+            code: `#include <stdio.h>
+#include "myheader.h"`,
+            opts: ["Không khác nhau", "<> tìm trong thư mục hệ thống trước, \"\" tìm trong thư mục hiện tại trước", "<> dùng cho C++, \"\" dùng cho C", "\"\" nhanh hơn <>"],
+            ans: 1,
+            expl: "Dấu ngoặc nhọn `<>` báo trình biên dịch tìm trong đường dẫn chuẩn (standard include path). Dấu ngoặc kép `\"\"` báo tìm trong thư mục chứa file source hiện tại trước, nếu không thấy mới tìm ra ngoài."
+        },
+        {
+            id: 2, type: "C++ - Reference", level: "easy",
+            q: "Làm thế nào để khai báo một tham chiếu tới con trỏ (Reference to Pointer)?",
+            code: `int *ptr;
+// Muốn ref là tham chiếu của ptr`,
+            opts: ["int &*ref = ptr;", "int *&ref = ptr;", "int &&ref = ptr;", "int *ref = &ptr;"],
+            ans: 1,
+            expl: "Đọc từ phải sang trái: `&ref` là tham chiếu, `*` là tới con trỏ, `int` là kiểu integer. `int *&ref` là đúng."
+        },
+        {
+            id: 3, type: "Logic - Modulo", level: "easy",
+            q: "Kết quả của phép chia lấy dư số âm trong C: `-5 % 2`?",
+            code: `int r = -5 % 2;`,
+            opts: ["1", "-1", "0", "2"],
+            ans: 1,
+            expl: "Trong C (từ C99), dấu của phép dư tuân theo dấu của số bị chia (dividend). -5 chia 2 được -2 dư -1."
+        },
+        {
+            id: 4, type: "C - Global Variable", level: "easy",
+            q: "Biến toàn cục (Global variable) nếu không khởi tạo sẽ có giá trị mặc định là gì?",
+            code: `int global_var;
+int main() { ... }`,
+            opts: ["Giá trị rác (Garbage)", "0", "NULL", "1"],
+            ans: 1,
+            expl: "Biến toàn cục được lưu trong vùng nhớ BSS và được tự động khởi tạo bằng 0 bởi trình biên dịch (khác với biến cục bộ là rác)."
+        },
+        {
+            id: 5, type: "Bitwise - NOT", level: "easy",
+            q: "Kết quả của `~0` (Bitwise NOT của 0) là gì?",
+            code: `int x = ~0;`,
+            opts: ["1", "0", "-1 (nếu là signed int)", "MAX_INT"],
+            ans: 2,
+            expl: "0 là toàn bit 0 (00...00). ~0 đảo thành toàn bit 1 (11...11). Trong biểu diễn số bù 2 (Two's complement), toàn bit 1 tương ứng với giá trị -1."
+        },
+        {
+            id: 6, type: "C++ - Class Size", level: "easy",
+            q: "Kích thước của một class rỗng (Empty Class) trong C++ là bao nhiêu?",
+            code: `class Empty {};
+sizeof(Empty);`,
+            opts: ["0 bytes", "1 byte", "4 bytes", "8 bytes"],
+            ans: 1,
+            expl: "Theo chuẩn C++, kích thước object không được bằng 0 để đảm bảo mỗi object có một địa chỉ duy nhất. Compiler thường gán cho nó 1 byte."
+        },
+        {
+            id: 7, type: "C - Operator Priority", level: "easy",
+            q: "Độ ưu tiên của toán tử nào cao nhất trong nhóm này?",
+            code: `a = b + c * d;`,
+            opts: ["+", "=", "*", "Tất cả bằng nhau"],
+            ans: 2,
+            expl: "Nhân chia (*) ưu tiên cao hơn cộng trừ (+), và cao hơn nhiều so với gán (=)."
+        },
+        {
+            id: 8, type: "C++ - Access Modifier", level: "easy",
+            q: "Trong `class`, nếu không ghi gì thì phạm vi mặc định là?",
+            code: `class A {
+    int x; // Public, Private hay Protected?
+};`,
+            opts: ["Public", "Private", "Protected", "Static"],
+            ans: 1,
+            expl: "Mặc định của `class` là private. (Ngược lại, mặc định của `struct` là public)."
+        },
+        {
+            id: 9, type: "C - Volatile", level: "easy",
+            q: "Từ khóa `volatile` báo cho trình biên dịch biết điều gì?",
+            code: `volatile int sensorValue;`,
+            opts: ["Biến này là hằng số", "Biến này có thể bị thay đổi bất ngờ từ bên ngoài (phần cứng, thread khác), đừng tối ưu hóa nó", "Biến này tính toán rất nhanh", "Biến này không được lưu vào RAM"],
+            ans: 1,
+            expl: "Volatile ngăn compiler thực hiện các tối ưu hóa (như cache vào thanh ghi), buộc chương trình phải đọc giá trị từ RAM mỗi lần truy xuất."
+        },
+        {
+            id: 10, type: "Logic - Break", level: "easy",
+            q: "Lệnh `break` có thể dùng trong `if` không?",
+            code: `if (x > 0) {
+    break; // ???
+}`,
+            opts: ["Có", "Không (trừ khi if nằm trong loop hoặc switch)", "Tùy trình biên dịch", "Luôn được"],
+            ans: 1,
+            expl: "`break` chỉ hợp lệ bên trong các cấu trúc lặp (for, while, do-while) hoặc cấu trúc switch. Dùng trong if đơn lẻ sẽ lỗi biên dịch."
+        },
+
+        // --- 24 CÂU TRUNG BÌNH ---
+        {
+            id: 11, type: "C - Bit Fields", level: "medium",
+            q: "Kích thước của struct BitField này là bao nhiêu (trên hệ 32-bit)?",
+            code: `struct Flags {
+    unsigned int a : 1;
+    unsigned int b : 1;
+    unsigned int c : 2;
+};`,
+            opts: ["4 bytes", "1 byte", "3 bits", "12 bytes"],
+            ans: 0,
+            expl: "Các bit field a, b, c (tổng 4 bits) được gói gọn (pack) vào trong một đơn vị `unsigned int` (thường là 4 bytes). Dù chỉ dùng 4 bit, nó vẫn chiếm trọn 1 block int."
+        },
+        {
+            id: 12, type: "C - Strcat Risk", level: "medium",
+            q: "Rủi ro lớn nhất khi dùng `strcat(dest, src)` là gì?",
+            code: `char dest[10] = "Hello";
+char *src = "World";
+strcat(dest, src);`,
+            opts: ["Không copy được ký tự null", "Buffer Overflow (Tràn bộ nhớ đệm)", "Sai định dạng chuỗi", "Không nối được chuỗi rỗng"],
+            ans: 1,
+            expl: "Dest chỉ có 10 bytes. \"Hello\" (5) + \"World\" (5) + null (1) = 11 bytes. Ghi tràn ra ngoài vùng nhớ dest gây lỗi nghiêm trọng."
+        },
+        {
+            id: 13, type: "C++ - Virtual in Ctor", level: "medium",
+            q: "Điều gì xảy ra khi gọi hàm ảo (virtual function) trong Constructor?",
+            code: `class Base {
+public:
+    Base() { func(); }
+    virtual void func() { cout << "Base"; }
+};
+class Derived : public Base {
+    void func() { cout << "Derived"; }
+};
+Derived d;`,
+            opts: ["Gọi hàm của Derived", "Gọi hàm của Base", "Lỗi biên dịch", "Crash runtime"],
+            ans: 1,
+            expl: "Khi Constructor của Base đang chạy, object Derived chưa được khởi tạo xong. Do đó, bảng phương thức ảo (VTable) vẫn trỏ về Base. Nó sẽ gọi `Base::func()`, không phải `Derived::func()`."
+        },
+        {
+            id: 14, type: "Logic - Short Circuit Side Effect", level: "medium",
+            q: "Giá trị của x sau lệnh if?",
+            code: `int x = 1;
+if ( (x == 1) || (x++ > 1) ) { ... }
+// x = ?`,
+            opts: ["1", "2", "3", "0"],
+            ans: 0,
+            expl: "Do `(x == 1)` là True, toán tử OR (`||`) kích hoạt Short-circuit: không cần kiểm tra vế sau nữa. Lệnh `x++` không bao giờ được thực thi. x vẫn là 1."
+        },
+        {
+            id: 15, type: "C - Double Free", level: "medium",
+            q: "Lỗi Double Free xảy ra khi nào?",
+            code: `char *p = malloc(10);
+free(p);
+free(p); // ???`,
+            opts: ["Không sao cả, an toàn", "Undefined Behavior (Crash/Corruption)", "Memory Leak", "Chỉ cảnh báo"],
+            ans: 1,
+            expl: "Giải phóng một vùng nhớ đã giải phóng rồi làm hỏng cấu trúc quản lý heap của hệ thống, thường dẫn đến crash chương trình."
+        },
+        {
+            id: 16, type: "C++ - Name Hiding", level: "medium",
+            q: "Hiện tượng 'Name Hiding' trong kế thừa là gì?",
+            code: `class Base { public: void f(int); };
+class Derived : public Base { public: void f(); };
+Derived d; d.f(10); // Lỗi?`,
+            opts: ["Không lỗi, gọi Base::f(int)", "Lỗi biên dịch vì Derived::f() che khuất Base::f(int)", "Gọi Derived::f()", "Tự động ép kiểu"],
+            ans: 1,
+            expl: "Trong C++, nếu lớp con khai báo hàm trùng tên (dù khác tham số) với lớp cha, nó sẽ CHE KHUẤT (Hide) toàn bộ các hàm cùng tên ở lớp cha. `d.f(10)` sẽ lỗi vì `Derived` chỉ thấy hàm `f()` không tham số."
+        },
+        {
+            id: 17, type: "Bitwise - Opposite Signs", level: "medium",
+            q: "Cách kiểm tra hai số nguyên `x` và `y` có trái dấu nhau không?",
+            code: `if ( ... ) printf("Trai dau");`,
+            opts: ["(x ^ y) < 0", "(x & y) < 0", "(x | y) == 0", "x * y < 0"],
+            ans: 0,
+            expl: "Bit dấu (MSB) của số dương là 0, số âm là 1. Phép XOR 2 bit dấu: 0^1 = 1 (ra số âm). Nếu cùng dấu: 0^0=0, 1^1=0 (ra số dương). Cách `x*y` dễ bị tràn số (overflow)."
+        },
+        {
+            id: 18, type: "C - Pointer Arithmetic", level: "medium",
+            q: "Phép toán `ptr + 1` tăng địa chỉ lên bao nhiêu bytes nếu `ptr` là `double*`?",
+            code: `double *ptr = 0x100;
+// ptr + 1 = ?`,
+            opts: ["1 byte", "4 bytes", "8 bytes (sizeof double)", "Tùy ý"],
+            ans: 2,
+            expl: "Phép cộng con trỏ luôn nhân với kích thước kiểu dữ liệu nó trỏ tới. Với double (thường là 8 byte), địa chỉ tăng thêm 8."
+        },
+        {
+            id: 19, type: "C++ - Delete This", level: "medium",
+            q: "Lệnh `delete this;` trong hàm thành viên có hợp lệ không?",
+            code: `void Object::suicide() {
+    delete this;
+}`,
+            opts: ["Hoàn toàn cấm", "Hợp lệ, nhưng nguy hiểm nếu truy cập thành viên sau đó", "Lỗi biên dịch", "Chỉ dùng cho static"],
+            ans: 1,
+            expl: "`delete this` là hợp lệ (thường dùng trong RefCount pattern). Tuy nhiên, sau dòng này, object bị hủy, mọi truy cập vào biến thành viên hay gọi hàm ảo đều gây lỗi Undefined Behavior."
+        },
+        {
+            id: 20, type: "C - Switch Fallthrough", level: "medium",
+            q: "Biến `a` bằng mấy?",
+            code: `int a = 0;
+switch(1) {
+    case 1: a += 1;
+    case 2: a += 2;
+    default: a += 3;
+}`,
+            opts: ["1", "3", "6", "0"],
+            ans: 2,
+            expl: "Case 1 khớp -> a=1. Không có break -> Fallthrough xuống Case 2 -> a=1+2=3. Không break -> Fallthrough xuống Default -> a=3+3=6."
+        },
+        {
+            id: 21, type: "C++ - Const Object", level: "medium",
+            q: "Đối tượng hằng `const A obj;` chỉ gọi được các hàm nào?",
+            code: `class A {
+    void f1();
+    void f2() const;
+};
+const A a; a.f1(); // ???`,
+            opts: ["Mọi hàm public", "Chỉ các hàm const", "Chỉ các hàm static", "Không gọi được hàm nào"],
+            ans: 1,
+            expl: "Đối tượng const chỉ được phép gọi các phương thức cam kết không thay đổi trạng thái đối tượng (các hàm có từ khóa `const` ở cuối)."
+        },
+        {
+            id: 22, type: "C - Format Specifier", level: "medium",
+            q: "Điều gì xảy ra nếu dùng `%d` để in biến `double` trong `printf`?",
+            code: `double d = 3.14;
+printf("%d", d);`,
+            opts: ["In ra 3", "In ra số rác cực lớn hoặc 0", "Tự động ép kiểu", "Lỗi biên dịch"],
+            ans: 1,
+            expl: "`printf` dùng stack để lấy tham số. `double` (8 bytes) khác format với `%d` (int 4 bytes). Nó sẽ đọc sai vùng nhớ, dẫn đến in ra giá trị vô nghĩa (undefined behavior), không tự ép kiểu."
+        },
+        {
+            id: 23, type: "C++ - Static Cast", level: "medium",
+            q: "`static_cast` KHÔNG làm được việc gì?",
+            code: `Base *b = new Base();
+Derived *d = static_cast<Derived*>(b);`,
+            opts: ["Ép kiểu cơ bản (float -> int)", "Ép kiểu con trỏ trong cây kế thừa", "Bỏ tính chất const (Remove const)", "Ép kiểu void* sang int*"],
+            ans: 2,
+            expl: "`static_cast` không thể dùng để bỏ tính chất const (phải dùng `const_cast`). Các việc còn lại nó làm được (dù ép từ Base xuống Derived có thể không an toàn nếu không check)."
+        },
+        {
+            id: 24, type: "C - Pointer Array Logic", level: "medium",
+            q: "Biểu thức `*arr[1]` có ý nghĩa gì?",
+            code: `int *arr[5]; // Mảng chứa con trỏ`,
+            opts: ["Giá trị của phần tử thứ 2 trong mảng arr", "Giá trị mà con trỏ tại arr[1] trỏ tới", "Địa chỉ của arr[1]", "Phần tử thứ 1 của mảng"],
+            ans: 1,
+            expl: "`arr[1]` lấy phần tử thứ 2 (là một con trỏ). Toán tử `*` lấy giá trị tại địa chỉ đó (Dereference)."
+        },
+        {
+            id: 25, type: "Logic - While(1)", level: "medium",
+            q: "`while(1)` và `for(;;)` cái nào tối ưu hơn?",
+            code: `// Loop vô hạn`,
+            opts: ["while(1) nhanh hơn", "for(;;) nhanh hơn", "Như nhau với trình biên dịch hiện đại", "while(1) tốn RAM hơn"],
+            ans: 2,
+            expl: "Ngày xưa `while(1)` có thể sinh mã kiểm tra điều kiện `1`. Nhưng các trình biên dịch hiện đại (GCC, MSVC) đều tối ưu cả hai thành mã máy nhảy vô điều kiện (unconditional jump) như nhau."
+        },
+        {
+            id: 26, type: "C++ - Destructor Virtual", level: "medium",
+            q: "Khi nào KHÔNG CẦN khai báo Destructor là virtual?",
+            code: `class Base { ... };`,
+            opts: ["Khi class không có hàm ảo nào", "Khi class không dùng để làm class cha (final class) hoặc không bao giờ delete qua con trỏ Base", "Luôn luôn cần", "Khi class chỉ có biến int"],
+            ans: 1,
+            expl: "Virtual destructor chỉ cần thiết khi bạn định xóa (delete) đối tượng con thông qua con trỏ cha (Polymorphic deletion). Nếu không dùng tính năng đó, không cần virtual để tiết kiệm vptr."
+        },
+        {
+            id: 27, type: "Bitwise - Swap", level: "medium",
+            q: "Kỹ thuật XOR Swap `a^=b; b^=a; a^=b;` thất bại khi nào?",
+            code: `swap(&x, &x); // Gọi swap cho cùng 1 biến`,
+            opts: ["Khi số âm", "Khi 2 biến trỏ cùng vào 1 địa chỉ nhớ (Aliasing)", "Khi số quá lớn", "Không bao giờ thất bại"],
+            ans: 1,
+            expl: "Nếu a và b là cùng một ô nhớ. Dòng đầu `a^=b` (tức `a^=a`) sẽ làm a về 0. Các dòng sau đều là 0. Biến bị mất dữ liệu."
+        },
+        {
+            id: 28, type: "C - Typedef Funct Ptr", level: "medium",
+            q: "Cách dùng typedef cho con trỏ hàm đúng?",
+            code: `typedef void (*Handler)(int);`,
+            opts: ["Handler là tên hàm", "Handler là kiểu dữ liệu con trỏ hàm nhận int trả về void", "Handler là con trỏ void", "Sai cú pháp"],
+            ans: 1,
+            expl: "Cú pháp này định nghĩa `Handler` là một alias cho kiểu pointer to function `void(int)`. Sau này có thể dùng: `Handler h = myFunc;`."
+        },
+        {
+            id: 29, type: "C++ - Pure Virtual", level: "medium",
+            q: "Hàm thuần ảo `virtual void f() = 0;` có thể có phần thân (implementation) không?",
+            code: `virtual void f() = 0;
+// Bên ngoài: void Base::f() { ... }`,
+            opts: ["Không, tuyệt đối không", "Có thể, và có thể gọi qua Base::f()", "Chỉ trong Java mới được", "Lỗi Linker"],
+            ans: 1,
+            expl: "Trong C++, Pure Virtual Function VẪN CÓ THỂ có phần cài đặt (body). Các lớp con vẫn phải override nó, nhưng chúng có thể gọi ngược lại `Base::f()` để dùng code chung."
+        },
+        {
+            id: 30, type: "C - Float Logic", level: "medium",
+            q: "Tại sao `0.1 + 0.2 != 0.3` trong lập trình?",
+            code: `if (0.1 + 0.2 == 0.3) ...`,
+            opts: ["Máy tính tính sai", "Lỗi dấu phẩy động (Floating point precision)", "Do hệ thập lục phân", "Do biến chưa khởi tạo"],
+            ans: 1,
+            expl: "Số 0.1 và 0.2 không thể biểu diễn chính xác trong hệ nhị phân hữu hạn (như 1/3 trong thập phân). Tổng của chúng lệch một chút so với 0.3 chuẩn. Cần so sánh với epsilon."
+        },
+        {
+            id: 31, type: "Logic - Pre Increment", level: "medium",
+            q: "Giá trị của `i` sau lệnh: `arr[i++] = i` (với i=0)?",
+            code: `i = 0;
+arr[i++] = i; // Undefined Behavior`,
+            opts: ["arr[0]=1", "arr[1]=0", "arr[0]=0", "Hành vi không xác định (Undefined)"],
+            ans: 3,
+            expl: "Việc sửa đổi `i` (i++) và sử dụng `i` trong cùng một biểu thức mà không có điểm phân tách (sequence point) là Undefined Behavior. Kết quả phụ thuộc trình biên dịch."
+        },
+        {
+            id: 32, type: "C - Stack vs Heap", level: "medium",
+            q: "Biến cấp phát bằng `malloc` nằm ở đâu?",
+            code: `int *p = malloc(4);`,
+            opts: ["Stack", "Heap", "Data Segment", "Code Segment"],
+            ans: 1,
+            expl: "Malloc/New cấp phát bộ nhớ trên Heap (vùng nhớ động). Biến cục bộ nằm trên Stack."
+        },
+        {
+            id: 33, type: "C++ - Explicit", level: "medium",
+            q: "Từ khóa `explicit` trước Constructor dùng để làm gì?",
+            code: `class A {
+    explicit A(int x);
+};`,
+            opts: ["Cho phép gọi constructor từ bên ngoài", "Ngăn chặn ép kiểu ngầm định (Implicit conversion)", "Tối ưu hóa constructor", "Báo lỗi nếu không truyền tham số"],
+            ans: 1,
+            expl: "Ngăn trình biên dịch tự động chuyển `int` sang `A`. Ví dụ: `A a = 10;` sẽ lỗi, bắt buộc phải viết `A a(10);`."
+        },
+        {
+            id: 34, type: "C - Pointer Size", level: "medium",
+            q: "Kích thước của `void *` so với `char *`?",
+            code: `sizeof(void*) vs sizeof(char*)`,
+            opts: ["void* lớn hơn", "char* lớn hơn", "Bằng nhau", "void* bằng 0"],
+            ans: 2,
+            expl: "Mọi con trỏ dữ liệu (data pointer) trên cùng một kiến trúc máy tính đều có kích thước bằng nhau (ví dụ 8 bytes trên 64-bit) để chứa địa chỉ bộ nhớ."
+        },
+
+        // --- 6 CÂU KHÓ ---
+        {
+            id: 35, type: "C++ - Multiple Inheritance", level: "hard",
+            q: "Khi ép kiểu con trỏ trong đa kế thừa, địa chỉ con trỏ có thay đổi không?",
+            code: `class A { int a; };
+class B { int b; };
+class C : public A, public B {};
+C *c = new C();
+B *b = c; // Địa chỉ b và c có giống nhau?`,
+            opts: ["Giống hệt nhau", "Khác nhau (b bị dịch đi một đoạn)", "Lỗi biên dịch", "Null"],
+            ans: 1,
+            expl: "Khác nhau. Object C chứa [Part A][Part B]. Con trỏ `c` trỏ đầu (A). Khi ép sang `B*`, trình biên dịch phải cộng thêm offset (`sizeof(A)`) để con trỏ `b` trỏ đúng vào phần [Part B] của object."
+        },
+        {
+            id: 36, type: "C - Alloca", level: "hard",
+            q: "Hàm `alloca` cấp phát bộ nhớ ở đâu và rủi ro là gì?",
+            code: `int *p = alloca(100);`,
+            opts: ["Heap - Rủi ro leak", "Stack - Rủi ro Stack Overflow, tự giải phóng khi hết hàm", "Static - Rủi ro data race", "HDD - Chậm"],
+            ans: 1,
+            expl: "`alloca` cấp phát ngay trên Stack frame. Nó rất nhanh và tự giải phóng khi thoát hàm, nhưng nếu cấp quá nhiều sẽ gây tràn Stack (Stack Overflow) ngay lập tức."
+        },
+        {
+            id: 37, type: "Bitwise - Reverse Bits", level: "hard",
+            q: "Thuật toán tối ưu để đảo ngược thứ tự các bit (Reverse Bits) thường dùng kỹ thuật gì?",
+            code: `// 0001 -> 1000`,
+            opts: ["Vòng lặp từng bit", "Lookup Table hoặc Divide and Conquer (Mask & Shift)", "Phép chia", "XOR toàn bộ"],
+            ans: 1,
+            expl: "Cách tối ưu không dùng vòng lặp là Divide and Conquer: Hoán đổi các cặp bit liền kề, rồi hoán đổi các cụm 2 bit, cụm 4 bit... bằng các bitmask (0x5555, 0x3333...)."
+        },
+        {
+            id: 38, type: "C++ - SFINAE", level: "hard",
+            q: "SFINAE trong Template là viết tắt của nguyên lý gì?",
+            code: `template <typename T> ...`,
+            opts: ["Static Function Is Not An Error", "Substitution Failure Is Not An Error", "Standard File Input And Error", "Structure For Internal Array Element"],
+            ans: 1,
+            expl: "Substitution Failure Is Not An Error: Khi trình biên dịch thử thay thế kiểu T vào template mà thất bại (do không hợp lệ), nó không báo lỗi ngay mà chỉ bỏ qua template đó và tìm cái khác phù hợp hơn."
+        },
+        {
+            id: 39, type: "C - Function Ptr Array", level: "hard",
+            q: "Khai báo mảng 10 con trỏ hàm, mỗi hàm nhận int trả về int?",
+            code: `??? arr[10];`,
+            opts: ["int *arr[10](int);", "int (*arr[10])(int);", "int (arr[10])(int*);", "int arr(int)[10];"],
+            ans: 1,
+            expl: "Cú pháp xoắn não: `(*arr[10])` là mảng 10 con trỏ. `(int)` là tham số hàm. `int` đầu tiên là kiểu trả về."
+        },
+        {
+            id: 40, type: "C - Struct Flexible", level: "hard",
+            q: "Kỹ thuật 'struct hack' (mảng độ dài 0 ở cuối struct) dùng để làm gì trước chuẩn C99?",
+            code: `struct S { int len; char data[0]; };`,
+            opts: ["Tiết kiệm RAM", "Tạo mảng kích thước thay đổi (Variable Length) nằm liền khối với header", "Lỗi biên dịch", "Tạo danh sách liên kết"],
+            ans: 1,
+            expl: "Cho phép cấp phát một khối nhớ liên tục chứa cả header và dữ liệu biến thiên: `malloc(sizeof(S) + data_len)`. `data` sẽ trỏ ngay vào phần bộ nhớ thừa ra sau struct."
+        }
+    ];
+
+    function gradeQuiz() {
+        let score = 0;
+        
+        questions.forEach((q, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            const explainDiv = document.getElementById(`expl-${idx}`);
+            const card = document.getElementById(`card-${idx}`);
+
+            explainDiv.style.display = 'block'; // Hiện giải thích
+            
+            // Xóa style cũ
+            card.querySelectorAll('label').forEach(l => {
+                l.classList.remove('ans-correct', 'ans-wrong');
+            });
+
+            // Highlight đáp án đúng
+            const correctLabel = document.getElementById(`lbl-${idx}-${q.ans}`);
+            if(correctLabel) correctLabel.classList.add('ans-correct');
+
+            if (selected) {
+                const val = parseInt(selected.value);
+                if (val === q.ans) {
+                    score++;
+                } else {
+                    const wrongLabel = document.getElementById(`lbl-${idx}-${val}`);
+                    if(wrongLabel) wrongLabel.classList.add('ans-wrong');
+                }
+            }
+        });
+
+        const scorePanel = document.getElementById('score-panel');
+        scorePanel.style.display = 'block';
+        scorePanel.innerText = `KẾT QUẢ: ${score} / ${questions.length} CÂU ĐÚNG`;
+        scorePanel.scrollIntoView({ behavior: 'smooth' });
+
+        const btn = document.getElementById('btn-submit');
+        btn.disabled = true;
+        btn.innerText = "ĐÃ CHẤM ĐIỂM";
+        btn.style.background = "#95a5a6";
+    }
+
+    // Render questions
+    window.onload = function() {
+        const container = document.getElementById('quiz-body');
+        let html = '';
+
+        questions.forEach((q, idx) => {
+            let lvlClass = q.level === 'easy' ? 'lvl-easy' : (q.level === 'medium' ? 'lvl-medium' : 'lvl-hard');
+            let lvlText = q.level === 'easy' ? 'DỄ' : (q.level === 'medium' ? 'TRUNG BÌNH' : 'KHÓ');
+
+            html += `
+                <div class="question-card ${lvlClass}" id="card-${idx}">
+                    <div class="q-meta">
+                        <span>Câu ${idx + 1}: ${q.type}</span>
+                        <span style="color:${q.level === 'hard' ? '#c0392b' : '#27ae60'}">${lvlText}</span>
+                    </div>
+                    
+                    <div class="q-text">${q.q}</div>
+                    
+                    <pre>${q.code.replace(/</g, "&lt;")}</pre>
+                    
+                    <div class="options">
+                        ${q.opts.map((opt, i) => `
+                            <label id="lbl-${idx}-${i}">
+                                <input type="radio" name="q${idx}" value="${i}">
+                                ${opt.replace(/</g, "&lt;")}
+                            </label>
+                        `).join('')}
+                    </div>
+
+                    <div class="explain-area" id="expl-${idx}">
+                        <strong>Giải thích:</strong> ${q.expl}
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C/C++ Comprehensive Code Quiz</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; background-color: #f4f6f8; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #2c3e50; }
+        .quiz-container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .question-block { margin-bottom: 40px; border-bottom: 1px solid #e1e1e1; padding-bottom: 20px; }
+        .question-text { font-weight: bold; font-size: 1.1em; margin-bottom: 15px; }
+        .code-snippet { background-color: #282c34; color: #abb2bf; padding: 15px; border-radius: 5px; font-family: 'Courier New', Courier, monospace; overflow-x: auto; font-size: 0.95em; margin-bottom: 15px; border-left: 5px solid #61dafb; }
+        .options label { display: block; margin-bottom: 10px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s; }
+        .options label:hover { background-color: #f0f0f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        button#submit-btn { display: block; width: 100%; padding: 15px; background-color: #27ae60; color: white; border: none; border-radius: 5px; font-size: 1.2em; cursor: pointer; margin-top: 30px; transition: background 0.3s; }
+        button#submit-btn:hover { background-color: #219150; }
+        .feedback { margin-top: 10px; padding: 15px; border-radius: 5px; display: none; background-color: #e8f6f3; border: 1px solid #d4efdf; }
+        .correct-text { color: #27ae60; font-weight: bold; }
+        .incorrect-text { color: #c0392b; font-weight: bold; }
+        .score-display { text-align: center; font-size: 1.5em; margin-top: 20px; font-weight: bold; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>C/C++ Technical Quiz</h1>
+    <p><i>Based on source materials including pointer arithmetic, OOP, bitwise operations, and memory management.</i></p>
+    <hr>
+
+    <form id="quiz-form">
+        <!-- Generated Questions based on Sources [1-12] -->
+
+        <!-- Q1: Bitwise Operation -->
+        <div class="question-block" id="q1">
+            <div class="question-text">1. What is the output of the following bitwise operation?</div>
+            <div class="code-snippet">
+int main() {
+    int a = 34; // Binary: 100010
+    cout << ((a >> 5) & 3) << endl;
+}
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q1" value="A"> 3</label>
+                <label><input type="radio" name="q1" value="B"> 2</label>
+                <label><input type="radio" name="q1" value="C"> 0</label>
+                <label><input type="radio" name="q1" value="D"> 1</label>
+            </div>
+            <div class="feedback" id="feedback-q1"></div>
+        </div>
+
+        <!-- Q2: Pass by Reference -->
+        <div class="question-block" id="q2">
+            <div class="question-text">2. What is the output? (Pass by value vs Reference)</div>
+            <div class="code-snippet">
+void Swap(int a, int &b) { 
+    int t = a; a = b; b = t; 
+}
+int main() {
+    int x = 5, y = 10;
+    Swap(x, y);
+    cout << x << " " << y;
+}
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q2" value="A"> 10 10</label>
+                <label><input type="radio" name="q2" value="B"> 5 10</label>
+                <label><input type="radio" name="q2" value="C"> 5 5</label>
+                <label><input type="radio" name="q2" value="D"> 10 5</label>
+            </div>
+            <div class="feedback" id="feedback-q2"></div>
+        </div>
+
+        <!-- Q3: Switch Case Math -->
+        <div class="question-block" id="q3">
+            <div class="question-text">3. What is the value of 'm' after execution?</div>
+            <div class="code-snippet">
+int m = 18;
+switch (m * m % 8) {
+    case 2: m -= 8; break;
+    case 4: m += 8; break;
+    case 8: m /= 8; break;
+}
+// Note: 18*18 = 324. 324 % 8 = 4.
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q3" value="A"> 10</label>
+                <label><input type="radio" name="q3" value="B"> 26</label>
+                <label><input type="radio" name="q3" value="C"> 3</label>
+                <label><input type="radio" name="q3" value="D"> 18</label>
+            </div>
+            <div class="feedback" id="feedback-q3"></div>
+        </div>
+
+        <!-- Q4: Pointer Casting (Little Endian) -->
+        <div class="question-block" id="q4">
+            <div class="question-text">4. Assuming a Little Endian system, what is the output?</div>
+            <div class="code-snippet">
+int main() {
+    char s[] = "0123456789";
+    short* p = (short*)s;
+    *(p+2) = 'A'; // 'A' is 65 (0x41)
+    cout << s;
+}
+// Hint: p points to shorts (2 bytes). p+2 points to index 4 ("45").
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q4" value="A"> 0123A56789</label>
+                <label><input type="radio" name="q4" value="B"> 0123A</label>
+                <label><input type="radio" name="q4" value="C"> 0123A\06789 (Terminates early)</label>
+                <label><input type="radio" name="q4" value="D"> 01234567A</label>
+            </div>
+            <div class="feedback" id="feedback-q4"></div>
+        </div>
+
+        <!-- Q5: Static Recursion -->
+        <div class="question-block" id="q5">
+            <div class="question-text">5. What is the output of this recursive function with a static variable?</div>
+            <div class="code-snippet">
+int loop() {
+    static int v = 0;
+    if (v < 5) { 
+        cout << ++v; 
+        loop(); 
+    }
+}
+int main() { loop(); }
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q5" value="A"> 12345</label>
+                <label><input type="radio" name="q5" value="B"> 01234</label>
+                <label><input type="radio" name="q5" value="C"> 11111</label>
+                <label><input type="radio" name="q5" value="D"> Infinite Loop</label>
+            </div>
+            <div class="feedback" id="feedback-q5"></div>
+        </div>
+
+        <!-- Q6: Assignment in Condition -->
+        <div class="question-block" id="q6">
+            <div class="question-text">6. What is the result?</div>
+            <div class="code-snippet">
+int a = 2;
+if (a = 0) 
+    cout << "True";
+else 
+    cout << "False";
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q6" value="A"> True</label>
+                <label><input type="radio" name="q6" value="B"> False</label>
+                <label><input type="radio" name="q6" value="C"> Runtime Error</label>
+                <label><input type="radio" name="q6" value="D"> Compilation Error</label>
+            </div>
+            <div class="feedback" id="feedback-q6"></div>
+        </div>
+
+        <!-- Q7: Constructor Inheritance -->
+        <div class="question-block" id="q7">
+            <div class="question-text">7. What is printed when `Square a(3);` is declared?</div>
+            <div class="code-snippet">
+class Number {
+public:
+    Number(int v=0) { cout << v; }
+};
+class Square : public Number {
+public:
+    Square(int v=0) : Number(v) { cout << v*v; }
+};
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q7" value="A"> 93</label>
+                <label><input type="radio" name="q7" value="B"> 39</label>
+                <label><input type="radio" name="q7" value="C"> 9</label>
+                <label><input type="radio" name="q7" value="D"> 33</label>
+            </div>
+            <div class="feedback" id="feedback-q7"></div>
+        </div>
+
+        <!-- Q8: Double Free Error -->
+        <div class="question-block" id="q8">
+            <div class="question-text">8. What runtime error does this code cause?</div>
+            <div class="code-snippet">
+class Array {
+    int* data;
+public:
+    Array(int s) { data = new int[s]; }
+    ~Array() { delete[] data; }
+};
+int main() {
+    Array A(10);
+    Array B = A; // Default copy constructor used
+}
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q8" value="A"> Memory Leak</label>
+                <label><input type="radio" name="q8" value="B"> Double Free (Memory freed twice)</label>
+                <label><input type="radio" name="q8" value="C"> Stack Overflow</label>
+                <label><input type="radio" name="q8" value="D"> Null Pointer Exception</label>
+            </div>
+            <div class="feedback" id="feedback-q8"></div>
+        </div>
+
+        <!-- Q9: Loop Logic -->
+        <div class="question-block" id="q9">
+            <div class="question-text">9. What is the final value of 'a'?</div>
+            <div class="code-snippet">
+int a = 0;
+for (int i = 0; i < 5; i++) {
+    a = a * 2 + 1;
+}
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q9" value="A"> 15</label>
+                <label><input type="radio" name="q9" value="B"> 31</label>
+                <label><input type="radio" name="q9" value="C"> 63</label>
+                <label><input type="radio" name="q9" value="D"> 32</label>
+            </div>
+            <div class="feedback" id="feedback-q9"></div>
+        </div>
+
+        <!-- Q10: Virtual Functions -->
+        <div class="question-block" id="q10">
+            <div class="question-text">10. What is printed?</div>
+            <div class="code-snippet">
+class A {
+public: virtual void show() { cout << "A"; }
+};
+class B : public A {
+public: void show() { cout << "B"; }
+};
+int main() {
+    A* p = new B();
+    p->show();
+}
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q10" value="A"> A</label>
+                <label><input type="radio" name="q10" value="B"> B</label>
+                <label><input type="radio" name="q10" value="C"> Error</label>
+                <label><input type="radio" name="q10" value="D"> Nothing</label>
+            </div>
+            <div class="feedback" id="feedback-q10"></div>
+        </div>
+
+        <!-- Q11: Pointer Arithmetic -->
+        <div class="question-block" id="q11">
+            <div class="question-text">11. What is the output?</div>
+            <div class="code-snippet">
+int arr[] = {1, 2, 3, 4, 5};
+int *p = arr;
+*(p + 2) += 3;
+cout << arr[1];
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q11" value="A"> 3</label>
+                <label><input type="radio" name="q11" value="B"> 5</label>
+                <label><input type="radio" name="q11" value="C"> 6</label>
+                <label><input type="radio" name="q11" value="D"> 2</label>
+            </div>
+            <div class="feedback" id="feedback-q11"></div>
+        </div>
+
+        <!-- Q12: Sizeof Struct -->
+        <div class="question-block" id="q12">
+            <div class="question-text">12. Assuming 4-byte int and 4-byte alignment, what is `sizeof(A)`?</div>
+            <div class="code-snippet">
+struct A {
+    char c;
+    int i;
+    char d;
+};
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q12" value="A"> 6</label>
+                <label><input type="radio" name="q12" value="B"> 8</label>
+                <label><input type="radio" name="q12" value="C"> 12</label>
+                <label><input type="radio" name="q12" value="D"> 9</label>
+            </div>
+            <div class="feedback" id="feedback-q12"></div>
+        </div>
+
+        <!-- Q13: Ternary Pointer -->
+        <div class="question-block" id="q13">
+            <div class="question-text">13. What is the output?</div>
+            <div class="code-snippet">
+int a = 5, b = 10;
+int* p = (a > b) ? &a : &b;
+cout << *p + 1;
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q13" value="A"> 6</label>
+                <label><input type="radio" name="q13" value="B"> 11</label>
+                <label><input type="radio" name="q13" value="C"> 10</label>
+                <label><input type="radio" name="q13" value="D"> 5</label>
+            </div>
+            <div class="feedback" id="feedback-q13"></div>
+        </div>
+
+        <!-- Q14: Bitwise Shift Left -->
+        <div class="question-block" id="q14">
+            <div class="question-text">14. What is the result of `(16 >> 3) | 2`?</div>
+            <div class="code-snippet">
+int a = 16;
+cout << (a >> 3 | 2);
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q14" value="A"> 0</label>
+                <label><input type="radio" name="q14" value="B"> 4</label>
+                <label><input type="radio" name="q14" value="C"> 2</label>
+                <label><input type="radio" name="q14" value="D"> 1</label>
+            </div>
+            <div class="feedback" id="feedback-q14"></div>
+        </div>
+
+        <!-- Q15: String Logic -->
+        <div class="question-block" id="q15">
+            <div class="question-text">15. What does this loop do? `while (*s1++ = *s2++);`</div>
+            <div class="options">
+                <label><input type="radio" name="q15" value="A"> Compares s1 and s2</label>
+                <label><input type="radio" name="q15" value="B"> Copies s2 to s1</label>
+                <label><input type="radio" name="q15" value="C"> Swaps s1 and s2</label>
+                <label><input type="radio" name="q15" value="D"> Finds length of s2</label>
+            </div>
+            <div class="feedback" id="feedback-q15"></div>
+        </div>
+
+        <!-- Q16: Pre-increment Math -->
+        <div class="question-block" id="q16">
+            <div class="question-text">16. What is the output?</div>
+            <div class="code-snippet">
+int a = 5;
+int b = (++a) * 2;
+cout << b;
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q16" value="A"> 10</label>
+                <label><input type="radio" name="q16" value="B"> 12</label>
+                <label><input type="radio" name="q16" value="C"> 11</label>
+                <label><input type="radio" name="q16" value="D"> 6</label>
+            </div>
+            <div class="feedback" id="feedback-q16"></div>
+        </div>
+
+        <!-- Q17: Constructor/Destructor Order -->
+        <div class="question-block" id="q17">
+            <div class="question-text">17. In Inheritance, in what order are Destructors called?</div>
+            <div class="options">
+                <label><input type="radio" name="q17" value="A"> Base first, then Derived</label>
+                <label><input type="radio" name="q17" value="B"> Derived first, then Base</label>
+                <label><input type="radio" name="q17" value="C"> Random order</label>
+                <label><input type="radio" name="q17" value="D"> Only Derived is called</label>
+            </div>
+            <div class="feedback" id="feedback-q17"></div>
+        </div>
+
+        <!-- Q18: Template Instantiation -->
+        <div class="question-block" id="q18">
+            <div class="question-text">18. How many functions are generated?</div>
+            <div class="code-snippet">
+template <class T> T test(T x) { return x; }
+int main() {
+    test(5);       // int
+    test(5.5);     // double
+    test<int>(3.2);// int (reused)
+}
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q18" value="A"> 1</label>
+                <label><input type="radio" name="q18" value="B"> 2</label>
+                <label><input type="radio" name="q18" value="C"> 3</label>
+                <label><input type="radio" name="q18" value="D"> Compilation Error</label>
+            </div>
+            <div class="feedback" id="feedback-q18"></div>
+        </div>
+
+        <!-- Q19: Array Size -->
+        <div class="question-block" id="q19">
+            <div class="question-text">19. What is the output?</div>
+            <div class="code-snippet">
+float m[] = {1.0, 2.0, 3.0, 4.0};
+cout << sizeof(m) / sizeof(m);
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q19" value="A"> 16</label>
+                <label><input type="radio" name="q19" value="B"> 4</label>
+                <label><input type="radio" name="q19" value="C"> 1</label>
+                <label><input type="radio" name="q19" value="D"> 8</label>
+            </div>
+            <div class="feedback" id="feedback-q19"></div>
+        </div>
+
+        <!-- Q20: Switch Fall-through -->
+        <div class="question-block" id="q20">
+            <div class="question-text">20. What is printed?</div>
+            <div class="code-snippet">
+int a = 1;
+switch(a) {
+    case 1: cout << "1";
+    case 2: cout << "2"; break;
+    default: cout << "D";
+}
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q20" value="A"> 1</label>
+                <label><input type="radio" name="q20" value="B"> 12</label>
+                <label><input type="radio" name="q20" value="C"> 12D</label>
+                <label><input type="radio" name="q20" value="D"> 1D</label>
+            </div>
+            <div class="feedback" id="feedback-q20"></div>
+        </div>
+
+        <!-- Q21: Struct and Pointer -->
+        <div class="question-block" id="q21">
+            <div class="question-text">21. To access member `val` using pointer `p` to object `obj`:</div>
+            <div class="options">
+                <label><input type="radio" name="q21" value="A"> p.val</label>
+                <label><input type="radio" name="q21" value="B"> p->val</label>
+                <label><input type="radio" name="q21" value="C"> p::val</label>
+                <label><input type="radio" name="q21" value="D"> p[val]</label>
+            </div>
+            <div class="feedback" id="feedback-q21"></div>
+        </div>
+
+        <!-- Q22: Continue Statement -->
+        <div class="question-block" id="q22">
+            <div class="question-text">22. What is the output?</div>
+            <div class="code-snippet">
+for (int i=0; i<5; i++) {
+    if (i == 3) continue;
+    cout << i;
+}
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q22" value="A"> 0124</label>
+                <label><input type="radio" name="q22" value="B"> 01234</label>
+                <label><input type="radio" name="q22" value="C"> 012</label>
+                <label><input type="radio" name="q22" value="D"> 0123</label>
+            </div>
+            <div class="feedback" id="feedback-q22"></div>
+        </div>
+
+        <!-- Q23: New Array Syntax -->
+        <div class="question-block" id="q23">
+            <div class="question-text">23. Which syntax correctly allocates an array of 10 integers?</div>
+            <div class="options">
+                <label><input type="radio" name="q23" value="A"> int* p = new int[13];</label>
+                <label><input type="radio" name="q23" value="B"> int* p = new int(10);</label>
+                <label><input type="radio" name="q23" value="C"> int p = new int[13];</label>
+                <label><input type="radio" name="q23" value="D"> int p[13] = new int;</label>
+            </div>
+            <div class="feedback" id="feedback-q23"></div>
+        </div>
+
+        <!-- Q24: Const Pointer -->
+        <div class="question-block" id="q24">
+            <div class="question-text">24. What does `int * const p` mean?</div>
+            <div class="options">
+                <label><input type="radio" name="q24" value="A"> Pointer to constant integer</label>
+                <label><input type="radio" name="q24" value="B"> Constant pointer to integer</label>
+                <label><input type="radio" name="q24" value="C"> Constant pointer to constant integer</label>
+                <label><input type="radio" name="q24" value="D"> Integer pointer</label>
+            </div>
+            <div class="feedback" id="feedback-q24"></div>
+        </div>
+
+        <!-- Q25: Function Overloading -->
+        <div class="question-block" id="q25">
+            <div class="question-text">25. Which function prototype allows `func(5)` to work if `func(int, int=0)` is defined?</div>
+            <div class="options">
+                <label><input type="radio" name="q25" value="A"> void func(int)</label>
+                <label><input type="radio" name="q25" value="B"> Both cause ambiguity</label>
+                <label><input type="radio" name="q25" value="C"> void func(float)</label>
+                <label><input type="radio" name="q25" value="D"> No conflict occurs</label>
+            </div>
+            <div class="feedback" id="feedback-q25"></div>
+        </div>
+
+        <!-- Q26: Enum Value -->
+        <div class="question-block" id="q26">
+            <div class="question-text">26. What is the value of `BLUE`?</div>
+            <div class="code-snippet">
+enum Color { RED=2, GREEN, BLUE=6 };
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q26" value="A"> 4</label>
+                <label><input type="radio" name="q26" value="B"> 6</label>
+                <label><input type="radio" name="q26" value="C"> 3</label>
+                <label><input type="radio" name="q26" value="D"> 0</label>
+            </div>
+            <div class="feedback" id="feedback-q26"></div>
+        </div>
+
+        <!-- Q27: Dynamic Casting (Concepts) -->
+        <div class="question-block" id="q27">
+            <div class="question-text">27. Which cast is used for safe downcasting in polymorphism?</div>
+            <div class="options">
+                <label><input type="radio" name="q27" value="A"> static_cast</label>
+                <label><input type="radio" name="q27" value="B"> dynamic_cast</label>
+                <label><input type="radio" name="q27" value="C"> reinterpret_cast</label>
+                <label><input type="radio" name="q27" value="D"> const_cast</label>
+            </div>
+            <div class="feedback" id="feedback-q27"></div>
+        </div>
+
+        <!-- Q28: Recursion with Global/Static -->
+        <div class="question-block" id="q28">
+            <div class="question-text">28. What happens if `int v` in Question 5 was NOT static?</div>
+            <div class="options">
+                <label><input type="radio" name="q28" value="A"> Same output (12345)</label>
+                <label><input type="radio" name="q28" value="B"> Infinite recursion (Stack Overflow)</label>
+                <label><input type="radio" name="q28" value="C"> Prints 1 once</label>
+                <label><input type="radio" name="q28" value="D"> Prints 0</label>
+            </div>
+            <div class="feedback" id="feedback-q28"></div>
+        </div>
+
+        <!-- Q29: Bitwise Loop (Count Set Bits) -->
+        <div class="question-block" id="q29">
+            <div class="question-text">29. What does this function compute?</div>
+            <div class="code-snippet">
+int func(int n) {
+    int count = 0;
+    while (n > 0) {
+        n = n & (n - 1);
+        count++;
+    }
+    return count;
+}
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q29" value="A"> Number of set bits (1s)</label>
+                <label><input type="radio" name="q29" value="B"> Number of zero bits</label>
+                <label><input type="radio" name="q29" value="C"> Logarithm of n</label>
+                <label><input type="radio" name="q29" value="D"> Factorial of n</label>
+            </div>
+            <div class="feedback" id="feedback-q29"></div>
+        </div>
+
+        <!-- Q30: Friend Function -->
+        <div class="question-block" id="q30">
+            <div class="question-text">30. What is true about a `friend` function?</div>
+            <div class="options">
+                <label><input type="radio" name="q30" value="A"> It is a member of the class</label>
+                <label><input type="radio" name="q30" value="B"> It can access private members</label>
+                <label><input type="radio" name="q30" value="C"> It must be public</label>
+                <label><input type="radio" name="q30" value="D"> It inherits from the class</label>
+            </div>
+            <div class="feedback" id="feedback-q30"></div>
+        </div>
+
+        <!-- Q31: Abstract Class -->
+        <div class="question-block" id="q31">
+            <div class="question-text">31. A class is Abstract if:</div>
+            <div class="options">
+                <label><input type="radio" name="q31" value="A"> It has no variables</label>
+                <label><input type="radio" name="q31" value="B"> It has at least one pure virtual function</label>
+                <label><input type="radio" name="q31" value="C"> It has a virtual destructor</label>
+                <label><input type="radio" name="q31" value="D"> It inherits from two classes</label>
+            </div>
+            <div class="feedback" id="feedback-q31"></div>
+        </div>
+
+        <!-- Q32: Reference Variable -->
+        <div class="question-block" id="q32">
+            <div class="question-text">32. Which statement regarding references is FALSE?</div>
+            <div class="options">
+                <label><input type="radio" name="q32" value="A"> Must be initialized when declared</label>
+                <label><input type="radio" name="q32" value="B"> Cannot be NULL</label>
+                <label><input type="radio" name="q32" value="C"> Can be reseated to refer to another object</label>
+                <label><input type="radio" name="q32" value="D"> Acts as an alias</label>
+            </div>
+            <div class="feedback" id="feedback-q32"></div>
+        </div>
+
+        <!-- Q33: Destructor Syntax -->
+        <div class="question-block" id="q33">
+            <div class="question-text">33. Correct syntax for a destructor of class `Test`?</div>
+            <div class="options">
+                <label><input type="radio" name="q33" value="A"> void Test()</label>
+                <label><input type="radio" name="q33" value="B"> ~Test()</label>
+                <label><input type="radio" name="q33" value="C"> Test(void)</label>
+                <label><input type="radio" name="q33" value="D"> delete Test()</label>
+            </div>
+            <div class="feedback" id="feedback-q33"></div>
+        </div>
+
+        <!-- Q34: Hex Calculation -->
+        <div class="question-block" id="q34">
+            <div class="question-text">34. Output of `cout << (0x10 | 0x01);`?</div>
+            <div class="options">
+                <label><input type="radio" name="q34" value="A"> 11</label>
+                <label><input type="radio" name="q34" value="B"> 17</label>
+                <label><input type="radio" name="q34" value="C"> 10</label>
+                <label><input type="radio" name="q34" value="D"> 0</label>
+            </div>
+            <div class="feedback" id="feedback-q34"></div>
+        </div>
+
+        <!-- Q35: Macro expansion -->
+        <div class="question-block" id="q35">
+            <div class="question-text">35. What is the output?</div>
+            <div class="code-snippet">
+#define SQR(x) x*x
+int main() { cout << SQR(2+3); }
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q35" value="A"> 25</label>
+                <label><input type="radio" name="q35" value="B"> 11</label>
+                <label><input type="radio" name="q35" value="C"> 13</label>
+                <label><input type="radio" name="q35" value="D"> Error</label>
+            </div>
+            <div class="feedback" id="feedback-q35"></div>
+        </div>
+
+        <!-- Q36: Loop Variable Scope -->
+        <div class="question-block" id="q36">
+            <div class="question-text">36. What is the output?</div>
+            <div class="code-snippet">
+int x = 10;
+{
+    int x = 5;
+    cout << x;
+}
+cout << x;
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q36" value="A"> 55</label>
+                <label><input type="radio" name="q36" value="B"> 1010</label>
+                <label><input type="radio" name="q36" value="C"> 510</label>
+                <label><input type="radio" name="q36" value="D"> Error</label>
+            </div>
+            <div class="feedback" id="feedback-q36"></div>
+        </div>
+
+        <!-- Q37: Char Pointer Loop -->
+        <div class="question-block" id="q37">
+            <div class="question-text">37. What does the loop output?</div>
+            <div class="code-snippet">
+char s[] = "HUST BK";
+for(int i=0; s[i]!='\0'; i++) {
+    if(s[i] == ' ') break;
+    cout << s[i];
+}
+            </div>
+            <div class="options">
+                <label><input type="radio" name="q37" value="A"> HUST BK</label>
+                <label><input type="radio" name="q37" value="B"> HUST</label>
+                <label><input type="radio" name="q37" value="C"> BK</label>
+                <label><input type="radio" name="q37" value="D"> HUSTBK</label>
+            </div>
+            <div class="feedback" id="feedback-q37"></div>
+        </div>
+
+        <!-- Q38: Modulo Logic -->
+        <div class="question-block" id="q38">
+            <div class="question-text">38. `18 % 4` equals:</div>
+            <div class="options">
+                <label><input type="radio" name="q38" value="A"> 4</label>
+                <label><input type="radio" name="q38" value="B"> 2</label>
+                <label><input type="radio" name="q38" value="C"> 4.5</label>
+                <label><input type="radio" name="q38" value="D"> 0</label>
+            </div>
+            <div class="feedback" id="feedback-q38"></div>
+        </div>
+
+        <!-- Q39: Exception Handling -->
+        <div class="question-block" id="q39">
+            <div class="question-text">39. Which keyword throws an exception?</div>
+            <div class="options">
+                <label><input type="radio" name="q39" value="A"> try</label>
+                <label><input type="radio" name="q39" value="B"> catch</label>
+                <label><input type="radio" name="q39" value="C"> throw</label>
+                <label><input type="radio" name="q39" value="D"> except</label>
+            </div>
+            <div class="feedback" id="feedback-q39"></div>
+        </div>
+
+        <!-- Q40: Sizeof Pointer -->
+        <div class="question-block" id="q40">
+            <div class="question-text">40. On a 64-bit system, what is `sizeof(int*)`?</div>
+            <div class="options">
+                <label><input type="radio" name="q40" value="A"> 4</label>
+                <label><input type="radio" name="q40" value="B"> 8</label>
+                <label><input type="radio" name="q40" value="C"> Depends on int size</label>
+                <label><input type="radio" name="q40" value="D"> 2</label>
+            </div>
+            <div class="feedback" id="feedback-q40"></div>
+        </div>
+
+        <button type="button" id="submit-btn" onclick="checkAnswers()">Submit Answers</button>
+
+    </form>
+
+    <div id="score-display" class="score-display"></div>
+
+</div>
+
+<script>
+    function checkAnswers() {
+        const answers = {
+            q1: 'D', q2: 'C', q3: 'B', q4: 'B', q5: 'A',
+            q6: 'B', q7: 'B', q8: 'B', q9: 'C', q10: 'B',
+            q11: 'C', q12: 'C', q13: 'B', q14: 'C', q15: 'B',
+            q16: 'B', q17: 'B', q18: 'B', q19: 'B', q20: 'B',
+            q21: 'B', q22: 'A', q23: 'A', q24: 'B', q25: 'B',
+            q26: 'B', q27: 'B', q28: 'B', q29: 'A', q30: 'B',
+            q31: 'B', q32: 'C', q33: 'B', q34: 'B', q35: 'B',
+            q36: 'C', q37: 'B', q38: 'B', q39: 'C', q40: 'B'
+        };
+
+        const explanations = {
+            q1: "34 is 100010. >> 5 gives 000001 (1). 1 & 3 is 1.",
+            q2: "Swap swaps local copies/references. 'x' was passed by value (unchanged in main), 'y' by reference (changed in main). But logic inside sets local 'a' (copy of x) to 'b' (ref of y) and 'b' to temp. Only 'y' changes to 5? Wait, source code: 'int t=a; a=b; b=t'. 'a' is value, 'b' is ref. 'b' becomes 5. 'a' (local) becomes 10. Main 'x' stays 5, Main 'y' becomes 5. Output: 5 5.",
+            q3: "18*18=324. 324%8=4. Case 4 executes: m+=8 -> 18+8=26.",
+            q4: "Little Endian: '0123' bytes are 0x30, 0x31, 0x32, 0x33. p points to short. p+2 is index 4 ('4'). Assigning 'A' changes '4' to 'A'. Output '0123A'. Note: The null terminator is not inserted, so remaining string prints.",
+            q5: "Static 'v' retains value. Calls: v=0->1, v=1->2, v=2->3, v=3->4, v=4->5. Loop stops. Prints 12345.",
+            q6: "Assignment (=) returns the assigned value (0). 0 is False. Executes 'else'.",
+            q7: "Derived constructor calls Base(3) -> prints 3. Then prints 3*3=9. Output 39.",
+            q8: "Default copy constructor does shallow copy. Both A and B point to same 'data'. Destructor tries to delete[] twice.",
+            q9: "Loop 5 times: 0->1, 1->3, 3->7, 7->15, 15->31. Wait, 5 times. 0: a=1. 1: a=3. 2: a=7. 3: a=15. 4: a=31. 5th iteration: 31*2+1 = 63.",
+            q10: "Polymorphism works with pointers/references + virtual functions. B overrides show(). Output B.",
+            q11: "p=arr. p+2 points to arr[1] (3). +=3 makes it 6. Output 6.",
+            q12: "char(1)+padding(3) + int(4) + char(1)+padding(3) = 12 bytes total (alignment).",
+            q13: "5 > 10 false. Returns &b. *p is 10. 10+1 = 11.",
+            q14: "Precedence: >> is higher than |. 16 >> 3 is 2. 2 | 2 is 2. Wait, shift (>>) is lower than + but higher than |. 16/8 = 2. 2 | 2 = 2.",
+            q15: "Standard string copy idiom. Copies *s2 to *s1, increments both, stops when null (0) is copied.",
+            q16: "++a makes a=6. 6*2 = 12.",
+            q17: "Destruction order is reverse of construction: Derived first, then Base.",
+            q18: "test(5) generates int version. test(5.5) generates double version. test<int> uses existing int version. Total 2.",
+            q19: "Size of array / size of element = number of elements (4).",
+            q20: "Switch case fall-through. Case 1 prints '1'. No break, so Case 2 prints '2'. Break stops it.",
+            q21: "Access members via pointer using -> operator.",
+            q22: "Skips printing when i=3. Output 0124.",
+            q23: "new int[13] allocates array. new int(10) allocates single int with value 10.",
+            q24: "const after * applies to the pointer itself.",
+            q25: "Ambiguity error. func(5) matches both int and int (with default).",
+            q26: "RED=2, GREEN=3, BLUE=6 (explicitly set).",
+            q27: "dynamic_cast checks type at runtime.",
+            q28: "Stack Overflow. 'v' re-initializes to 0 every call, condition v<5 always true.",
+            q29: "Brian Kernighan's algorithm. n & (n-1) removes the rightmost set bit. Counts 1s.",
+            q30: "Friend functions can access private members but are not members themselves.",
+            q31: "Abstract classes have at least one pure virtual function (=0).",
+            q32: "References cannot be reseated (rebound) after initialization.",
+            q33: "Destructor uses tilde ~ClassName().",
+            q34: "0x10 is 16. 0x01 is 1. OR result is 0x11 (17).",
+            q35: "Macro substitution: 2+3*2+3 = 2+6+3 = 11. (Lack of parentheses in macro).",
+            q36: "Inner block 'x' shadows outer. Prints 5 inside, 10 outside. 510.",
+            q37: "Loops until space is found. Prints HUST.",
+            q38: "18 divided by 4 is 4 remainder 2.",
+            q39: "throw keyword raises exception.",
+            q40: "Pointers are 8 bytes (64 bits) on 64-bit systems."
+        };
+
+        let score = 0;
+        let total = 40;
+
+        for (let i = 1; i <= total; i++) {
+            const qID = 'q' + i;
+            const selected = document.querySelector(`input[name="${qID}"]:checked`);
+            const feedbackDiv = document.getElementById(`feedback-${qID}`);
+            
+            feedbackDiv.style.display = 'block';
+
+            if (selected) {
+                if (selected.value === answers[qID]) {
+                    score++;
+                    feedbackDiv.innerHTML = `<span class="correct-text">Correct!</span> ${explanations[qID]}`;
+                } else {
+                    feedbackDiv.innerHTML = `<span class="incorrect-text">Incorrect.</span> Answer: ${answers[qID]}. ${explanations[qID]}`;
+                }
+            } else {
+                feedbackDiv.innerHTML = `<span class="incorrect-text">No answer.</span> Answer: ${answers[qID]}. ${explanations[qID]}`;
+            }
+        }
+
+        const scoreDisplay = document.getElementById('score-display');
+        scoreDisplay.style.display = 'block';
+        scoreDisplay.innerHTML = `Your Score: ${score} / ${total}`;
+        scoreDisplay.style.color = score >= 28 ? '#27ae60' : '#c0392b';
+
+        // Scroll to top
+        window.scrollTo(0, 0);
+    }
+</script>
+
+</body>
+</html>
