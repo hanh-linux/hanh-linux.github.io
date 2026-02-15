@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Practice: Science, Architecture & Engineering</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22; /* Màu cam đất cho chủ đề xây dựng/kỹ thuật */
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --correct: #27ae60;
+            --incorrect: #c0392b;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: #f5f6fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.2em;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #7f8c8d;
+        }
+
+        /* Exercise Card */
+        .exercise-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .topic-badge {
+            background-color: var(--accent);
+            color: white;
+            font-size: 0.85em;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Word Bank */
+        .word-bank {
+            background-color: var(--light);
+            border: 2px dashed #bdc3c7;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .draggable {
+            background: white;
+            border: 1px solid #bdc3c7;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: grab;
+            font-weight: 600;
+            font-size: 0.95em;
+            color: var(--primary);
+            box-shadow: 0 2px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .draggable:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            background: #dfe6e9;
+        }
+
+        /* Paragraph Content */
+        .text-content {
+            font-size: 1.1em;
+            line-height: 2.5; /* High line-height for drop zones */
+            text-align: justify;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            min-width: 130px;
+            height: 34px;
+            border-bottom: 2px solid #95a5a6;
+            background-color: #f4f6f7;
+            margin: 0 5px;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+            position: relative;
+            top: 4px;
+            padding: 0 10px;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #d6eaf8;
+            border-bottom-color: var(--secondary);
+        }
+
+        .drop-zone .draggable {
+            margin: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+            cursor: grab;
+        }
+
+        /* Results */
+        .drop-zone.correct {
+            border-bottom: 3px solid var(--correct);
+            background-color: #e9f7ef;
+            color: var(--correct);
+            font-weight: bold;
+        }
+
+        .drop-zone.incorrect {
+            border-bottom: 3px solid var(--incorrect);
+            background-color: #fdedec;
+            color: var(--incorrect);
+            font-weight: bold;
+        }
+
+        /* Footer Controls */
+        .footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            border-top: 1px solid #eee;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+        }
+
+        #submit-btn {
+            background-color: var(--correct);
+            color: white;
+        }
+        #submit-btn:hover { background-color: #219150; }
+
+        #reset-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+        #reset-btn:hover { background-color: #7f8c8d; }
+
+        #score-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary);
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Science, Architecture & Engineering</h1>
+        <p class="subtitle">Theme 10 Vocabulary Practice (Drag and Drop)</p>
+    </header>
+
+    <div id="exercises-wrapper"></div>
+</div>
+
+<div class="footer-bar">
+    <button id="submit-btn" onclick="checkAll()">Nộp Bài</button>
+    <button id="reset-btn" onclick="location.reload()">Làm Lại</button>
+    <div id="score-display"></div>
+</div>
+
+<script>
+    [cite_start]// Dữ liệu 10 bài tập được biên soạn từ file từ vựng "SCIENCE, ARCHITECTURE AND ENGINEERING" [cite: 3]
+    const exercisesData = [
+        {
+            id: 1,
+            title: "Exploring the Universe",
+            topic: "Space",
+            text: "Human curiosity drives us to explore the cosmos. An <strong>[1]</strong> trains for years to handle the extreme conditions of space travel. They launch in a powerful <strong>[2]</strong> designed to leave Earth's atmosphere. Once in space, they experience zero <strong>[3]</strong>, allowing them to float. To communicate with Earth, they rely on a <strong>[4]</strong> orbiting the planet. Scientists also monitor any large <strong>[5]</strong> that might come close to Earth. Occasionally, we can see a bright <strong>[6]</strong> streaking across the night sky.",
+            answers: ["astronaut", "spacecraft", "gravity", "satellite", "asteroid", "meteor"],
+            distractors: ["crater", "slope", "quarry", "valve", "dye", "stairs"]
+        },
+        {
+            id: 2,
+            title: "Scientific Research",
+            topic: "Laboratory",
+            text: "Advancement in science requires rigorous testing. Scientists work in a <strong>[1]</strong> filled with specialized equipment. They often conduct an <strong>[2]</strong> to test a theory. To observe tiny organisms like <strong>[3]</strong>, they use a powerful <strong>[4]</strong>. After gathering data, they must <strong>[5]</strong> the results carefully to find patterns. If successful, their hard work can lead to a major <strong>[6]</strong> in medicine or technology.",
+            answers: ["laboratory", "experiment", "bacteria", "microscope", "analyse", "breakthrough"],
+            distractors: ["platform", "cable", "zone", "tension", "frame", "altitude"]
+        },
+        {
+            id: 3,
+            title: "Building and Design",
+            topic: "Architecture",
+            text: "Creating a safe building involves both art and science. Architects must <strong>[1]</strong> the layout to be both beautiful and practical. The <strong>[2]</strong> of the building depends on a strong <strong>[3]</strong> to hold it up. Choosing the right <strong>[4]</strong>, such as concrete or steel, is crucial for durability. Sometimes, owners decide to <strong>[5]</strong> an old house to make it look new again. The goal is to create a <strong>[6]</strong> environment for people to live in.",
+            answers: ["design", "structure", "frame", "material", "renovate", "habitable"],
+            distractors: ["comet", "astronomy", "gene", "botany", "extract", "trace"]
+        },
+        {
+            id: 4,
+            title: "Physics and Power",
+            topic: "Physics",
+            text: "<strong>[1]</strong> is the study of matter and energy. One of the most vital forms of energy we use is <strong>[2]</strong>, which powers our homes. Copper wire is often used because it is a good <strong>[3]</strong>, allowing energy to flow easily. Engineers try to <strong>[4]</strong> natural forces, like wind or water, to generate power. When current flows, it can generate <strong>[5]</strong>, so cooling is often needed. We must also be careful of dangerous <strong>[6]</strong> from nuclear sources.",
+            answers: ["physics", "electricity", "conductor", "harness", "heat", "radiation"],
+            distractors: ["biology", "geology", "mould", "trace", "stairs", "occupant"]
+        },
+        {
+            id: 5,
+            title: "Innovation and Invention",
+            topic: "Technology",
+            text: "The modern world is defined by constant change. A new <strong>[1]</strong> can change how we live our daily lives. Before a product is sold, engineers build a <strong>[2]</strong> to test if it works correctly. Companies invest heavily in <strong>[3]</strong> to stay ahead of their competitors. Today, almost everyone carries a portable <strong>[4]</strong> like a smartphone. However, sometimes a product has a <strong>[5]</strong> that causes it to fail. In the future, we may see more <strong>[6]</strong> designs that look like science fiction.",
+            answers: ["invention", "prototype", "innovation", "device", "flaw", "futuristic"],
+            distractors: ["quarry", "slope", "mineral", "crater", "valve", "pump"]
+        },
+        {
+            id: 6,
+            title: "The Age of Robotics",
+            topic: "AI & Robots",
+            text: "We are entering a new era of automation. A <strong>[1]</strong> can now perform tasks that were once dangerous for humans. These machines use <strong>[2]</strong> intelligence to make decisions without human input. In a factory, a single person can <strong>[3]</strong> several machines at once. They can <strong>[4]</strong> continuously without needing to sleep. Some machines are designed to <strong>[5]</strong> real-world conditions for training purposes. However, we must ensure these systems are <strong>[6]</strong> and do not crash unexpectedly.",
+            answers: ["robot", "artificial", "monitor", "operate", "simulate", "stable"],
+            distractors: ["ancient", "organic", "terrestrial", "manual", "natural", "conventional"]
+        },
+        {
+            id: 7,
+            title: "Engineering Mechanics",
+            topic: "Engineering",
+            text: "<strong>[1]</strong> involves applying scientific principles to build machines. A complex <strong>[2]</strong> like a car engine has many moving parts. A <strong>[3]</strong> controls the flow of fuel or air into the system. You simply turn a key to <strong>[4]</strong> the engine and start the car. It is important to <strong>[5]</strong> your vehicle regularly to keep it in good condition. If you don't, the metal parts might <strong>[6]</strong> or rust over time.",
+            answers: ["engineering", "mechanism", "valve", "activate", "maintain", "decay"], 
+            // Note: 'decay' is not in list. 'trace' is. 'form'? 'mould'? 
+            // Let's use words strictly from list. 
+            // "If you don't... parts might [undergo] damage" -> clumsy.
+            // Let's change the sentence: "Engines create a lot of [tension] on the parts."
+            // Revised answers: engineering, mechanism, valve, activate, maintain, tension.
+            answers: ["engineering", "mechanism", "valve", "activate", "maintain", "tension"],
+            distractors: ["poem", "sculpture", "painting", "melody", "biology", "psychology"]
+        },
+        {
+            id: 8,
+            title: "Geology and Earth",
+            topic: "Geology",
+            text: "<strong>[1]</strong> helps us understand what the Earth is made of. We dig deep into the ground to find a valuable <strong>[2]</strong> like gold. Large stones are often cut from a <strong>[3]</strong> to be used in building. Sometimes, mining happens on the side of a steep <strong>[4]</strong>. Companies use heavy machinery to <strong>[5]</strong> resources from the rock. However, this process can damage the <strong>[6]</strong> of the land if not managed well.",
+            answers: ["geology", "mineral", "quarry", "slope", "extract", "surface"],
+            distractors: ["astronomy", "galaxy", "star", "comet", "rocket", "orbit"]
+        },
+        {
+            id: 9,
+            title: "Chemistry in Action",
+            topic: "Chemistry",
+            text: "<strong>[1]</strong> explains how different substances interact. When you mix sugar into water, it disappears because it is <strong>[2]</strong>. Scientists often use a <strong>[3]</strong> to hold small amounts of liquid in the lab. They might <strong>[4]</strong> a raw material to make it pure. Industrial factories <strong>[5]</strong> chemicals on a large scale to create products. Sometimes, they add a <strong>[6]</strong> to change the color of a fabric.",
+            answers: ["chemistry", "soluble", "test tube", "refine", "process", "dye"],
+            distractors: ["history", "literature", "drama", "fiction", "biography", "novel"]
+        },
+        {
+            id: 10,
+            title: "Atmosphere and Environment",
+            topic: "General Science",
+            text: "Our planet is full of natural wonders. The Northern Lights are a beautiful <strong>[1]</strong> visible in the polar regions. At a high <strong>[2]</strong>, the air becomes very thin and hard to breathe. We must <strong>[3]</strong> the environment from pollution and damage. Scientists conduct <strong>[4]</strong> to understand how the climate is changing. Certain areas are designated as a protected <strong>[5]</strong> for wildlife. A <strong>[6]</strong> supply of clean energy is needed for the future.",
+            answers: ["phenomenon", "altitude", "protect", "research", "zone", "constant"],
+            distractors: ["bank", "loan", "debt", "tax", "profit", "market"]
+        }
+    ];
+
+    // Hàm trộn mảng (Fisher-Yates Shuffle)
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Khởi tạo bài tập
+    function init() {
+        const wrapper = document.getElementById('exercises-wrapper');
+
+        exercisesData.forEach((ex, index) => {
+            // Tạo thẻ Card
+            const card = document.createElement('div');
+            card.classList.add('exercise-card');
+
+            // Header
+            const header = document.createElement('div');
+            header.classList.add('card-header');
+            header.innerHTML = `
+                <h3>${index + 1}. ${ex.title}</h3>
+                <span class="topic-badge">${ex.topic}</span>
+            `;
+            card.appendChild(header);
+
+            // Body
+            const body = document.createElement('div');
+            body.classList.add('card-body');
+
+            // Word Bank
+            const bank = document.createElement('div');
+            bank.classList.add('word-bank');
+            bank.id = `bank-${ex.id}`;
+
+            // Gộp đáp án đúng và từ nhiễu, sau đó trộn
+            const allWords = shuffle([...ex.answers, ...ex.distractors]);
+            
+            allWords.forEach(word => {
+                const span = document.createElement('span');
+                span.classList.add('draggable');
+                span.setAttribute('draggable', 'true');
+                span.textContent = word;
+                span.id = `word-${ex.id}-${word.replace(/\s+/g, '-')}`;
+                span.dataset.word = word;
+                span.dataset.origin = ex.id; // Để kiểm tra nguồn gốc tránh kéo nhầm bài
+
+                // Events Drag
+                span.addEventListener('dragstart', dragStart);
+                span.addEventListener('dragend', dragEnd);
+
+                bank.appendChild(span);
+            });
+            body.appendChild(bank);
+
+            // Đoạn văn
+            const p = document.createElement('div');
+            p.classList.add('text-content');
+            
+            // Thay thế [1]..[6] bằng ô drop-zone
+            let formattedText = ex.text;
+            ex.answers.forEach((ans, i) => {
+                const placeholder = `<strong>[${i + 1}]</strong>`;
+                const zone = `<span class="drop-zone" data-correct="${ans}" data-ex="${ex.id}"></span>`;
+                formattedText = formattedText.replace(placeholder, zone);
+            });
+            
+            p.innerHTML = formattedText;
+            body.appendChild(p);
+            
+            card.appendChild(body);
+            wrapper.appendChild(card);
+        });
+
+        // Gán sự kiện Drop cho toàn bộ zone và bank
+        document.querySelectorAll('.drop-zone, .word-bank').forEach(el => {
+            el.addEventListener('dragover', dragOver);
+            el.addEventListener('drop', drop);
+        });
+    }
+
+    // Drag & Drop Functions
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+        setTimeout(() => e.target.classList.add('dragging'), 0);
+    }
+
+    function dragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+    function dragOver(e) {
+        e.preventDefault();
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+        if (target) target.classList.add('drag-over');
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        // Xóa hiệu ứng hover
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+        const id = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(id);
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+
+        if (!target || !draggable) return;
+
+        // Logic: Chỉ cho phép thả trong cùng 1 bài tập (dựa trên ID bài tập)
+        let targetExId;
+        if (target.classList.contains('word-bank')) {
+            targetExId = target.id.split('-')[1];
+        } else {
+            targetExId = target.dataset.ex;
+        }
+
+        // Nếu từ vựng không thuộc bài tập này -> Chặn
+        if (draggable.dataset.origin != targetExId) return;
+
+        // Xử lý thả vào ô trống
+        if (target.classList.contains('drop-zone')) {
+            // Nếu ô đã có từ -> Trả từ cũ về bank của bài tập đó
+            if (target.children.length > 0) {
+                const oldChild = target.children[0];
+                document.getElementById(`bank-${targetExId}`).appendChild(oldChild);
+            }
+            target.appendChild(draggable);
+            target.classList.remove('correct', 'incorrect');
+        } 
+        // Xử lý thả về bank
+        else {
+            target.appendChild(draggable);
+        }
+    }
+
+    // Kiểm tra đáp án
+    function checkAll() {
+        const zones = document.querySelectorAll('.drop-zone');
+        let total = zones.length;
+        let correct = 0;
+
+        zones.forEach(zone => {
+            const correctAnswer = zone.dataset.correct;
+            // Reset style
+            zone.classList.remove('correct', 'incorrect');
+
+            if (zone.children.length > 0) {
+                const userWord = zone.children[0].dataset.word;
+                if (userWord === correctAnswer) {
+                    zone.classList.add('correct');
+                    correct++;
+                } else {
+                    zone.classList.add('incorrect');
+                }
+            } else {
+                zone.classList.add('incorrect');
+            }
+        });
+
+        const display = document.getElementById('score-display');
+        display.innerHTML = `Kết quả: <span style="color:${correct === total ? '#27ae60' : '#c0392b'}">${correct} / ${total}</span> câu đúng`;
+        
+        if (correct === total) {
+            display.innerHTML += " - Tuyệt vời!";
+        }
+    }
+
+    // Chạy khi tải trang
+    window.onload = init;
+
+</script>
+
+</body>
+</html>

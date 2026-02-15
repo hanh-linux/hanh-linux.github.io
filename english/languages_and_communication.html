@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Practice: Languages & Communication</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #8e44ad; /* Màu tím cho chủ đề ngôn ngữ/giao tiếp */
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --correct: #27ae60;
+            --incorrect: #c0392b;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.2em;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #7f8c8d;
+        }
+
+        /* Exercise Card */
+        .exercise-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .topic-badge {
+            background-color: var(--accent);
+            color: white;
+            font-size: 0.85em;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Word Bank */
+        .word-bank {
+            background-color: var(--light);
+            border: 2px dashed #bdc3c7;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .draggable {
+            background: white;
+            border: 1px solid #bdc3c7;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: grab;
+            font-weight: 600;
+            font-size: 0.95em;
+            color: var(--primary);
+            box-shadow: 0 2px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .draggable:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            background: #dfe6e9;
+        }
+
+        /* Paragraph Content */
+        .text-content {
+            font-size: 1.1em;
+            line-height: 2.5; /* High line-height for drop zones */
+            text-align: justify;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            min-width: 140px;
+            height: 34px;
+            border-bottom: 2px solid #95a5a6;
+            background-color: #f4f6f7;
+            margin: 0 5px;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+            position: relative;
+            top: 4px;
+            padding: 0 10px;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #d6eaf8;
+            border-bottom-color: var(--secondary);
+        }
+
+        .drop-zone .draggable {
+            margin: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+            cursor: grab;
+        }
+
+        /* Results */
+        .drop-zone.correct {
+            border-bottom: 3px solid var(--correct);
+            background-color: #e9f7ef;
+            color: var(--correct);
+            font-weight: bold;
+        }
+
+        .drop-zone.incorrect {
+            border-bottom: 3px solid var(--incorrect);
+            background-color: #fdedec;
+            color: var(--incorrect);
+            font-weight: bold;
+        }
+
+        /* Footer Controls */
+        .footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            border-top: 1px solid #eee;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+        }
+
+        #submit-btn {
+            background-color: var(--correct);
+            color: white;
+        }
+        #submit-btn:hover { background-color: #219150; }
+
+        #reset-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+        #reset-btn:hover { background-color: #7f8c8d; }
+
+        #score-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary);
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Languages & Communication</h1>
+        <p class="subtitle">Theme 4 Vocabulary Practice (Drag and Drop)</p>
+    </header>
+
+    <div id="exercises-wrapper"></div>
+</div>
+
+<div class="footer-bar">
+    <button id="submit-btn" onclick="checkAll()">Nộp Bài</button>
+    <button id="reset-btn" onclick="location.reload()">Làm Lại</button>
+    <div id="score-display"></div>
+</div>
+
+<script>
+    // Dữ liệu 10 bài tập được biên soạn từ file từ vựng Theme 4
+    const exercisesData = [
+        {
+            id: 1,
+            title: "Basics of Human Connection",
+            topic: "Communication",
+            text: "Sharing information is a vital part of life. <strong>[1]</strong> is the process of expressing ideas and feelings to others. While we often think of speaking, much of our interaction is <strong>[2]</strong>, relying on spoken words. However, <strong>[3]</strong> communication is just as important, using cues other than words. For example, your <strong>[4]</strong>, such as how you stand or sit, can reveal your confidence. A simple hand <strong>[5]</strong> can indicate a direction. Even a <strong>[6]</strong> like a smile can change the meaning of a message.",
+            answers: ["communication", "verbal", "non-verbal", "body language", "gesture", "facial expression"],
+            distractors: ["dialect", "jargon", "syntax", "barrier", "fluency", "accuracy"]
+        },
+        {
+            id: 2,
+            title: "Learning a New Language",
+            topic: "Acquisition",
+            text: "Learning a foreign language is a journey. Language <strong>[1]</strong> takes time and consistent practice. The goal for many is to achieve <strong>[2]</strong>, allowing them to speak easily and without pausing. This is different from your <strong>[3]</strong>, which is the first language you learned as a child. Learners must practice their <strong>[4]</strong> to ensure they sound correct. They also strive for <strong>[5]</strong> in grammar to avoid mistakes. Fear of making errors can be a psychological <strong>[6]</strong> to progress.",
+            answers: ["acquisition", "fluency", "mother tongue", "pronunciation", "accuracy", "barrier"],
+            distractors: ["slang", "idiom", "linguist", "morphology", "phonology", "semantics"]
+        },
+        {
+            id: 3,
+            title: "The Science of Language",
+            topic: "Linguistics",
+            text: "<strong>[1]</strong> is the scientific study of language and its structure. A <strong>[2]</strong> analyzes how languages work and how they change. They might study <strong>[3]</strong> to understand the system of speech sounds. They also look at <strong>[4]</strong>, which deals with the forms of words. How sentences are constructed is the focus of <strong>[5]</strong>. Finally, <strong>[6]</strong> is the branch concerned with the meaning of words and phrases.",
+            answers: ["linguistics", "linguist", "phonology", "morphology", "syntax", "semantics"],
+            distractors: ["gossip", "rumor", "dialogue", "monologue", "accent", "dialect"]
+        },
+        {
+            id: 4,
+            title: "Varieties of Speech",
+            topic: "Registers",
+            text: "People speak differently depending on where they are and who they are with. A <strong>[1]</strong> is a form of language specific to a particular region. Your <strong>[2]</strong> often reveals which country or social class you come from. In casual settings, young people often use <strong>[3]</strong>, which is very informal. However, in business meetings, <strong>[4]</strong> language is required. Schools usually teach the <strong>[5]</strong> version of a language. To express yourself well, you need a wide <strong>[6]</strong> of words.",
+            answers: ["dialect", "accent", "slang", "formal", "standard", "vocabulary"],
+            distractors: ["sign", "symbol", "code", "means", "breakdown", "barrier"]
+        },
+        {
+            id: 5,
+            title: "Clarity and Understanding",
+            topic: "Clarity",
+            text: "Effective speaking requires clarity. You must <strong>[1]</strong> your thoughts clearly so others can hear the words. If a listener looks puzzled, you may need to <strong>[2]</strong> your point to make it easier to understand. A <strong>[3]</strong> argument is logical and easy to follow. The goal is to make your message <strong>[4]</strong> to the audience. Using complex words can <strong>[5]</strong> people instead of impressing them. This often leads to a <strong>[6]</strong> where the message is lost.",
+            answers: ["articulate", "clarify", "coherent", "comprehensible", "confuse", "misunderstanding"],
+            distractors: ["evolve", "emerge", "insert", "omit", "process", "ramble"]
+        },
+        {
+            id: 6,
+            title: "Forms of Interaction",
+            topic: "Interaction",
+            text: "There are many ways to exchange information. A casual talk between friends is a <strong>[1]</strong>. A formal exchange between two people is often called a <strong>[2]</strong>. Many prefer <strong>[3]</strong> meetings because they are more personal. The internet provides a convenient <strong>[4]</strong> of communication for people far away. However, a <strong>[5]</strong> in the system can stop messages from getting through. Sometimes, we must <strong>[6]</strong> to reach an agreement acceptable to both sides.",
+            answers: ["conversation", "dialogue", "face-to-face", "means", "breakdown", "negotiate"],
+            distractors: ["extract", "quote", "symbol", "sign", "signal", "gesture"]
+        },
+        {
+            id: 7,
+            title: "Writing Skills",
+            topic: "Writing",
+            text: "Good writing is a valuable skill. It should be <strong>[1]</strong>, giving necessary information in few words. Writers should avoid <strong>[2]</strong> explanations that bore the reader. You must follow the rules of <strong>[3]</strong> to form correct sentences. Using correct <strong>[4]</strong>, such as commas and full stops, helps the flow. Correct <strong>[5]</strong> of words is also essential for professionalism. Here is a short <strong>[6]</strong> from a famous book as an example.",
+            answers: ["concise", "lengthy", "grammar", "punctuation", "spelling", "extract"],
+            distractors: ["verbal", "vocal", "oral", "speech", "sound", "noise"]
+        },
+        {
+            id: 8,
+            title: "Meaning and Context",
+            topic: "Semantics",
+            text: "Understanding language often requires looking deeper. You can look up the <strong>[1]</strong> of a word in a dictionary. However, you must <strong>[2]</strong> the meaning based on the situation. A speaker might <strong>[3]</strong> something without saying it directly. Certain signs <strong>[4]</strong> specific warnings, like a red light. In literature, a symbol might <strong>[5]</strong> a deeper abstract idea. Therefore, understanding the <strong>[6]</strong> of the conversation is crucial.",
+            answers: ["definition", "interpret", "imply", "indicate", "signify", "context"],
+            distractors: ["stutter", "mutter", "whisper", "shout", "scream", "cry"]
+        },
+        {
+            id: 9,
+            title: "Language Evolution & Verification",
+            topic: "Change",
+            text: "Languages are living things that <strong>[1]</strong> over centuries. New words <strong>[2]</strong> as society changes and technology advances. In research, we must <strong>[3]</strong> facts to ensure they are true. Experiments are used to <strong>[4]</strong> theories clearly. It can be hard to <strong>[5]</strong> between two similar dialects. We need to <strong>[6]</strong> who the native speaker is in the group.",
+            answers: ["evolve", "emerge", "confirm", "demonstrate", "distinguish", "identify"],
+            distractors: ["ramble", "stutter", "hesitate", "pause", "stop", "quit"]
+        },
+        {
+            id: 10,
+            title: "Common Expressions",
+            topic: "Idioms",
+            text: "English is full of useful expressions. <strong>[1]</strong>, studying hard leads to better grades; it's obvious. Even if friends move away, they should try to <strong>[2]</strong> via email. The weather today was terrible, <strong>[3]</strong>; it was actually a storm! <strong>[4]</strong>, what matters most is that we tried our best. If someone says 'This pizza is delicious', you might agree by saying '<strong>[5]</strong>!'. I love this city. <strong>[6]</strong>, the traffic is a nightmare.",
+            answers: ["Needless to say", "keep in touch", "To say the least", "When all is said and done", "You can say that again", "Having said that"],
+            distractors: ["barrier", "code", "symbol", "sign", "signal", "gesture"]
+        }
+    ];
+
+    // Hàm trộn mảng (Fisher-Yates Shuffle)
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Khởi tạo bài tập
+    function init() {
+        const wrapper = document.getElementById('exercises-wrapper');
+
+        exercisesData.forEach((ex, index) => {
+            // Tạo thẻ Card
+            const card = document.createElement('div');
+            card.classList.add('exercise-card');
+
+            // Header
+            const header = document.createElement('div');
+            header.classList.add('card-header');
+            header.innerHTML = `
+                <h3>${index + 1}. ${ex.title}</h3>
+                <span class="topic-badge">${ex.topic}</span>
+            `;
+            card.appendChild(header);
+
+            // Body
+            const body = document.createElement('div');
+            body.classList.add('card-body');
+
+            // Word Bank
+            const bank = document.createElement('div');
+            bank.classList.add('word-bank');
+            bank.id = `bank-${ex.id}`;
+
+            // Gộp đáp án đúng và từ nhiễu, sau đó trộn
+            const allWords = shuffle([...ex.answers, ...ex.distractors]);
+            
+            allWords.forEach(word => {
+                const span = document.createElement('span');
+                span.classList.add('draggable');
+                span.setAttribute('draggable', 'true');
+                span.textContent = word;
+                span.id = `word-${ex.id}-${word.replace(/\s+/g, '-')}`;
+                span.dataset.word = word;
+                span.dataset.origin = ex.id; // Để kiểm tra nguồn gốc tránh kéo nhầm bài
+
+                // Events Drag
+                span.addEventListener('dragstart', dragStart);
+                span.addEventListener('dragend', dragEnd);
+
+                bank.appendChild(span);
+            });
+            body.appendChild(bank);
+
+            // Đoạn văn
+            const p = document.createElement('div');
+            p.classList.add('text-content');
+            
+            // Thay thế [1]..[6] bằng ô drop-zone
+            let formattedText = ex.text;
+            ex.answers.forEach((ans, i) => {
+                const placeholder = `<strong>[${i + 1}]</strong>`;
+                const zone = `<span class="drop-zone" data-correct="${ans}" data-ex="${ex.id}"></span>`;
+                formattedText = formattedText.replace(placeholder, zone);
+            });
+            
+            p.innerHTML = formattedText;
+            body.appendChild(p);
+            
+            card.appendChild(body);
+            wrapper.appendChild(card);
+        });
+
+        // Gán sự kiện Drop cho toàn bộ zone và bank
+        document.querySelectorAll('.drop-zone, .word-bank').forEach(el => {
+            el.addEventListener('dragover', dragOver);
+            el.addEventListener('drop', drop);
+        });
+    }
+
+    // Drag & Drop Functions
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+        setTimeout(() => e.target.classList.add('dragging'), 0);
+    }
+
+    function dragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+    function dragOver(e) {
+        e.preventDefault();
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+        if (target) target.classList.add('drag-over');
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        // Xóa hiệu ứng hover
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+        const id = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(id);
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+
+        if (!target || !draggable) return;
+
+        // Logic: Chỉ cho phép thả trong cùng 1 bài tập (dựa trên ID bài tập)
+        let targetExId;
+        if (target.classList.contains('word-bank')) {
+            targetExId = target.id.split('-')[1];
+        } else {
+            targetExId = target.dataset.ex;
+        }
+
+        // Nếu từ vựng không thuộc bài tập này -> Chặn
+        if (draggable.dataset.origin != targetExId) return;
+
+        // Xử lý thả vào ô trống
+        if (target.classList.contains('drop-zone')) {
+            // Nếu ô đã có từ -> Trả từ cũ về bank của bài tập đó
+            if (target.children.length > 0) {
+                const oldChild = target.children[0];
+                document.getElementById(`bank-${targetExId}`).appendChild(oldChild);
+            }
+            target.appendChild(draggable);
+            target.classList.remove('correct', 'incorrect');
+        } 
+        // Xử lý thả về bank
+        else {
+            target.appendChild(draggable);
+        }
+    }
+
+    // Kiểm tra đáp án
+    function checkAll() {
+        const zones = document.querySelectorAll('.drop-zone');
+        let total = zones.length;
+        let correct = 0;
+
+        zones.forEach(zone => {
+            const correctAnswer = zone.dataset.correct;
+            // Reset style
+            zone.classList.remove('correct', 'incorrect');
+
+            if (zone.children.length > 0) {
+                const userWord = zone.children[0].dataset.word;
+                if (userWord === correctAnswer) {
+                    zone.classList.add('correct');
+                    correct++;
+                } else {
+                    zone.classList.add('incorrect');
+                }
+            } else {
+                zone.classList.add('incorrect');
+            }
+        });
+
+        const display = document.getElementById('score-display');
+        display.innerHTML = `Kết quả: <span style="color:${correct === total ? '#27ae60' : '#c0392b'}">${correct} / ${total}</span> câu đúng`;
+        
+        if (correct === total) {
+            display.innerHTML += " - Tuyệt vời!";
+        }
+    }
+
+    // Chạy khi tải trang
+    window.onload = init;
+
+</script>
+
+</body>
+</html>

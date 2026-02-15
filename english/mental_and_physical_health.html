@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Practice: Mental & Physical Development</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #16a085; /* Màu xanh ngọc cho chủ đề y tế/phát triển */
+            --secondary: #2980b9;
+            --light: #ecf0f1;
+            --correct: #27ae60;
+            --incorrect: #c0392b;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: #f0f3f4;
+            color: #2c3e50;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.2em;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #7f8c8d;
+        }
+
+        /* Exercise Card */
+        .exercise-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .topic-badge {
+            background-color: var(--accent);
+            color: white;
+            font-size: 0.85em;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Word Bank */
+        .word-bank {
+            background-color: var(--light);
+            border: 2px dashed #bdc3c7;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .draggable {
+            background: white;
+            border: 1px solid #bdc3c7;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: grab;
+            font-weight: 600;
+            font-size: 0.95em;
+            color: var(--primary);
+            box-shadow: 0 2px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .draggable:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            background: #dfe6e9;
+        }
+
+        /* Paragraph Content */
+        .text-content {
+            font-size: 1.1em;
+            line-height: 2.5; /* High line-height for drop zones */
+            text-align: justify;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            min-width: 130px;
+            height: 34px;
+            border-bottom: 2px solid #95a5a6;
+            background-color: #f4f6f7;
+            margin: 0 5px;
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+            position: relative;
+            top: 4px;
+            padding: 0 10px;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #d6eaf8;
+            border-bottom-color: var(--secondary);
+        }
+
+        .drop-zone .draggable {
+            margin: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+            cursor: grab;
+        }
+
+        /* Results */
+        .drop-zone.correct {
+            border-bottom: 3px solid var(--correct);
+            background-color: #e9f7ef;
+            color: var(--correct);
+            font-weight: bold;
+        }
+
+        .drop-zone.incorrect {
+            border-bottom: 3px solid var(--incorrect);
+            background-color: #fdedec;
+            color: var(--incorrect);
+            font-weight: bold;
+        }
+
+        /* Footer Controls */
+        .footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            border-top: 1px solid #eee;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+        }
+
+        #submit-btn {
+            background-color: var(--correct);
+            color: white;
+        }
+        #submit-btn:hover { background-color: #219150; }
+
+        #reset-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+        #reset-btn:hover { background-color: #7f8c8d; }
+
+        #score-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary);
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Mental & Physical Development</h1>
+        <p class="subtitle">Theme 7 Vocabulary Practice (Drag and Drop)</p>
+    </header>
+
+    <div id="exercises-wrapper"></div>
+</div>
+
+<div class="footer-bar">
+    <button id="submit-btn" onclick="checkAll()">Nộp Bài</button>
+    <button id="reset-btn" onclick="location.reload()">Làm Lại</button>
+    <div id="score-display"></div>
+</div>
+
+<script>
+    // Dữ liệu 10 bài tập được biên soạn từ file từ vựng Theme 7
+    const exercisesData = [
+        {
+            id: 1,
+            title: "Early Childhood",
+            topic: "Infancy",
+            text: "The first stage of life, known as <strong>[1]</strong>, is a period of rapid change. A child then grows into a <strong>[2]</strong>, learning to walk and explore. Parents excitedly wait for their child to reach an important <strong>[3]</strong> like speaking their first word. Children at this age often <strong>[4]</strong> what adults do, copying their actions. They may point with a <strong>[5]</strong> to show what they want. Proper nutrition is essential to ensure healthy physical <strong>[6]</strong> during these formative years.",
+            answers: ["infancy", "toddler", "milestone", "imitate", "gesture", "growth"],
+            distractors: ["logic", "rate", "phase", "anxiety", "depression", "concept"]
+        },
+        {
+            id: 2,
+            title: "Learning and Education",
+            topic: "Education",
+            text: "Going to school allows students to <strong>[1]</strong> new skills and information. By reading and studying, they expand their general <strong>[2]</strong> of the world. It takes time and practice to <strong>[3]</strong> a difficult subject like mathematics. <strong>[4]</strong> development involves how children think, explore and figure things out. Teachers try to identify a student's <strong>[5]</strong> early on to help them succeed. Every child has the natural <strong>[6]</strong> to learn if given the right support.",
+            answers: ["acquire", "knowledge", "master", "cognitive", "potential", "ability"],
+            distractors: ["height", "autism", "disorder", "phobia", "tantrum", "brain"]
+        },
+        {
+            id: 3,
+            title: "Mental Health Awareness",
+            topic: "Psychology",
+            text: "Taking care of your mind is as important as your body. Many people suffer from <strong>[1]</strong>, feeling constantly nervous or worried. Others experience <strong>[2]</strong>, a state of deep unhappiness. <strong>[3]</strong> is the science that studies the human mind and behavior. Sometimes, a chemical imbalance can lead to a mental <strong>[4]</strong>. Having high <strong>[5]</strong> helps a person feel confident and valuable. We must understand that <strong>[6]</strong> health problems are medical conditions, not weaknesses.",
+            answers: ["anxiety", "depression", "psychology", "disorder", "self-esteem", "mental"],
+            distractors: ["physical", "gesture", "mature", "growth", "height", "skilled"]
+        },
+        {
+            id: 4,
+            title: "Adolescence and Maturity",
+            topic: "Teenagers",
+            text: "The <strong>[1]</strong> from childhood to adulthood can be a confusing time. Teenagers strive to become <strong>[2]</strong>, making their own decisions without parental help. They are often heavily influenced by their <strong>[3]</strong> group at school. Sometimes they act in an <strong>[4]</strong> way, not thinking about the consequences. Reaching full emotional <strong>[5]</strong> takes many years. Parents often notice changes in their child's <strong>[6]</strong> as they seek their own identity.",
+            answers: ["transition", "independent", "peer", "immature", "maturity", "behaviour"],
+            distractors: ["infancy", "toddler", "genius", "autism", "concept", "rate"]
+        },
+        {
+            id: 5,
+            title: "The Human Brain",
+            topic: "Brain Function",
+            text: "The <strong>[1]</strong> is the most complex organ in the body. It is divided into two parts, and each <strong>[2]</strong> controls different activities. The right side is often associated with <strong>[3]</strong>, helping us produce art and music. <strong>[4]</strong> allows us to create pictures and ideas in our minds. Every part of the brain has a specific <strong>[5]</strong> to keep the body running. While the right side is artistic, the left side is usually more <strong>[6]</strong> and analytical.",
+            answers: ["brain", "hemisphere", "creativity", "imagination", "function", "logical"],
+            distractors: ["physical", "height", "period", "phase", "limb", "muscle"]
+        },
+        {
+            id: 6,
+            title: "Thinking Processes",
+            topic: "Cognition",
+            text: "Scientists <strong>[1]</strong> data to find patterns and answers. They use evidence to <strong>[2]</strong> a conclusion based on facts. Understanding an <strong>[3]</strong> idea, like love or freedom, can be difficult because it is not physical. You must grasp the basic <strong>[4]</strong> before moving to advanced topics. Sometimes, we rely on our <strong>[5]</strong>, or gut feeling, rather than facts. Good <strong>[6]</strong> is the ability to make sensible decisions after thinking carefully.",
+            answers: ["analyse", "deduce", "abstract", "concept", "intuition", "judgement"],
+            distractors: ["grow", "remind", "look back", "imitate", "gesture", "trigger"]
+        },
+        {
+            id: 7,
+            title: "Memory and Forgetfulness",
+            topic: "Memory",
+            text: "As we age, our <strong>[1]</strong> may not be as sharp as it used to be. I tried to answer the question, but my <strong>[2]</strong>. Please <strong>[3]</strong> me to call my mother later so I don't forget. I'm sorry I missed the meeting; it completely <strong>[4]</strong>. It is nice to sit with old friends and <strong>[5]</strong> about the good old days. You should <strong>[6]</strong> that this project is due tomorrow.",
+            answers: ["memory", "mind went blank", "remind", "slipped my mind", "reminisce", "bear in mind"],
+            distractors: ["physical", "gifted", "skilled", "aware", "conscious", "grown"]
+        },
+        {
+            id: 8,
+            title: "Special Needs and Abilities",
+            topic: "Diversity",
+            text: "Every child learns differently. A <strong>[1]</strong> child has a lot of natural ability and learns very fast. A true <strong>[2]</strong> shows exceptional intelligence or artistic skill. However, some children face a <strong>[3]</strong> that makes learning harder. <strong>[4]</strong> is a condition where a person finds social communication difficult. Being <strong>[5]</strong> at something requires practice, not just talent. Early support can make a <strong>[6]</strong> difference in a child's life.",
+            answers: ["gifted", "genius", "disability", "autism", "skilled", "significant"],
+            distractors: ["irresponsible", "immature", "conscious", "aware", "abstract", "logical"]
+        },
+        {
+            id: 9,
+            title: "Physical Development",
+            topic: "Body",
+            text: "Doctors check a child's <strong>[1]</strong> health during regular check-ups. They measure their <strong>[2]</strong> to see how tall they have grown. Children grow at a different <strong>[3]</strong> depending on their genetics. The body continues to <strong>[4]</strong> until early adulthood. We must be <strong>[5]</strong> of what we eat to stay healthy. Being <strong>[6]</strong> of your surroundings helps prevent accidents while playing.",
+            answers: ["physical", "height", "rate", "develop", "conscious", "aware"],
+            distractors: ["mental", "psychological", "abstract", "theoretical", "emotional", "gifted"]
+        },
+        {
+            id: 10,
+            title: "Character and Responsibility",
+            topic: "Personality",
+            text: "Success often depends on your attitude. A <strong>[1]</strong> person works hard without needing to be told. It is <strong>[2]</strong> to ignore your duties and let others down. You should learn to be <strong>[3]</strong> so you don't always depend on others. Those who study hard usually <strong>[4]</strong> in their exams. Remember that every action has a <strong>[5]</strong>, good or bad. Teachers use praise to <strong>[6]</strong> good behavior in class.",
+            answers: ["self-motivated", "irresponsible", "self-reliant", "excel", "consequence", "reinforce"],
+            distractors: ["tantrum", "phobia", "symptom", "toddler", "infancy", "autism"]
+        }
+    ];
+
+    // Hàm trộn mảng (Fisher-Yates Shuffle)
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Khởi tạo bài tập
+    function init() {
+        const wrapper = document.getElementById('exercises-wrapper');
+
+        exercisesData.forEach((ex, index) => {
+            // Tạo thẻ Card
+            const card = document.createElement('div');
+            card.classList.add('exercise-card');
+
+            // Header
+            const header = document.createElement('div');
+            header.classList.add('card-header');
+            header.innerHTML = `
+                <h3>${index + 1}. ${ex.title}</h3>
+                <span class="topic-badge">${ex.topic}</span>
+            `;
+            card.appendChild(header);
+
+            // Body
+            const body = document.createElement('div');
+            body.classList.add('card-body');
+
+            // Word Bank
+            const bank = document.createElement('div');
+            bank.classList.add('word-bank');
+            bank.id = `bank-${ex.id}`;
+
+            // Gộp đáp án đúng và từ nhiễu, sau đó trộn
+            const allWords = shuffle([...ex.answers, ...ex.distractors]);
+            
+            allWords.forEach(word => {
+                const span = document.createElement('span');
+                span.classList.add('draggable');
+                span.setAttribute('draggable', 'true');
+                span.textContent = word;
+                span.id = `word-${ex.id}-${word.replace(/\s+/g, '-')}`;
+                span.dataset.word = word;
+                span.dataset.origin = ex.id; // Để kiểm tra nguồn gốc tránh kéo nhầm bài
+
+                // Events Drag
+                span.addEventListener('dragstart', dragStart);
+                span.addEventListener('dragend', dragEnd);
+
+                bank.appendChild(span);
+            });
+            body.appendChild(bank);
+
+            // Đoạn văn
+            const p = document.createElement('div');
+            p.classList.add('text-content');
+            
+            // Thay thế [1]..[6] bằng ô drop-zone
+            let formattedText = ex.text;
+            ex.answers.forEach((ans, i) => {
+                const placeholder = `<strong>[${i + 1}]</strong>`;
+                const zone = `<span class="drop-zone" data-correct="${ans}" data-ex="${ex.id}"></span>`;
+                formattedText = formattedText.replace(placeholder, zone);
+            });
+            
+            p.innerHTML = formattedText;
+            body.appendChild(p);
+            
+            card.appendChild(body);
+            wrapper.appendChild(card);
+        });
+
+        // Gán sự kiện Drop cho toàn bộ zone và bank
+        document.querySelectorAll('.drop-zone, .word-bank').forEach(el => {
+            el.addEventListener('dragover', dragOver);
+            el.addEventListener('drop', drop);
+        });
+    }
+
+    // Drag & Drop Functions
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+        setTimeout(() => e.target.classList.add('dragging'), 0);
+    }
+
+    function dragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+    function dragOver(e) {
+        e.preventDefault();
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+        if (target) target.classList.add('drag-over');
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        // Xóa hiệu ứng hover
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+        const id = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(id);
+        const target = e.target.closest('.drop-zone') || e.target.closest('.word-bank');
+
+        if (!target || !draggable) return;
+
+        // Logic: Chỉ cho phép thả trong cùng 1 bài tập (dựa trên ID bài tập)
+        let targetExId;
+        if (target.classList.contains('word-bank')) {
+            targetExId = target.id.split('-')[1];
+        } else {
+            targetExId = target.dataset.ex;
+        }
+
+        // Nếu từ vựng không thuộc bài tập này -> Chặn
+        if (draggable.dataset.origin != targetExId) return;
+
+        // Xử lý thả vào ô trống
+        if (target.classList.contains('drop-zone')) {
+            // Nếu ô đã có từ -> Trả từ cũ về bank của bài tập đó
+            if (target.children.length > 0) {
+                const oldChild = target.children[0];
+                document.getElementById(`bank-${targetExId}`).appendChild(oldChild);
+            }
+            target.appendChild(draggable);
+            target.classList.remove('correct', 'incorrect');
+        } 
+        // Xử lý thả về bank
+        else {
+            target.appendChild(draggable);
+        }
+    }
+
+    // Kiểm tra đáp án
+    function checkAll() {
+        const zones = document.querySelectorAll('.drop-zone');
+        let total = zones.length;
+        let correct = 0;
+
+        zones.forEach(zone => {
+            const correctAnswer = zone.dataset.correct;
+            // Reset style
+            zone.classList.remove('correct', 'incorrect');
+
+            if (zone.children.length > 0) {
+                const userWord = zone.children[0].dataset.word;
+                if (userWord === correctAnswer) {
+                    zone.classList.add('correct');
+                    correct++;
+                } else {
+                    zone.classList.add('incorrect');
+                }
+            } else {
+                zone.classList.add('incorrect');
+            }
+        });
+
+        const display = document.getElementById('score-display');
+        display.innerHTML = `Kết quả: <span style="color:${correct === total ? '#27ae60' : '#c0392b'}">${correct} / ${total}</span> câu đúng`;
+        
+        if (correct === total) {
+            display.innerHTML += " - Tuyệt vời!";
+        }
+    }
+
+    // Chạy khi tải trang
+    window.onload = init;
+
+</script>
+
+</body>
+</html>
